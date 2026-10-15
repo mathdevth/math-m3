@@ -457,8 +457,9 @@ function initPractice(){document.querySelectorAll('.pz').forEach(root=>{const mo
   ask()})}
 
 /* ---------- เฉลย (เปิดผ่าน config.json) ---------- */
-fetch('config.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})).then(c=>{window.CFG=c||{};const open=(c&&c.openAnswers)||[];
-  document.querySelectorAll('.keys').forEach(k=>k.classList.toggle('open',open.includes(k.dataset.code)))});
+let keysFromDB=false;const applyKeys=open=>document.querySelectorAll('.keys').forEach(k=>k.classList.toggle('open',open.includes(k.dataset.code)));
+window.M3Keys={set(arr,onet){keysFromDB=true;window.M3OPEN=arr||[];applyKeys(window.M3OPEN);window.CFG=window.CFG||{};window.CFG.onetSolutions=!!onet},get:()=>window.M3OPEN||[]};
+fetch('config.json',{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})).then(c=>{c=c||{};if(keysFromDB){c.onetSolutions=window.CFG&&window.CFG.onetSolutions;window.CFG=c;return}window.CFG=c;window.M3OPEN=c.openAnswers||[];applyKeys(window.M3OPEN)});
 
 /* ---------- นำทาง ---------- */
 function route(){const h=(location.hash||'').slice(1),t=TOPICS.findIndex(x=>x[0]===h);
@@ -1069,7 +1070,7 @@ async function init(){let cfg=null;for(let i=0;i<30&&!window.CFG;i++)await new P
  if(window.__FAKEDB)DB=window.__FAKEDB;else{if(!cfg||!cfg.apiKey)return;const v='https://cdn.jsdelivr.net/npm/firebase@10.12.2/';
   try{await load(v+'firebase-app-compat.js');await load(v+'firebase-auth-compat.js');await load(v+'firebase-firestore-compat.js')}catch(e){return}
   firebase.initializeApp(cfg);DB=mkDB(firebase)}
- ui();DB.auth.onAuthStateChanged(onUser)}
+ ui();DB.get('settings/m3').then(s=>{if(s&&Array.isArray(s.openAnswers))M3Keys.set(s.openAnswers,s.onetSolutions)}).catch(()=>{});DB.auth.onAuthStateChanged(onUser)}
 /* ---------- ส่วนติดต่อ ---------- */
 function ui(){const b=document.createElement('button');b.className='acb';b.id='acb';b.textContent='เข้าสู่ระบบ';$('thm').before(b);
  const sec=document.createElement('section');sec.id='fbHome';const lede=document.querySelector('#home .lede');lede.after(sec);
@@ -1131,8 +1132,8 @@ addEventListener('m3onet',e=>{if(!ME)return;const d=e.detail;DB.add('m3tests',{u
 /* ---------- แดชบอร์ดครู ---------- */
 function td(v){if(!v)return'–';const d=v.toDate?v.toDate():new Date(v);return d.toLocaleDateString('th-TH',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}
 function csv(rows,name){const t='﻿'+rows.map(r=>r.map(x=>`"${String(x??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download=name;a.click()}
-function teacher(){const H=$('fbHome');H.innerHTML=`<h2><span>ครู</span>แดชบอร์ด ม.3</h2><div class="seg" id="tTabs">${['นักเรียน','คะแนนทดสอบ','เรื่องอยากบอก','สร้างบัญชี'].map((x,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===0}">${x}<span id="tB${i}"></span></button>`).join('')}</div><div id="tBody"></div><div class="fbr"><button id="outB">ออกจากระบบ</button></div>`;
- $('outB').onclick=()=>DB.auth.signOut();const bs=[...H.querySelectorAll('#tTabs button')];bs.forEach(b=>b.onclick=()=>{bs.forEach(x=>x.setAttribute('aria-pressed',x===b));[tStu,tTest,tFeel,tNew][+b.dataset.i]()});tStu();
+function teacher(){const H=$('fbHome');H.innerHTML=`<h2><span>ครู</span>แดชบอร์ด ม.3</h2><div class="seg" id="tTabs">${['นักเรียน','คะแนนทดสอบ','เรื่องอยากบอก','สร้างบัญชี','เปิดเฉลย'].map((x,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===0}">${x}<span id="tB${i}"></span></button>`).join('')}</div><div id="tBody"></div><div class="fbr"><button id="outB">ออกจากระบบ</button></div>`;
+ $('outB').onclick=()=>DB.auth.signOut();const bs=[...H.querySelectorAll('#tTabs button')];bs.forEach(b=>b.onclick=()=>{bs.forEach(x=>x.setAttribute('aria-pressed',x===b));[tStu,tTest,tFeel,tNew,tKeys][+b.dataset.i]()});tStu();
  DB.q('feelings',[['read','==',false]]).then(r=>{if(r.length)$('tB2').textContent=` (${r.length})`}).catch(()=>{})}
 async function tStu(){const B=$('tBody');B.innerHTML='<p class="mut">กำลังโหลด…</p>';let s=[];try{s=await DB.q('m3students')}catch(e){B.innerHTML='<p class="err">โหลดไม่สำเร็จ ตรวจสอบกฎ (Rules) ของ Firestore ว่าเพิ่มส่วนของ ม.3 แล้ว</p>';return}
  const cls=[...new Set(s.map(x=>x.cls))].sort();let f='';
@@ -1150,6 +1151,19 @@ async function tFeel(){const B=$('tBody');B.innerHTML='<p class="mut">กำล�
  const M={5:'😄 ดีมาก',4:'🙂 ดี',3:'😐 เฉย ๆ',2:'😟 ไม่ค่อยดี',1:'😢 แย่มาก',0:'ไม่ได้เลือก'};
  B.innerHTML=`<p class="mut">รวมข้อความจากเว็บ ม.1 และ ม.3  ข้อความที่เลือก “แย่มาก” หรือพูดถึงความไม่ปลอดภัย ควรติดตามโดยเร็วร่วมกับครูแนะแนว</p>`+(f.length?f.map(x=>`<div class="fl ${x.read?'':'unread'}"><b>${esc(x.name)}</b> · ${esc(x.grade||'ม.1')} ชั้น ${esc(x.cls)} · ${td(x.time)} · ${M[x.mood||0]}<div style="white-space:pre-wrap;margin-top:4px">${esc(x.text)||'<i>ไม่มีข้อความ</i>'}</div>${x.read?'':`<button data-id="${x.id}" class="rd" style="margin-top:6px">ทำเครื่องหมายว่าอ่านแล้ว</button>`}</div>`).join(''):'<p class="mut">ยังไม่มีข้อความ</p>');
  B.querySelectorAll('.rd').forEach(b=>b.onclick=async()=>{await DB.update('feelings/'+b.dataset.id,{read:true}).catch(()=>{});tFeel()})}
+function tKeys(){const B=$('tBody');const cur=new Set(M3Keys.get()),seen=new Set(),rows=[];
+ document.querySelectorAll('.keys[data-code]').forEach(k=>{const c=k.dataset.code;if(seen.has(c))return;seen.add(c);const m=k.closest('main');const t=TOPICS.find(x=>x[0]===m.dataset.t);const g=UNITINFO.find(u=>u.topics.includes(t[0]));
+  rows.push({c,term:g.term,u:g.unit,un:g.name,lab:(k.closest('section').querySelector('h2')||{}).textContent.replace(/^\d+/,'').trim()})});
+ rows.sort((a,b)=>a.term-b.term||a.u-b.u||a.c.localeCompare(b.c));const units=[...new Set(rows.map(r=>r.term+'|'+r.u+'|'+r.un))];
+ const onet=!!(window.CFG&&window.CFG.onetSolutions);
+ B.innerHTML=`<p class="mut">ติ๊กแบบฝึกหัดที่ให้นักเรียนเห็นเฉลย แล้วกด <b>บันทึก</b> นักเรียนเห็นเมื่อรีเฟรชหน้า ไม่ต้องแก้ config.json</p>
+ <div class="fbx"><label style="display:flex;gap:10px;align-items:center;margin:0"><input type="checkbox" id="kOn" ${onet?'checked':''} style="width:22px;height:22px"> <b>เปิดเฉลยและวิธีคิดโจทย์ O-NET</b></label></div>
+ <div class="fbr"><button id="kAll">เลือกทั้งหมด</button><button id="kNone">ไม่เลือกเลย</button></div>
+ ${units.map(u=>{const [te,un,nm]=u.split('|');return`<div class="fbx"><b>เล่ม ${te} หน่วยที่ ${un} ${esc(nm)}</b>${rows.filter(r=>r.term==te&&r.u==un).map(r=>`<label style="display:flex;gap:10px;align-items:center;margin:6px 0"><input type="checkbox" data-c="${r.c}" ${cur.has(r.c)?'checked':''} style="width:22px;height:22px;flex:none"> ${esc(r.lab)} <span class="mut" style="font-family:var(--mono);font-size:12px">${r.c}</span></label>`).join('')}</div>`}).join('')}
+ <div class="fbr"><button class="pri" id="kSave">บันทึก</button></div><p id="kMsg" class="mut"></p>`;
+ const ins=[...B.querySelectorAll('input[data-c]')];$('kAll').onclick=()=>ins.forEach(i=>i.checked=true);$('kNone').onclick=()=>ins.forEach(i=>i.checked=false);
+ $('kSave').onclick=async()=>{const a=ins.filter(i=>i.checked).map(i=>i.dataset.c),o=$('kOn').checked;$('kSave').disabled=true;
+  try{await DB.set('settings/m3',{openAnswers:a,onetSolutions:o,updated:DB.ts()});M3Keys.set(a,o);$('kMsg').innerHTML=`<span class="okc">บันทึกแล้ว</span> เปิดเฉลย ${a.length} แบบฝึกหัด · O-NET ${o?'เปิด':'ปิด'}`}catch(e){$('kMsg').innerHTML='<span class="err">บันทึกไม่สำเร็จ ตรวจสอบว่าเพิ่มกฎ settings ใน Firestore แล้ว</span>'}$('kSave').disabled=false}}
 function tNew(){const B=$('tBody');B.innerHTML=`<p class="mut">วางรายชื่อจาก Excel บรรทัดละคน เรียงคอลัมน์ <b>เลขประจำตัว, ชื่อ–สกุล, ชั้น, เลขที่</b> ระบบสุ่มรหัสให้ แล้วแสดงใบแจ้งรหัสให้พิมพ์</p>
  <div class="fbx"><textarea id="nR" rows="8" placeholder="12345	เด็กชายตัวอย่าง ใจดี	3/1	1"></textarea><div class="fbr"><button class="pri" id="nGo">สร้างบัญชี</button></div><p id="nM" class="mut"></p></div><div id="nOut"></div>`;
  $('nGo').onclick=async()=>{const rows=$('nR').value.split(/\n/).map(l=>l.split(/\t|,/).map(x=>x.trim())).filter(r=>r[0]&&r[1]);if(!rows.length){$('nM').textContent='ยังไม่มีรายชื่อ';return}
@@ -1249,6 +1263,10 @@ document.querySelectorAll('main.topic[data-t]').forEach(m=>{const items=BANK.fil
  const roots=()=>document.querySelectorAll('main');
  let q=false;const run=()=>{q=false;obs.disconnect();roots().forEach(conv);roots().forEach(r=>obs.observe(r,{childList:true,subtree:true,characterData:true}))};
  const obs=new MutationObserver(()=>{if(!q){q=true;requestAnimationFrame(run)}});run()})();
+/* ===== ตัวนับผู้เข้าชม (GoatCounter) ครูดูสถิติที่ goatcounter.com ไม่แสดงตัวเลขบนเว็บ ===== */
+(function(){let n=0;const t=setInterval(()=>{const C=window.CFG;if(!C&&++n<40)return;clearInterval(t);const g=((C||{}).goatcounter||'').trim();if(!/^[a-z0-9-]+$/.test(g))return;
+ window.goatcounter={no_onload:true};const s=document.createElement('script');s.async=true;s.dataset.goatcounter=`https://${g}.goatcounter.com/count`;s.src='https://gc.zgo.at/count.js';
+ s.onload=()=>{const send=()=>{const h=(location.hash||'').slice(1);const tp=TOPICS.find(x=>x[0]===h);try{window.goatcounter.count({path:'/m3/'+(h||'home'),title:tp?`ม.3 ${tp[1]} ${tp[2]}`:h==='onet'?'ม.3 O-NET':'ม.3 หน้าแรก'})}catch(e){}};send();addEventListener('hashchange',send)};document.head.appendChild(s)},150)})();
 
 initPractice();
 </script>
