@@ -1,5 +1,13 @@
-{
-  "openAnswers": [],
-  "onetSolutions": false,
-  "firebase": null
-}
+   {
+     "openAnswers": [],
+     "goatcounter": "",
+     "sheetUrl": "",
+     "firebase": {
+       "apiKey": "AIzaSyAEvnb6Z07XVsqvU2qiWKXx9tS0cEV4jMc",
+       "authDomain": "math-m1-krukum.firebaseapp.com",
+       "projectId": "math-m1-krukum",
+       "storageBucket": "math-m1-krukum.firebasestorage.app",
+       "messagingSenderId": "690968649223",
+       "appId": "1:690968649223:web:4f7ae5809ff688e3e554a2"
+     }
+   }
