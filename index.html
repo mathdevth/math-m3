@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>คณิตศาสตร์ ม.3</title>
 <script>(function(){try{var t=localStorage.getItem('m3theme');if(t)document.documentElement.dataset.theme=t}catch(e){}})()</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Anuphan:wght@400;500;600;700&family=Kanit:wght@500;600;700&display=swap">
 <style>:root{--bg:#f7f7f4;--ink:#141414;--mut:#6d6d68;--line:#e2e2dc;--soft:#ededE8;--acc:#d9431e;--accbg:#fbe9e3;--ok:#1d7a4c;--okbg:#e4f3ea;--no:#b3261e;--nobg:#fbe7e5;--box:#ffffff;
  --sans:"IBM Plex Sans Thai",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--ink:#ececea;--mut:#9a9a94;--line:#2c2c2a;--soft:#1c1c1b;--acc:#ff7a50;--accbg:#3a1f16;--ok:#6fd39f;--okbg:#14301f;--no:#ff8a80;--nobg:#3a1714;--box:#1a1a19;color-scheme:dark}}
@@ -123,7 +123,102 @@ h1.hero{font-size:clamp(36px,10.5vw,72px);line-height:1.1;letter-spacing:-.02em;
 .cmap.hl .me{opacity:.07}.cmap.hl .mn{opacity:.28}.cmap.hl .me.on{opacity:1;stroke:var(--acc);stroke-width:2.4}.cmap.hl .mn.on{opacity:1}
 .maps{font-size:13px;margin:4px 0 0}@media(min-width:700px){.maps{display:none}}
 .mn:focus-visible rect{stroke-width:3}.mapn{color:var(--mut);font-size:15px;min-height:1.6em;margin:6px 0 12px}
+</style><style id="m3pop">
+/* ===== ธีมสดใส ม.3 · สีประจำหน่วย (สีช่วยจำ) ===== */
+:root{--sans:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;--disp:"Kanit","Anuphan",system-ui,sans-serif;
+ --bg:#fbf8ff;--box:#ffffff;--soft:#f3effb;--line:#e6e0f2;--ink:#1d1830;--mut:#6b6485;
+ --u:#7c3aed;--ud:color-mix(in srgb,var(--u) 72%,#000);--ul:color-mix(in srgb,var(--u) 12%,var(--box));--um:color-mix(in srgb,var(--u) 28%,var(--box));
+ --acc:var(--u);--accbg:var(--ul);
+ --c-idea:#2563eb;--c-play:#9333ea;--c-prac:#16a34a;--c-key:#64748b;--c-onet:#ea580c;
+ --sh:0 1px 2px rgba(40,20,90,.06),0 8px 24px -10px rgba(60,30,140,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120f1d;--box:#1b1729;--soft:#231e35;--line:#332c4b;--ink:#f1edff;--mut:#a59fc0;
+ --ud:color-mix(in srgb,var(--u) 55%,#fff);--ul:color-mix(in srgb,var(--u) 18%,var(--box));--um:color-mix(in srgb,var(--u) 35%,var(--box));--sh:0 8px 24px -12px #000}}
+:root[data-theme="dark"]{--bg:#120f1d;--box:#1b1729;--soft:#231e35;--line:#332c4b;--ink:#f1edff;--mut:#a59fc0;
+ --ud:color-mix(in srgb,var(--u) 55%,#fff);--ul:color-mix(in srgb,var(--u) 18%,var(--box));--um:color-mix(in srgb,var(--u) 35%,var(--box));--sh:0 8px 24px -12px #000}
+/* สีประจำหน่วย */
+[data-u="i"]{--u:#f97316}[data-u="f"]{--u:#8b5cf6}[data-u="q"]{--u:#ec4899}[data-u="s"]{--u:#0d9488}[data-u="g"]{--u:#2563eb}[data-u="t"]{--u:#16a34a}
+[data-u="e"]{--u:#4f46e5}[data-u="c"]{--u:#e11d48}[data-u="v"]{--u:#d97706}[data-u="p"]{--u:#0891b2}[data-u="r"]{--u:#c026d3}[data-u="o"]{--u:#ea580c}
+body{font-family:var(--sans);font-size:17.5px;line-height:1.75;background:
+ radial-gradient(900px 500px at 100% -10%,color-mix(in srgb,var(--u) 14%,transparent),transparent 70%),
+ radial-gradient(700px 500px at -10% 10%,color-mix(in srgb,#06b6d4 10%,transparent),transparent 70%),var(--bg);background-attachment:fixed}
+.wrap{max-width:860px}
+h1,h1.hero,h2,.brand,.uh span,.pn a,.onc b{font-family:var(--disp)}
+h1{font-weight:600;letter-spacing:0}
+.top{background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:0;box-shadow:0 1px 0 var(--line)}
+.brand b{color:var(--u)}
+.tnav a{font-weight:500}.tnav a[aria-current]{color:#fff;background:var(--u)}
+button,select,.din{border-radius:12px}
+button:hover{border-color:var(--u)}
+.go{background:var(--u);border-color:var(--u);color:#fff;font-weight:600;box-shadow:0 6px 16px -8px var(--u)}
+.go:hover{filter:brightness(1.08)}
+.seg button[aria-pressed=true]{background:var(--u);border-color:var(--u);color:#fff}
+input[type=range],.rg input,.tg input,input[type=checkbox]{accent-color:var(--u)}
+/* หน้าแรก */
+#home{--u:#7c3aed}
+#home .eyebrow{font-family:var(--disp);color:var(--u);font-weight:500;letter-spacing:.02em}
+h1.hero{font-weight:700;background:linear-gradient(100deg,#f97316,#ec4899 30%,#8b5cf6 60%,#2563eb 85%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
+.meta b{color:var(--u);font-family:var(--disp);font-size:1.15em}
+.qk a,.qk button{border-radius:999px;font-weight:500;box-shadow:var(--sh)}
+.qk a{background:linear-gradient(135deg,#f97316,#ec4899);border:0;color:#fff}
+section{border-top:0;padding:22px 22px 26px;margin-top:22px;background:var(--box);border-radius:22px;box-shadow:var(--sh);border:1px solid var(--line)}
+h2{font-size:18px;font-weight:600;color:var(--ink)}
+h2 span{font-family:var(--disp);font-size:13px;font-weight:600;color:#fff;background:var(--u);border-radius:999px;padding:2px 10px}
+/* รายการหน่วยแบบการ์ดสี */
+.units{display:grid;gap:14px}
+.units>li{border:0;border-radius:18px;padding:14px 16px 8px;background:var(--ul);border-left:8px solid var(--u)}
+.uh{align-items:center}
+.uh b{display:grid;place-items:center;width:38px!important;height:38px;border-radius:12px;background:var(--u);color:#fff!important;font-family:var(--disp);font-size:18px;flex:none}
+.uh span{font-size:18.5px;font-weight:600;color:var(--ud)}
+.uh .uic{font-size:24px;margin-left:auto;font-style:normal}
+.units ul{padding-left:52px}
+.units ul a{border-top:1px dashed var(--um);font-weight:500}
+.units ul a span{font-family:var(--disp);color:var(--ud);background:var(--box);border-radius:8px;padding:0 8px;font-size:13px}
+.units ul a i{color:var(--u);font-weight:700}
+.units ul a:hover{color:var(--ud)}
+.onc{background:linear-gradient(135deg,#fff1e6,#ffe4f0);border:0;box-shadow:var(--sh)}
+:root[data-theme="dark"] .onc{background:linear-gradient(135deg,#3a2112,#3a1229)}
+.onc i{color:#ea580c}
+.wsr{border-bottom:1px dashed var(--line)}.wsr b{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--u);color:#fff!important;font-family:var(--disp)}
+.wsr[data-u] span{font-weight:500}
+/* หน้าหัวข้อ */
+main.topic>.eyebrow{display:inline-block;font-family:var(--disp);color:#fff;background:var(--u);border-radius:999px;padding:3px 14px;margin-top:30px}
+main.topic>h1{font-size:clamp(28px,6.5vw,42px);color:var(--ud);line-height:1.25}
+main.topic>h1::after{content:"";display:block;width:72px;height:6px;border-radius:6px;margin-top:10px;background:linear-gradient(90deg,var(--u),color-mix(in srgb,var(--u) 40%,#fff))}
+.uband{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 0;font-size:14px;color:var(--mut)}
+.uband b{color:var(--ud);font-family:var(--disp);font-weight:600}
+/* สีประจำประเภทกิจกรรม (ช่วยจำ) */
+section.k-idea{--k:var(--c-idea)}section.k-play{--k:var(--c-play)}section.k-prac{--k:var(--c-prac)}section.k-key{--k:var(--c-key)}section.k-onet{--k:var(--c-onet)}
+section[class*="k-"]{border-top:6px solid var(--k)}
+section[class*="k-"] h2 span{background:var(--k)}
+section[class*="k-"] h2[data-tip]::after{content:attr(data-tip);margin-left:auto;font-family:var(--sans);font-size:12.5px;font-weight:500;color:var(--k);background:color-mix(in srgb,var(--k) 10%,var(--box));border-radius:999px;padding:2px 10px}
+/* แนวคิด = การ์ดจำ */
+.rules{gap:10px}
+.rules>div{border:0;border-radius:16px;padding:14px 16px;background:var(--ul);border-left:6px solid var(--u)}
+.rules dt{color:var(--ud);font-family:var(--disp);font-weight:600;font-size:17px}
+.rules dd{color:var(--ink);font-size:17.5px}
+/* ลองปรับ / ฝึก */
+.verdict{border-left:5px solid var(--u);background:var(--ul);border-radius:0 14px 14px 0}
+.out b,.score b{color:var(--ud)}
+.chip.hit{border-color:var(--u);background:var(--ul)}
+.bar i.a{background:var(--u)}.bar i{border-radius:6px;height:12px}
+.pz .data{background:var(--ul);border-radius:14px}
+.pz .q{font-size:19px;font-weight:500}
+.opts button{border-radius:14px;font-weight:500}.opts button.sel{border-color:var(--u);background:var(--ul)}
+.fb{border-radius:14px}.fb.ok{background:#dcfce7;border-left:6px solid #16a34a}.fb.no{background:#ffe4e6;border-left:6px solid #e11d48}
+:root[data-theme="dark"] .fb.ok{background:#11331f}:root[data-theme="dark"] .fb.no{background:#3a1420}
+.steps b{color:var(--ud);font-family:var(--disp)}
+.keys summary::after{color:var(--u)}
+.locked{border-radius:14px;border-color:var(--um);background:var(--soft)}
+.pn a{border-radius:16px;background:var(--box);box-shadow:var(--sh);border-color:var(--line)}
+.pn a small{color:var(--u)}
+.ov .stats div{border-radius:16px;background:var(--ul);border:0}.ov .stats b{color:var(--ud);font-family:var(--disp)}
+.legend3{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;font-size:13.5px}
+.legend3 span{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:2px 10px;background:var(--soft)}
+.legend3 i{width:10px;height:10px;border-radius:50%;display:inline-block}
+@media (max-width:560px){section{padding:18px 14px 20px;border-radius:18px}.units ul{padding-left:0}.wrap{padding:0 12px 60px}}
+
 </style>
+
 <header class="top"><a href="#" class="brand">ม.3 <b>คณิต</b></a><nav class="tnav" id="tnav" hidden><a href="#i1" data-t="i1" data-g="a1">1.1–1.2 อสมการและคำตอบ</a><a href="#i2" data-t="i2" data-g="a1">1.3 การแก้อสมการ</a><a href="#i3" data-t="i3" data-g="a1">1.4 โจทย์ปัญหาอสมการ</a><a href="#f1" data-t="f1" data-g="a2">2.1 ผลบวกและผลต่างกำลังสาม</a><a href="#f2" data-t="f2" data-g="a2">2.1 พหุนามดีกรีสี่และดีกรีหก</a><a href="#f3" data-t="f3" data-g="a2">2.1 การจัดกลุ่มและการนำไปใช้</a><a href="#q1" data-t="q1" data-g="a3">3.1 แก้สมการโดยแยกตัวประกอบ</a><a href="#q2" data-t="q2" data-g="a3">3.2 กำลังสองสมบูรณ์และสูตร</a><a href="#q3" data-t="q3" data-g="a3">3.3 โจทย์ปัญหาสมการกำลังสอง</a><a href="#s1" data-t="s1" data-g="a4">4.1 รูปที่คล้ายกัน</a><a href="#s2" data-t="s2" data-g="a4">4.2 รูปสามเหลี่ยมที่คล้ายกัน</a><a href="#s3" data-t="s3" data-g="a4">4.3 การนำความคล้ายไปใช้</a><a href="#g1" data-t="g1" data-g="a5">5.1 ฟังก์ชันกำลังสองและกราฟพื้นฐาน</a><a href="#g2" data-t="g2" data-g="a5">5.2 รูป a(x − h)² + k และ ax² + bx + c</a><a href="#g3" data-t="g3" data-g="a5">5.3 ค่าสูงสุดและค่าต่ำสุด</a><a href="#t1" data-t="t1" data-g="6">6.1 ควอร์ไทล์</a><a href="#t2" data-t="t2" data-g="6">6.1 แผนภาพกล่องและการกระจาย</a><a href="#t3" data-t="t3" data-g="6">6.2 การนำแผนภาพกล่องไปใช้</a><a href="#e1" data-t="e1" data-g="b1">1.1 กราฟของระบบสมการ</a><a href="#e2" data-t="e2" data-g="b1">1.2 การแก้ระบบสมการ</a><a href="#e3" data-t="e3" data-g="b1">1.3 โจทย์ปัญหา</a><a href="#c1" data-t="c1" data-g="b2">2.1 ส่วนต่าง ๆ ของวงกลม</a><a href="#c2" data-t="c2" data-g="b2">2.2 มุมในวงกลม</a><a href="#c3" data-t="c3" data-g="b2">2.3 คอร์ด</a><a href="#c4" data-t="c4" data-g="b2">2.4 เส้นสัมผัสวงกลม</a><a href="#v1" data-t="v1" data-g="b3">3.1 พีระมิด</a><a href="#v2" data-t="v2" data-g="b3">3.2 กรวย</a><a href="#v3" data-t="v3" data-g="b3">3.3 ทรงกลม</a><a href="#p1" data-t="p1" data-g="b4">4.1 การทดลองสุ่มและเหตุการณ์</a><a href="#p2" data-t="p2" data-g="b4">4.2 ความน่าจะเป็นของเหตุการณ์</a><a href="#p3" data-t="p3" data-g="b4">4.3 การนำไปใช้</a><a href="#r1" data-t="r1" data-g="b5">5.1 อัตราส่วนตรีโกณมิติ</a><a href="#r2" data-t="r2" data-g="b5">5.1 หาความยาวด้านและมุมพิเศษ</a><a href="#r3" data-t="r3" data-g="b5">5.2 การนำไปใช้</a></nav><button id="thm" class="ic" aria-label="สลับโหมดสว่าง/มืด">◐</button></header>
 <div class="wrap"><main id="home">
 <p class="eyebrow">ปีการศึกษา 2569</p><h1 class="hero">คณิตศาสตร์ ม.3</h1>
@@ -1148,7 +1243,7 @@ addEventListener('m3onet',e=>{if(!ME)return;const d=e.detail;DB.add('m3tests',{u
 /* ---------- แดชบอร์ดครู ---------- */
 function td(v){if(!v)return'–';const d=v.toDate?v.toDate():new Date(v);return d.toLocaleDateString('th-TH',{day:'numeric',month:'short'})+' '+d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}
 function csv(rows,name){const t='﻿'+rows.map(r=>r.map(x=>`"${String(x??'').replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download=name;a.click()}
-function teacher(){const H=$('fbHome');H.innerHTML=`<h2><span>ครู</span>แดชบอร์ด ม.3</h2><div class="seg" id="tTabs">${['นักเรียน','คะแนนทดสอบ','เรื่องอยากบอก','สร้างบัญชี','เปิดเฉลย'].map((x,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===0}">${x}<span id="tB${i}"></span></button>`).join('')}</div><div id="tBody"></div><div class="fbr"><button id="outB">ออกจากระบบ</button></div>`;
+function teacher(){const H=$('fbHome');H.innerHTML=`<h2><span>ครู</span>แดชบอร์ด ม.3</h2><div class="seg" id="tTabs">${['นักเรียน','คะแนนรายบท','เรื่องอยากบอก','สร้างบัญชี','เปิดเฉลย'].map((x,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===0}">${x}<span id="tB${i}"></span></button>`).join('')}</div><div id="tBody"></div><div class="fbr"><button id="outB">ออกจากระบบ</button></div>`;
  $('outB').onclick=()=>DB.auth.signOut();const bs=[...H.querySelectorAll('#tTabs button')];bs.forEach(b=>b.onclick=()=>{bs.forEach(x=>x.setAttribute('aria-pressed',x===b));[tStu,tTest,tFeel,tNew,tKeys][+b.dataset.i]()});tStu();
  DB.q('feelings',[['read','==',false]]).then(r=>{if(r.length)$('tB2').textContent=` (${r.length})`}).catch(()=>{})}
 async function tStu(){const B=$('tBody');B.innerHTML='<p class="mut">กำลังโหลด…</p>';let s=[];try{s=await DB.q('m3students')}catch(e){B.innerHTML='<p class="err">โหลดไม่สำเร็จ ตรวจสอบกฎ (Rules) ของ Firestore ว่าเพิ่มส่วนของ ม.3 แล้ว</p>';return}
@@ -1157,7 +1252,8 @@ async function tStu(){const B=$('tBody');B.innerHTML='<p class="mut">กำล�
   B.innerHTML=`<div class="fbr"><select id="tC" style="width:auto">${['<option value="">ทุกห้อง ('+s.length+' คน)</option>',...cls.map(c=>`<option ${c===f?'selected':''}>${esc(c)}</option>`)].join('')}</select><button id="tCsv">ดาวน์โหลด CSV</button></div>
   ${!s.length?'<p class="empty">ยังไม่มีบัญชีนักเรียน ม.3 · ไปที่แท็บ “สร้างบัญชี” เพื่อเพิ่มรายชื่อ</p>':''}<div class="tbl"${!s.length?' hidden':''}><table><tr><th>ชั้น</th><th>เลขที่</th><th>เลขประจำตัว</th><th>ชื่อ</th><th>หัวข้อที่ผ่าน</th><th>ข้อที่ทำ</th><th>อยู่บท</th><th>เข้าใช้</th><th>ล่าสุด</th></tr>${r.map(x=>{const t=x.topics||{};return`<tr><td>${esc(x.cls)}</td><td>${esc(x.no)}</td><td>${esc(x.sid)}</td><td>${esc(x.name)}</td><td>${passed(t)}/${TOPICS.length}</td><td>${Object.values(t).reduce((a,v)=>a+(v.done||0),0)}</td><td>${esc(x.atName||'–')}</td><td>${x.visits||0}</td><td>${td(x.lastSeen)}</td></tr>`}).join('')}</table></div>`;
   $('tC').onchange=e=>{f=e.target.value;draw()};$('tCsv').onclick=()=>csv([['ชั้น','เลขที่','เลขประจำตัว','ชื่อ','หัวข้อที่ผ่าน','ข้อที่ทำ','อยู่บท','เข้าใช้','ล่าสุด'],...r.map(x=>[x.cls,x.no,x.sid,x.name,passed(x.topics||{}),Object.values(x.topics||{}).reduce((a,v)=>a+(v.done||0),0),x.atName||'',x.visits||0,td(x.lastSeen)])],'m3-students.csv')};draw()}
-async function tTest(){const B=$('tBody');B.innerHTML='<p class="mut">กำลังโหลด…</p>';let t=[];try{t=await DB.q('m3tests',null,['time','desc'],3000)}catch(e){B.innerHTML='<p class="err">โหลดไม่สำเร็จ</p>';return}
+async function tTest(){return KKTV({DB,box:$('tBody'),col:'m3tests',stuCol:'m3students',termLabel:'เล่ม',old:tTestOld})}
+async function tTestOld(){const B=$('tBody');B.innerHTML='<p class="mut">กำลังโหลด…</p>';let t=[];try{t=await DB.q('m3tests',null,['time','desc'],3000)}catch(e){B.innerHTML='<p class="err">โหลดไม่สำเร็จ</p>';return}
  const g={};t.filter(x=>x.type!=='onet').forEach(x=>{const k=`${x.cls}|${x.term}|${x.unit}|${x.unitName}`;const o=g[k]=g[k]||{pre:[],post:[]};(o[x.type]||o.pre).push(x.score/x.total*100)});const av=a=>a.length?(a.reduce((p,c)=>p+c,0)/a.length).toFixed(1):'–';
  if(!t.length){B.innerHTML='<p class="empty">ยังไม่มีคะแนนทดสอบ · คะแนนจะขึ้นเมื่อนักเรียนทำแบบทดสอบก่อน/หลังเรียน หรือข้อสอบ O-NET เสมือนจริง</p>';return}
  B.innerHTML=`<p class="mut">ค่าเฉลี่ยร้อยละ นับทุกครั้งที่ส่ง</p><div class="tbl"><table><tr><th>ชั้น</th><th>หน่วย</th><th>ก่อนเรียน</th><th>หลังเรียน</th><th>ผลต่าง</th></tr>${Object.entries(g).sort().map(([k,o])=>{const [c,te,un,n]=k.split('|'),a=av(o.pre),b=av(o.post);return`<tr><td>${esc(c)}</td><td>เล่ม ${te} หน่วย ${un} ${esc(n)}</td><td>${a} (${o.pre.length})</td><td>${b} (${o.post.length})</td><td>${a!=='–'&&b!=='–'?(b-a).toFixed(1):'–'}</td></tr>`}).join('')}</table></div>
@@ -1295,7 +1391,7 @@ document.querySelectorAll('main.topic[data-t]').forEach(m=>{const items=BANK.fil
 /* ===== แสดงเศษส่วน a/b เป็นเศษส่วนแนวตั้ง ===== */
 (function(){const s=document.createElement('style');s.textContent=`.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.88em;line-height:1.15;margin:0 .12em}.fr>span{padding:0 .15em;white-space:nowrap}.fr>span:first-child{border-bottom:1.2px solid currentColor}`;document.head.appendChild(s);
  const T='[0-9A-Za-zπ√²³.]+',RE=new RegExp(`(\\([^()]{1,24}\\)|[−-]?${T})\\/(\\([^()]{1,24}\\)|${T})(?![0-9A-Za-z/])`,'g');
- const SKIP='script,style,svg,textarea,input,select,a,code,.fr,.keys,title';
+ const SKIP='script,style,svg,textarea,input,select,a,code,.fr,.keys,title,.kktv';
  function conv(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.nodeValue.includes('/')&&!(n.parentElement&&n.parentElement.closest(SKIP))?1:2});const ns=[];while(w.nextNode())ns.push(w.currentNode);
   ns.forEach(n=>{const v=n.nodeValue;RE.lastIndex=0;if(!RE.test(v))return;RE.lastIndex=0;const f=document.createDocumentFragment();let i=0,m;
    while((m=RE.exec(v))){let a=m[1],b=m[2];if(/^\d{3,}$/.test(b)&&/^\d+$/.test(a)&&+b>1000)continue; /* ไม่แปลงแบบวันที่/ปี */
@@ -1314,4 +1410,105 @@ document.querySelectorAll('main.topic[data-t]').forEach(m=>{const items=BANK.fil
 initPractice();
 </script>
 
+<script>
+/* ===== คะแนนทดสอบ: ดูรายบท → รายคน → ลบรายครั้ง (ใช้ร่วมทุกเว็บ) ===== */
+window.KKTV=async function(o){
+const B=o.box,esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+if(!document.getElementById('kktvcss')){const st=document.createElement('style');st.id='kktvcss';st.textContent=`
+.kktv{--kl:color-mix(in srgb,currentColor 14%,transparent);--ks:color-mix(in srgb,currentColor 5%,transparent)}
+.kktv .kbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 12px}
+.kktv .kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.kktv .kcard{text-align:left;display:block;width:100%;border:1px solid var(--kl);border-radius:14px;padding:12px 14px;background:var(--ks);cursor:pointer;font:inherit;color:inherit;line-height:1.45}
+.kktv .kcard:hover{border-color:currentColor}.kktv .kcard b{display:block;font-size:16px}.kktv .kcard small{display:block;opacity:.72;font-size:13px;margin-top:4px}
+.kktv .kbadge{display:inline-block;border-radius:999px;padding:0 9px;font-size:12.5px;font-weight:700;margin-right:6px;color:#fff}
+.kktv .g4{background:#15803d}.kktv .g3{background:#65a30d}.kktv .g2{background:#d97706}.kktv .g1{background:#dc2626}.kktv .g0{background:#94a3b8}
+.kktv table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}.kktv .tw{overflow-x:auto}
+.kktv th,.kktv td{border-bottom:1px solid var(--kl);padding:7px 8px;text-align:left;vertical-align:top}.kktv th{font-size:13px;opacity:.75;font-weight:600}
+.kktv td.n{text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
+.kktv tr.att td{background:var(--ks);font-size:14px}.kktv tr.att td:first-child{border-left:4px solid currentColor}
+.kktv .del{border:1px solid #dc2626;color:#dc2626;background:transparent;border-radius:8px;padding:2px 10px;font:inherit;font-size:13px;cursor:pointer;min-height:30px}
+.kktv .del:hover{background:#dc2626;color:#fff}
+.kktv .mini{border-radius:8px;padding:2px 10px;font-size:13.5px;min-height:32px;cursor:pointer}
+.kktv .msg{margin:8px 0;padding:8px 12px;border-radius:10px;background:var(--ks)}
+.kktv .none{margin-top:12px;font-size:14px;opacity:.85}`;document.head.appendChild(st)}
+B.innerHTML='<p>กำลังโหลด…</p>';
+let T=[],S=[];
+try{[T,S]=await Promise.all([o.DB.q(o.col,null,['time','desc'],3000),o.stuCol?o.DB.q(o.stuCol).catch(()=>[]):[]])}catch(e){B.innerHTML='<p>โหลดคะแนนไม่สำเร็จ ตรวจสอบกฎ Firestore</p>';return}
+if(o.filter)T=T.filter(o.filter);
+const ms=v=>v?.toDate?v.toDate().getTime():(v?.seconds?v.seconds*1000:(v?new Date(v).getTime():0));
+const td=v=>{const t=ms(v);return t?new Date(t).toLocaleString('th-TH',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'–'};
+const pc=x=>x.total?Math.round(x.score/x.total*100):0,gr=v=>v==null?0:v>=85?4:v>=70?3:v>=50?2:1;
+const TY={pre:'ก่อนเรียน',post:'หลังเรียน',onet:'O-NET'};
+const clsAll=[...new Set(T.map(x=>x.cls).concat(S.map(x=>x.cls)).filter(Boolean))].sort((a,b)=>String(a).localeCompare(b,'th',{numeric:true}));
+let cls=o._cls&&clsAll.includes(o._cls)?o._cls:'*',unit=null,open=new Set(),msg='';
+const del=async x=>{if(o.DB.del)return o.DB.del(o.col+'/'+x.id);return firebase.firestore().collection(o.col).doc(x.id).delete()};
+const unitsOf=L=>{const m=new Map();L.forEach(x=>{const k=x.type==='onet'?'onet':`${x.term}-${x.unit}`;if(!m.has(k))m.set(k,{k,term:+x.term||0,unit:+x.unit||0,name:x.type==='onet'?'O-NET เสมือนจริง':String(x.unitName||'').replace(/^เพิ่มเติม:\s*/,'')});});
+ return [...m.values()].sort((a,b)=>(a.k==='onet')-(b.k==='onet')||a.term-b.term||a.unit-b.unit)};
+function inCls(x){return cls==='*'||x.cls===cls}
+function home(){const L=T.filter(inCls),U=unitsOf(L);const stu=S.filter(inCls);
+ B.innerHTML=`<div class="kktv"><div class="kbar"><label>ห้อง <select id="kkC"><option value="*">ทุกห้อง</option>${clsAll.map(c=>`<option ${c===cls?'selected':''}>${esc(c)}</option>`).join('')}</select></label>
+ <span style="opacity:.75;font-size:14px">${L.length} ครั้งที่ส่ง · เลือกบทเพื่อดูรายคน</span>${o.old?'<button type="button" class="mini" id="kkOld">ตารางสรุปแบบเดิม + CSV</button>':''}</div>
+ ${msg?`<p class="msg">${msg}</p>`:''}
+ ${U.length?`<div class="kgrid">${U.map(u=>{const X=L.filter(x=>(u.k==='onet'?x.type==='onet':`${x.term}-${x.unit}`===u.k));const who=new Set(X.map(x=>x.uid||x.sid));
+  const post=lastBy(X.filter(x=>x.type==='post')),pre=X.filter(x=>x.type==='pre');const pv=Object.values(post).map(pc);const av=pv.length?Math.round(pv.reduce((a,b)=>a+b,0)/pv.length):null;
+  const low=pv.filter(v=>v<50).length;
+  return`<button type="button" class="kcard" data-k="${u.k}"><b>${u.k==='onet'?'🏆 ':''}${u.k==='onet'?'':`${o.termLabel||'ภาค'} ${u.term} · หน่วย ${u.unit} `}${esc(u.name)}</b>
+  <small><span class="kbadge g${gr(av)}">${av==null?'–':av+'%'}</span>เฉลี่ย${u.k==='onet'?' (ครั้งล่าสุด)':'หลังเรียน'}</small>
+  <small>ทำแล้ว ${who.size}${stu.length?'/'+stu.length:''} คน · ก่อนเรียน ${pre.length} ครั้ง · หลังเรียน ${X.filter(x=>x.type==='post').length} ครั้ง${low?` · <span style="color:#dc2626;font-weight:700">ต่ำกว่า 50%: ${low} คน</span>`:''}</small></button>`}).join('')}</div>`:'<p>ยังไม่มีคะแนนทดสอบในห้องนี้</p>'}</div>`;
+ B.querySelector('#kkC').onchange=e=>{cls=e.target.value;o._cls=cls;home()};const ob=B.querySelector('#kkOld');if(ob)ob.onclick=()=>o.old();
+ B.querySelectorAll('.kcard').forEach(b=>b.onclick=()=>{unit=b.dataset.k;open=new Set();msg='';detail()})}
+function lastBy(X){const r={};X.forEach(x=>{const k=x.uid||x.sid;if(!r[k]||ms(x.time)>ms(r[k].time))r[k]=x});return r}
+function detail(){const L=T.filter(inCls),u=unitsOf(T).find(z=>z.k===unit);if(!u){unit=null;return home()}
+ const X=L.filter(x=>unit==='onet'?x.type==='onet':`${x.term}-${x.unit}`===unit);
+ const people=new Map();X.forEach(x=>{const k=x.uid||x.sid;if(!people.has(k)){const s=S.find(z=>(z.id===x.uid)||(z.sid&&z.sid===x.sid));people.set(k,{k,name:x.name||s?.name,cls:x.cls||s?.cls,no:s?.no??'',a:[]})}people.get(k).a.push(x)});
+ const P=[...people.values()].sort((a,b)=>String(a.cls).localeCompare(b.cls,'th',{numeric:true})||(+a.no||0)-(+b.no||0)||String(a.name).localeCompare(b.name,'th'));
+ const done=new Set(P.map(p=>p.k));const none=S.filter(inCls).filter(s=>!done.has(s.id)&&!done.has(s.sid)).sort((a,b)=>String(a.cls).localeCompare(b.cls,'th',{numeric:true})||(+a.no||0)-(+b.no||0));
+ const isO=unit==='onet';
+ B.innerHTML=`<div class="kktv"><div class="kbar"><button type="button" class="mini" id="kkBack">← ทุกบท</button><b>${isO?'O-NET เสมือนจริง':`${o.termLabel||'ภาค'} ${u.term} · หน่วย ${u.unit} ${esc(u.name)}`}</b><span style="opacity:.75;font-size:14px">${cls==='*'?'ทุกห้อง':'ห้อง '+esc(cls)} · ${P.length} คน</span>
+ <button type="button" class="mini" id="kkAll">${open.size?'ซ่อนรายครั้งทั้งหมด':'เปิดรายครั้งทุกคน'}</button></div>${msg?`<p class="msg">${msg}</p>`:''}
+ <div class="tw"><table><tr><th>ชั้น</th><th>เลขที่</th><th>ชื่อ</th>${isO?'<th>ครั้งล่าสุด</th><th>สูงสุด</th>':'<th>ก่อนเรียน (ครั้งแรก)</th><th>หลังเรียน (ล่าสุด)</th>'}<th>ทำทั้งหมด</th><th></th></tr>
+ ${P.map(p=>{const a=p.a.sort((x,y)=>ms(x.time)-ms(y.time)),pre=a.filter(x=>x.type==='pre'),po=a.filter(x=>x.type==='post');
+  const c1=isO?(a.length?pc(a[a.length-1]):null):(pre.length?pc(pre[0]):null),c2=isO?(a.length?Math.max(...a.map(pc)):null):(po.length?pc(po[po.length-1]):null);
+  const row=`<tr><td>${esc(p.cls)}</td><td>${esc(p.no)}</td><td>${esc(p.name)}</td><td class="n">${c1==null?'–':`<span class="kbadge g${gr(c1)}">${c1}%</span>`}</td><td class="n">${c2==null?'–':`<span class="kbadge g${gr(c2)}">${c2}%</span>`}</td><td class="n">${a.length}</td><td><button type="button" class="mini kkOpen" data-p="${esc(p.k)}">${open.has(p.k)?'ซ่อน ▴':'ดูรายคน ▾'}</button></td></tr>`;
+  return row+(open.has(p.k)?a.map(x=>`<tr class="att"><td colspan="3">${td(x.time)}</td><td>${TY[x.type]||x.type}</td><td class="n">${x.score}/${x.total} (${pc(x)}%)</td><td colspan="2"><button type="button" class="del" data-id="${esc(x.id)}">🗑 ลบครั้งนี้</button></td></tr>`).join(''):'')}).join('')||'<tr><td colspan="7">ยังไม่มีใครทำบทนี้</td></tr>'}</table></div>
+ ${none.length?`<p class="none"><b>ยังไม่ได้ทำ ${none.length} คน:</b> ${none.map(s=>`${esc(s.no)} ${esc(s.name)}`).join(' · ')}</p>`:''}
+ <p style="font-size:13px;opacity:.7;margin-top:8px">ลบเฉพาะครั้งที่ทำผิดบทหรือทดลองส่ง การลบกู้คืนไม่ได้ คะแนนครั้งอื่นของนักเรียนยังอยู่ครบ</p></div>`;
+ B.querySelector('#kkBack').onclick=()=>{unit=null;msg='';home()};
+ B.querySelector('#kkAll').onclick=()=>{open=open.size?new Set():new Set(P.map(p=>p.k));detail()};
+ B.querySelectorAll('.kkOpen').forEach(b=>b.onclick=()=>{const k=b.dataset.p;open.has(k)?open.delete(k):open.add(k);detail()});
+ B.querySelectorAll('.del').forEach(b=>b.onclick=async()=>{const x=T.find(z=>z.id===b.dataset.id);if(!x)return;
+  if(!confirm(`ลบคะแนน${TY[x.type]||''} ของ ${x.name}\n${td(x.time)} · ${x.score}/${x.total}\n\nลบแล้วกู้คืนไม่ได้ ยืนยันหรือไม่`))return;
+  b.disabled=true;b.textContent='กำลังลบ…';try{await del(x);T=T.filter(z=>z.id!==x.id);msg=`ลบคะแนนของ ${esc(x.name)} (${td(x.time)}) แล้ว`}catch(e){msg='ลบไม่สำเร็จ ตรวจว่าเข้าสู่ระบบด้วยบัญชีครู'}detail()})}
+home()};
+
+</script>
+<script>
+/* ===== ธีมสดใส ม.3: ใส่สีประจำหน่วยและประเภทกิจกรรม (ไม่แตะการทำงานเดิม) ===== */
+(function(){
+const ORDER=['i','f','q','s','g','t','e','c','v','p','r'];
+const ICON={i:'⚖️',f:'🧩',q:'🎯',s:'📐',g:'🌈',t:'📊',e:'✖️',c:'⭕',v:'🧊',p:'🎲',r:'📏',o:'🏆'};
+const UI=(()=>{try{return UNITINFO}catch(e){return null}})();
+const letter=id=>String(id||'').replace(/^#?p-/,'').replace(/^#/,'').charAt(0);
+// หัวข้อ
+document.querySelectorAll('main.topic,main[id^="p-"]').forEach(m=>{const t=m.id.replace('p-','');const u=t==='onet'?'o':letter(t);if(!ICON[u])return;m.dataset.u=u;
+ const h=m.querySelector(':scope>h1');if(h&&UI&&u!=='o'&&!m.querySelector('.uband')){const info=UI.find(x=>x.topics.includes(t));if(info){const d=document.createElement('p');d.className='uband';d.innerHTML=`<span>${ICON[u]}</span><span>เล่ม ${info.term} · หน่วยที่ ${info.unit}</span><b>${info.name}</b>`;h.after(d)}}
+ m.querySelectorAll(':scope>section').forEach(s=>{const h2=s.querySelector('h2');if(!h2)return;const x=h2.textContent;
+  const k=/เฉลย/.test(x)?['key','เช็ก: เฉลย']:/O-NET/.test(x)?['onet','ท้าทาย: แนวข้อสอบ']:/แนวคิด|สรุป/.test(x)?['idea','จำ: สรุปหลัก']:/ลองปรับ|สำรวจ|ทดลอง/.test(x)?['play','เล่น: ลองปรับดู']:/ฝึก/.test(x)?['prac','ฝึก: ตรวจทันที']:null;
+  if(k){s.classList.add('k-'+k[0]);h2.dataset.tip=k[1]}})});
+// รายการหน่วยหน้าแรก
+document.querySelectorAll('.units>li').forEach(li=>{const a=li.querySelector('ul a');if(!a)return;const u=letter(a.getAttribute('href'));if(!ICON[u])return;li.dataset.u=u;
+ const uh=li.querySelector('.uh');if(uh&&!uh.querySelector('.uic')){const e=document.createElement('i');e.className='uic';e.setAttribute('aria-hidden','true');e.textContent=ICON[u];uh.appendChild(e)}});
+// ใบงาน PDF: เรียงตามหน่วย เล่ม 1 = 6 หน่วยแรก เล่ม 2 = 5 หน่วยถัดไป
+const ws=[...document.querySelectorAll('.wsr')];let book=0,k=0;
+ws.forEach(r=>{const prev=r.previousElementSibling;if(prev&&prev.tagName==='H3'){book++;k=0}const idx=book<=1?k:6+k;k++;if(ORDER[idx])r.dataset.u=ORDER[idx]});
+// คำอธิบายสี
+const sU=document.getElementById('secU');if(sU&&!sU.querySelector('.legend3')){const L=document.createElement('div');L.className='legend3';
+ L.innerHTML='<span><i style="background:var(--c-idea)"></i>จำ = แนวคิด</span><span><i style="background:var(--c-play)"></i>เล่น = ลองปรับดู</span><span><i style="background:var(--c-prac)"></i>ฝึก = ตรวจทันที</span><span><i style="background:var(--c-key)"></i>เช็ก = เฉลย</span><span><i style="background:var(--c-onet)"></i>ท้าทาย = O-NET</span><span>แต่ละหน่วยมีสีและไอคอนของตัวเอง</span>';
+ const h2=sU.querySelector('h2');h2.after(L)}
+// สีแถบบนตามหน้าที่เปิดอยู่
+function sync(){const m=[...document.querySelectorAll('main')].find(x=>!x.hidden&&x.dataset.u);if(m)document.documentElement.dataset.u=m.dataset.u;else delete document.documentElement.dataset.u}
+new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['hidden']});window.addEventListener('hashchange',()=>setTimeout(sync,0));sync();
+})();
+
+</script>
 </html>
