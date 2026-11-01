@@ -1645,4 +1645,76 @@ return{bar:(host,c,where)=>{bar(host,c,where);const b=host&&host.querySelector('
  document.querySelectorAll('main.topic').forEach(m=>{if(!m.querySelector('.pz'))return;const c=m.id.replace('p-','');K.bar(m,c,{after:m.querySelector('.uband')||m.querySelector('h1')})});
  window.M3Drill=K})();
 </script>
+<script>
+/* ===== ตัวช่วยพัฒนาผู้เรียน: สมุดทบทวนข้อที่ผิด · แนะนำหลังสอบไม่ผ่าน · ปรับขนาดตัวอักษร ===== */
+window.KPlus=function(A){
+/* A={site,ansEvent,ctx()->{DB,U,ME,T},title(c),drill(c,goal),unitTopics(term,unit)->[c],testCol} */
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const css=document.createElement('style');css.textContent=`
+.kp-fab{position:fixed;left:12px;bottom:calc(12px + var(--kp-off,0px));z-index:9990;display:flex;gap:6px;align-items:center}
+.kp-fab button{font:inherit;font-size:14px;font-weight:600;border:0;border-radius:999px;padding:8px 12px;min-height:44px;cursor:pointer;box-shadow:0 8px 20px -8px rgba(0,0,0,.45);background:#fff;color:#1d1830}
+.kp-fab .kp-rv{background:#f59e0b;color:#1d1830}.kp-fab .kp-rv b{background:#1d1830;color:#fff;border-radius:999px;padding:0 7px;margin-left:4px;font-size:13px}
+:root[data-theme="dark"] .kp-fab .kp-aa{background:#2a2540;color:#f1edff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .kp-fab .kp-aa{background:#2a2540;color:#f1edff}}
+@media (max-width:700px){.kd-ban{bottom:118px!important}}
+.kp-ov{position:fixed;inset:0;z-index:9995;background:color-mix(in srgb,#000 45%,transparent);display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:16px}
+.kp-box{width:100%;max-width:640px;background:var(--kp-bg,#fff);color:var(--kp-ink,#1d1830);border-radius:22px;padding:18px 20px 22px;box-shadow:0 20px 60px -20px rgba(0,0,0,.5);line-height:1.6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .kp-box{--kp-bg:#1b1729;--kp-ink:#f1edff}}
+:root[data-theme="dark"] .kp-box{--kp-bg:#1b1729;--kp-ink:#f1edff}
+.kp-box h2{margin:0 0 4px;font-size:20px}.kp-box h2::before,.kp-box h2::after{content:none!important;display:none!important}.kp-box p{margin:6px 0}
+.kp-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.kp-btn{font:inherit;border:1px solid color-mix(in srgb,currentColor 25%,transparent);background:transparent;color:inherit;border-radius:12px;padding:8px 14px;min-height:42px;cursor:pointer}
+.kp-btn.p{background:#7c3aed;border-color:#7c3aed;color:#fff;font-weight:600}
+.kp-list{display:grid;gap:8px;margin-top:10px}
+.kp-row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:14px;padding:10px 12px}
+.kp-row b{display:block}.kp-row small{opacity:.75}
+.kp-tag{display:inline-block;border-radius:999px;padding:0 9px;font-size:12.5px;font-weight:700;margin-left:6px}
+.kp-tag.due{background:#fde68a;color:#78350f}.kp-tag.wait{background:color-mix(in srgb,currentColor 12%,transparent)}
+.kp-note{font-size:14px;opacity:.8}
+`;document.head.appendChild(css);
+/* ---------- เก็บข้อมูลในเครื่อง แยกตามผู้ใช้ ---------- */
+const key=()=>{const c=A.ctx()||{};return 'kp-'+A.site+'-'+(c.U&&c.U.uid||'guest')};
+const load=()=>{try{return JSON.parse(localStorage.getItem(key())||'{}')}catch(e){return{}}};
+const save=d=>{try{localStorage.setItem(key(),JSON.stringify(d))}catch(e){}};
+const H12=12*3600e3;
+addEventListener(A.ansEvent,e=>{const c=e.detail&&e.detail.c;if(!c||!A.title(c))return;const d=load(),t=d[c]=d[c]||{w:0,s:0,last:0};
+ if(e.detail.ok){t.s=(t.s||0)+1;if(t.w>0&&t.s>=3){t.w=0;t.done=Date.now()}}else{t.w=(t.w||0)+1;t.s=0;t.last=Date.now()}
+ save(d);fab()});
+const due=()=>{const d=load();return Object.entries(d).filter(([c,t])=>t.w>0&&A.title(c)).sort((a,b)=>(b[1].w-a[1].w)||(a[1].last-b[1].last))};
+/* ---------- ปุ่มลอย ---------- */
+const F=document.createElement('div');F.className='kp-fab';document.body.appendChild(F);if(A.css){const s2=document.createElement('style');s2.textContent=A.css;document.head.appendChild(s2)}
+let zoom=1;try{zoom=+localStorage.getItem('kp-zoom')||1}catch(e){}
+const applyZoom=()=>{document.body.style.zoom=zoom===1?'':zoom};applyZoom();
+function fab(){const n=due().length;F.innerHTML=`${n?`<button type="button" class="kp-rv" aria-label="สมุดทบทวนข้อที่ผิด ${n} หัวข้อ">📒 ทบทวน<b>${n}</b></button>`:''}<button type="button" class="kp-aa" aria-label="ปรับขนาดตัวอักษร ตอนนี้ ${Math.round(zoom*100)}%">Aa ${Math.round(zoom*100)}%</button>`;
+ const r=F.querySelector('.kp-rv');if(r)r.onclick=book;F.querySelector('.kp-aa').onclick=()=>{zoom=zoom>=1.3?1:Math.round((zoom+.15)*100)/100;try{localStorage.setItem('kp-zoom',zoom)}catch(e){}applyZoom();fab()}}
+fab();
+let lastU='';setInterval(()=>{const c=A.ctx()||{},k=c.U&&c.U.uid||'';if(k!==lastU){lastU=k;fab()}},1500);
+/* ---------- กล่อง ---------- */
+let ov=null;function box(){if(ov)ov.remove();ov=document.createElement('div');ov.className='kp-ov';ov.innerHTML='<div class="kp-box" role="dialog" aria-modal="true"></div>';document.body.appendChild(ov);ov.onclick=e=>{if(e.target===ov)close()};return ov.firstChild}
+function close(){if(ov)ov.remove();ov=null}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov)close()});
+function go(c,goal){close();A.drill(c,goal||5)}
+function book(){const L=due(),B=box(),now=Date.now();
+ B.innerHTML=`<div class="kp-top"><h2>📒 สมุดทบทวนข้อที่ผิด</h2><button type="button" class="kp-btn" id="kpX">ปิด ✕</button></div>
+ <p class="kp-note">หัวข้อที่เคยตอบผิดจะอยู่ที่นี่ ฝึกให้ถูกติดกัน 3 ข้อ หัวข้อนั้นจะหายจากสมุดเอง · ทบทวนห่างจากวันที่ผิดอย่างน้อยครึ่งวันจะจำได้นานขึ้น</p>
+ <div class="kp-list">${L.map(([c,t])=>{const ready=now-t.last>=H12;return`<div class="kp-row"><div><b>${esc(A.title(c))}<span class="kp-tag ${ready?'due':'wait'}">${ready?'พร้อมทบทวน':'ผิดล่าสุดวันนี้'}</span></b><small>ผิด ${t.w} ครั้ง · ถูกติดกันตอนนี้ ${t.s||0}/3</small></div><button type="button" class="kp-btn p" data-c="${esc(c)}">ฝึก 5 ข้อ</button></div>`}).join('')||'<p>ยังไม่มีข้อที่ต้องทบทวน เก่งมาก 🎉</p>'}</div>`;
+ B.querySelector('#kpX').onclick=close;B.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>go(b.dataset.c,5))}
+/* ---------- แนะนำหลังทำแบบทดสอบ ---------- */
+function advise(t){if(!t||t.type!=='post'||!t.total)return;const p=Math.round(t.score/t.total*100);if(p>=70)return;
+ const tops=(A.unitTopics(t.term,t.unit)||[]).filter(c=>A.title(c));if(!tops.length)return;const d=load();
+ tops.sort((a,b)=>((d[b]||{}).w||0)-((d[a]||{}).w||0));
+ setTimeout(()=>{const B=box();B.innerHTML=`<div class="kp-top"><h2>${p<50?'ยังไม่ผ่าน ลองอีกนิดนะ':'ใกล้ผ่านแล้ว'} (${t.score}/${t.total})</h2><button type="button" class="kp-btn" id="kpX">ปิด ✕</button></div>
+  <p>แนะนำให้ฝึกหัวข้อในหน่วยนี้ก่อน แล้วกลับมาทำแบบทดสอบหลังเรียนอีกครั้ง ระบบนับคะแนนครั้งล่าสุด</p>
+  <div class="kp-list">${tops.map(c=>{const w=(d[c]||{}).w||0;return`<div class="kp-row"><div><b>${esc(A.title(c))}</b><small>${w?`เคยตอบผิด ${w} ครั้ง · ควรฝึกก่อน`:'ทบทวนให้มั่นใจ'}</small></div><button type="button" class="kp-btn p" data-c="${esc(c)}">ฝึก 5 ข้อ</button></div>`}).join('')}</div>`;
+  B.querySelector('#kpX').onclick=close;B.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>go(b.dataset.c,5))},900)}
+/* ดักการบันทึกคะแนนทดสอบ โดยไม่แก้โค้ดเดิม */
+let hooked=null;setInterval(()=>{const c=A.ctx()||{},DB=c.DB;if(!DB||!DB.add||DB===hooked||DB.__kp)return;const orig=DB.add.bind(DB);
+ DB.add=(col,doc)=>{const r=orig(col,doc);try{if(col===A.testCol)advise(doc)}catch(e){}return r};DB.__kp=true;hooked=DB},1000);
+return{book,advise,fab,_load:load};
+};
+
+window.M3Plus=KPlus({site:'m3',ansEvent:'m3ans',testCol:'m3tests',ctx:()=>window.M3X?M3X():{},
+ title:c=>{const m=document.getElementById('p-'+c);if(!m||!m.querySelector('.pz'))return null;const e=m.querySelector('.eyebrow'),h=m.querySelector('h1');return ((e?e.textContent.split('·')[0].trim()+' ':'')+(h?h.textContent:'')).trim()},
+ drill:(c,g)=>M3Drill.open(c,{goal:g}),unitTopics:(t,u)=>{const x=UNITINFO.find(v=>v.term==t&&v.unit==u);return x?x.topics:[]}});
+</script>
 </html>
