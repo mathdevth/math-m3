@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>คณิตศาสตร์ ม.3</title>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="สรุปเนื้อหา สื่อให้ลองปรับ แบบฝึกตรวจทันที ใบงาน และแนวข้อสอบ O-NET ม.3"><meta property="og:type" content="website"><meta property="og:title" content="คณิตศาสตร์ ม.3 · ครูคุ้ม"><meta property="og:description" content="สรุปเนื้อหา สื่อให้ลองปรับ แบบฝึกตรวจทันที ใบงาน และแนวข้อสอบ O-NET ม.3"><meta property="og:url" content="https://mathdevth.github.io/math-m3/"><meta property="og:locale" content="th_TH"><meta name="theme-color" content="#7c3aed"><link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%237c3aed'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='white'>🎯</text></svg>"><title>คณิตศาสตร์ ม.3</title>
 <script>(function(){try{var t=localStorage.getItem('m3theme');if(t)document.documentElement.dataset.theme=t}catch(e){}})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Anuphan:wght@400;500;600;700&family=Kanit:wght@500;600;700&display=swap">
 <style>:root{--bg:#f7f7f4;--ink:#141414;--mut:#6d6d68;--line:#e2e2dc;--soft:#ededE8;--acc:#d9431e;--accbg:#fbe9e3;--ok:#1d7a4c;--okbg:#e4f3ea;--no:#b3261e;--nobg:#fbe7e5;--box:#ffffff;
@@ -123,7 +123,7 @@ h1.hero{font-size:clamp(36px,10.5vw,72px);line-height:1.1;letter-spacing:-.02em;
 .cmap.hl .me{opacity:.07}.cmap.hl .mn{opacity:.28}.cmap.hl .me.on{opacity:1;stroke:var(--acc);stroke-width:2.4}.cmap.hl .mn.on{opacity:1}
 .maps{font-size:13px;margin:4px 0 0}@media(min-width:700px){.maps{display:none}}
 .mn:focus-visible rect{stroke-width:3}.mapn{color:var(--mut);font-size:15px;min-height:1.6em;margin:6px 0 12px}
-</style><style id="m3pop">
+</style><style id="m3fix">#p-onet a:not(.brand):not(.go):not(.dl){display:inline-block;padding:9px 2px;min-height:40px}</style><style id="m3pop">
 /* ===== ธีมสดใส ม.3 · สีประจำหน่วย (สีช่วยจำ) ===== */
 :root{--sans:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;--disp:"Kanit","Anuphan",system-ui,sans-serif;
  --bg:#fbf8ff;--box:#ffffff;--soft:#f3effb;--line:#e6e0f2;--ink:#1d1830;--mut:#6b6485;
@@ -1158,7 +1158,7 @@ Object.assign(GEN,{
   const v=pick([10,20,30]),h0=R(0,3),tm=v/10,mx=5*tm*tm+h0;return{q:`ความสูงของลูกบอล h = −5t² + ${v}t${h0?' + '+h0:''} เมตร ลูกบอลขึ้นได้สูงสุดกี่เมตร`,ans:mx,sol:`h = −5(t − ${tm})² + ${mx}  สูงสุด ${mx} เมตร เมื่อ t = ${tm} วินาที`}}});
 /* ===== Firebase ม.3: บัญชีนักเรียน ความก้าวหน้า แบบทดสอบก่อน/หลังเรียน เรื่องอยากบอก แดชบอร์ดครู ===== */
 (function(){
-const DOM='students.m3math.app',PASS=5,NQ=10;let DB=null,U=null,ME=null,T=false;
+const DOM='students.m3math.app',PASS=5,NQ=10;let DB=null,U=null,ME=null,T=false;window.M3X=()=>({DB,U,ME,T});
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const css=document.createElement('style');css.textContent=`
 .acb{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer;margin-right:6px;max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1510,5 +1510,139 @@ function sync(){const m=[...document.querySelectorAll('main')].find(x=>!x.hidden
 new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['hidden']});window.addEventListener('hashchange',()=>setTimeout(sync,0));sync();
 })();
 
+</script>
+<script>
+/* ===== ฝึกในคาบ (โจทย์สุ่ม ปรับระดับตามผู้เรียน) — ใช้ร่วม ม.3 ม.5 ม.5 เพิ่มเติม ===== */
+window.KDrill=function(A){
+/* A = {site, title(c), levels(c)->[[maker...]...], ctx()->{DB,U,ME,T}, kind:'m3'|'m5'} */
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SET='settings/'+A.site+'drill';
+const css=document.createElement('style');css.textContent=`
+.kd-ov{position:fixed;inset:0;z-index:9999;background:color-mix(in srgb,#000 45%,transparent);display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:16px}
+.kd-box{width:100%;max-width:760px;background:var(--kd-bg,#fff);color:var(--kd-ink,#1d1830);border-radius:22px;padding:18px 20px 22px;box-shadow:0 20px 60px -20px rgba(0,0,0,.5);font:inherit;line-height:1.6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .kd-box{--kd-bg:#1b1729;--kd-ink:#f1edff}}
+:root[data-theme="dark"] .kd-box{--kd-bg:#1b1729;--kd-ink:#f1edff}
+.kd-box *{box-sizing:border-box}
+.kd-top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:6px}
+.kd-top h2{margin:0;font-size:20px}
+.kd-btn{font:inherit;border:1px solid color-mix(in srgb,currentColor 25%,transparent);background:transparent;color:inherit;border-radius:12px;padding:8px 14px;min-height:42px;cursor:pointer}
+.kd-btn.p{background:#7c3aed;border-color:#7c3aed;color:#fff;font-weight:600}
+.kd-btn:disabled{opacity:.5;cursor:default}
+.kd-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:14px;opacity:.9}
+.kd-pill{border-radius:999px;padding:2px 10px;background:color-mix(in srgb,#7c3aed 14%,transparent);font-weight:600}
+.kd-dots{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0}.kd-dots i{width:14px;height:14px;border-radius:50%;background:color-mix(in srgb,currentColor 15%,transparent)}.kd-dots i.ok{background:#16a34a}.kd-dots i.no{background:#e11d48}
+.kd-q{font-size:18px;margin:10px 0;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,currentColor 5%,transparent)}
+.kd-q .data,.kd-q .pq{font-size:inherit}
+.kd-opts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:8px 0}
+.kd-opts button.sel{outline:3px solid #7c3aed}
+.kd-in{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}.kd-in label{display:flex;gap:6px;align-items:center}
+.kd-in input{font:inherit;color:inherit;background:transparent;border:1px solid color-mix(in srgb,currentColor 30%,transparent);border-radius:12px;padding:8px 12px;min-height:44px;width:10em}
+.kd-fb{margin-top:10px;padding:10px 14px;border-radius:12px}.kd-fb.ok{background:color-mix(in srgb,#16a34a 16%,transparent)}.kd-fb.no{background:color-mix(in srgb,#e11d48 14%,transparent)}
+.kd-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.kd-big{font-size:26px;font-weight:700}
+.kd-box table{border-collapse:collapse;width:100%;font-size:15px}.kd-box td,.kd-box th{border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent);padding:6px 8px;text-align:left}
+.kd-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:12px 0;padding:12px 16px;border-radius:18px;border:2px solid #7c3aed;background:color-mix(in srgb,#7c3aed 7%,transparent)}
+.kd-bar b{font-size:17px}.kd-bar p{margin:2px 0 0;font-size:14px;opacity:.85}
+.kd-bar .kd-t{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:14px}.kd-bar .kd-t input{width:4.5em;font:inherit;color:inherit;background:transparent;border:1px solid color-mix(in srgb,currentColor 30%,transparent);border-radius:10px;padding:4px 8px;min-height:36px}
+.kd-ban{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9998;width:min(680px,calc(100% - 24px));background:#7c3aed;color:#fff;border-radius:18px;padding:12px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 12px 30px -10px rgba(60,20,140,.6)}
+.kd-ban button{background:#fff;color:#7c3aed;border:0;border-radius:12px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer;min-height:42px}
+`;document.head.appendChild(css);
+const LV=['ระดับ 1','ระดับ 2','ระดับ 3','ระดับ 4','ระดับ 5'];
+let ov=null,D=null,ACTIVE=null,liveT=null;
+function overlay(){if(ov)ov.remove();ov=document.createElement('div');ov.className='kd-ov';ov.innerHTML='<div class="kd-box" role="dialog" aria-modal="true"></div>';document.body.appendChild(ov);document.documentElement.style.overflow='hidden';
+ ov.addEventListener('click',e=>{if(e.target===ov)close()});return ov.firstChild}
+function close(){clearInterval(liveT);if(ov)ov.remove();ov=null;document.documentElement.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov)close()});
+const num=v=>{v=String(v).replace(/[,\s฿]|บาท/g,'').replace(/[−–]/g,'-');const m=v.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);if(m&&+m[2])return m[1]/m[2];return v===''?NaN:Number(v)};
+function make(lv){const L=D.lv[lv];for(let g=0;g<30;g++){const mk=L[Math.floor(Math.random()*L.length)];let q=null;try{q=mk()}catch(e){q=null}if(q&&!D.hist.some(h=>h.q===q.q))return q}return null}
+function open(c,opt){const lv=A.levels(c);if(!lv.length||!lv[0].length){alert('หัวข้อนี้ยังไม่มีคลังโจทย์');return}
+ D={c,name:A.title(c),lv,L:0,streak:0,miss:0,right:0,done:0,goal:(opt&&opt.goal)||10,hist:[],id:(opt&&opt.id)||'',saved:false,maxL:0};D.max=D.goal*2;ask()}
+function ask(){const q=make(D.L);if(!q)return finish();D.cur=q;const B=overlay();
+ let inp='';
+ if(A.kind==='m3'){if(q.opts)inp=`<div class="kd-opts">${q.opts.map(o=>`<button type="button" class="kd-btn" data-o="${esc(o)}">${q.lab?q.lab[o]:o}</button>`).join('')}</div>`;
+  else inp=`<form class="kd-in" id="kdF">${(q.pair||['']).map(p=>`<label>${p?esc(p)+' =':''}<input inputmode="decimal" autocomplete="off" aria-label="${p||'คำตอบ'}" placeholder="คำตอบ"></label>`).join('')}</form>`}
+ else{if(q.opts){const ord=q.opts.map((o,i)=>i);if(q.shuffle)ord.sort(()=>Math.random()-.5);inp=`<div class="kd-opts">${ord.map(i=>`<button type="button" class="kd-btn" data-i="${i}">${q.opts[i]}</button>`).join('')}</div>`}
+  else inp=`<form class="kd-in" id="kdF"><input inputmode="decimal" autocomplete="off" aria-label="คำตอบ" placeholder="พิมพ์คำตอบ"></form>${q.money?'<p style="font-size:14px;opacity:.8">ตอบเป็นตัวเลข ทศนิยม 2 ตำแหน่ง ใช้เครื่องคิดเลขได้</p>':q.hint?`<p style="font-size:14px;opacity:.8">${q.hint}</p>`:''}`}
+ B.innerHTML=`<div class="kd-top"><h2>🎯 ฝึกในคาบ · ${esc(D.name)}</h2><button type="button" class="kd-btn" id="kdX">ปิด ✕</button></div>
+ <div class="kd-meta"><span class="kd-pill">${LV[Math.min(D.L,4)]}${D.lv.length>1?` / ${D.lv.length}`:''}</span><span>ถูก <b>${D.right}</b>/${D.goal} · ทำไป ${D.done} ข้อ</span></div>
+ <div class="kd-dots">${D.hist.map(h=>`<i class="${h.ok?'ok':'no'}"></i>`).join('')}</div>
+ <p style="margin:6px 0 0;font-size:14px;opacity:.8">ตอบถูกติดกัน 2 ข้อ ระดับจะสูงขึ้น · ผิดจะได้ข้อใหม่เรื่องเดิม ตัวเลขใหม่</p>
+ <div class="kd-q">${q.q}</div>${inp}
+ <div class="kd-acts"><button type="button" class="kd-btn p" id="kdChk">ตรวจคำตอบ</button><button type="button" class="kd-btn" id="kdNx" hidden>ข้อต่อไป →</button><button type="button" class="kd-btn" id="kdEnd">จบการฝึก</button></div><div class="kd-fb" id="kdFb" hidden aria-live="polite"></div>`;
+ B.querySelector('#kdX').onclick=close;B.querySelector('#kdEnd').onclick=finish;B.querySelector('#kdChk').onclick=check;B.querySelector('#kdNx').onclick=next;
+ B.querySelectorAll('.kd-opts button').forEach(b=>b.onclick=()=>{if(D.checked)return;B.querySelectorAll('.kd-opts button').forEach(x=>x.classList.toggle('sel',x===b))});
+ const f=B.querySelector('#kdF');if(f){f.onsubmit=e=>{e.preventDefault();check()};f.querySelectorAll('input').forEach(i=>i.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check()}});const i=f.querySelector('input');if(i)setTimeout(()=>i.focus(),30)}
+ D.checked=false;if(window.renderMathInElement)try{renderMathInElement(B)}catch(e){}}
+function check(){if(D.checked)return;const B=ov.firstChild,q=D.cur;let ok;
+ const sel=B.querySelector('.kd-opts button.sel');
+ if(q.opts){if(!sel)return;ok=A.kind==='m3'?sel.dataset.o===String(q.ans):+sel.dataset.i===q.ans}
+ else{const xs=[...B.querySelectorAll('#kdF input')].map(i=>num(i.value));if(xs.some(x=>isNaN(x)))return;
+  if(A.kind==='m3'){const ans=[].concat(q.ans),tol=q.tol||1e-6;ok=ans.length===xs.length?ans.every((a,k)=>Math.abs(xs[k]-a)<tol):Math.abs(xs[0]-ans[0])<tol}
+  else{const tol=q.tol!=null?q.tol:1e-6;ok=Math.abs(xs[0]-q.a)<=tol+1e-9}}
+ D.checked=true;B.querySelectorAll('.kd-opts button,#kdF input').forEach(x=>x.disabled=true);
+ D.done++;D.hist.push({q:q.q,ok});if(ok){D.right++;D.streak++;D.miss=0}else{D.streak=0;D.miss++}
+ try{dispatchEvent(new CustomEvent(A.kind==='m3'?'m3ans':'m5ans',{detail:{c:D.c,ok}}))}catch(e){}
+ let msg='';if(ok&&D.streak>=2&&D.L<D.lv.length-1){D.L++;D.streak=0;msg=' · เก่งมาก ขึ้นระดับถัดไป'}
+ if(!ok&&D.miss>=2&&D.L>0){D.L--;D.miss=0;msg=' · ลองระดับที่ง่ายลงอีกนิด'}
+ if(!ok&&!msg)msg=' · ข้อต่อไปเป็นเรื่องเดิม ตัวเลขใหม่';D.maxL=Math.max(D.maxL,D.L);
+ const ansTxt=A.kind==='m3'?(q.opts?(q.lab?q.lab[q.ans]:q.ans):[].concat(q.ans).join(', ')):(q.opts?q.opts[q.ans]:(q.disp||q.a));
+ const fb=B.querySelector('#kdFb');fb.hidden=false;fb.className='kd-fb '+(ok?'ok':'no');
+ fb.innerHTML=`<b>${ok?'ถูกต้อง':'ยังไม่ถูก'}</b>${msg}<div style="margin-top:4px">${ok?'':`คำตอบ: <b>${ansTxt}</b><br>`}${q.sol||''}</div>`;
+ B.querySelector('#kdChk').hidden=true;const nx=B.querySelector('#kdNx');nx.hidden=false;if(D.right>=D.goal||D.done>=D.max)nx.textContent='ดูผล';nx.focus();
+ if(window.renderMathInElement)try{renderMathInElement(fb)}catch(e){}}
+function next(){if(D.right>=D.goal||D.done>=D.max)return finish();ask()}
+async function finish(){const B=overlay(),c=A.ctx()||{},pass=D.right>=D.goal;
+ B.innerHTML=`<div class="kd-top"><h2>ผลการฝึกในคาบ</h2><button type="button" class="kd-btn" id="kdX">ปิด ✕</button></div><p class="kd-big">${pass?'ผ่านแล้ว 🎉':'ฝึกต่ออีกนิดนะ'}</p>
+ <p>${esc(D.name)} · ตอบถูก <b>${D.right}</b> จาก ${D.done} ข้อ · ระดับสูงสุด ${LV[Math.min(D.maxL,4)]}</p><div class="kd-dots">${D.hist.map(h=>`<i class="${h.ok?'ok':'no'}"></i>`).join('')}</div><p id="kdSv" style="opacity:.85"></p>
+ <div class="kd-acts"><button type="button" class="kd-btn p" id="kdAg">ฝึกอีกรอบ</button><button type="button" class="kd-btn" id="kdCl">กลับไปบทเรียน</button></div>`;
+ B.querySelector('#kdX').onclick=close;B.querySelector('#kdCl').onclick=close;B.querySelector('#kdAg').onclick=()=>open(D.c,{goal:D.goal,id:D.id});
+ const sv=B.querySelector('#kdSv');if(D.saved||!D.done){return}D.saved=true;
+ if(c.DB&&c.U&&c.ME){try{await add({uid:c.U.uid,sid:c.ME.sid||'',name:c.ME.name||'',cls:c.ME.cls||'',no:c.ME.no||'',site:A.site,c:D.c,cname:D.name,drillId:D.id,goal:D.goal,right:D.right,done:D.done,first:D.right,level:D.maxL+1,pass});sv.textContent='บันทึกผลให้ครูแล้ว'}catch(e){sv.textContent='บันทึกผลไม่สำเร็จ แคปหน้าจอนี้ให้ครูแทน'}}
+ else sv.textContent='ยังไม่ได้เข้าสู่ระบบ ผลนี้จึงไม่ถูกบันทึก แคปหน้าจอนี้ให้ครูแทน'}
+/* ---------- ฐานข้อมูล (รองรับทั้ง wrapper ของเว็บ และ firebase compat) ---------- */
+const fs=()=>window.firebase&&firebase.firestore?firebase.firestore():null;
+const ts=()=>window.firebase&&firebase.firestore?firebase.firestore.FieldValue.serverTimestamp():new Date();
+async function add(d){const c=A.ctx()||{};d.time=ts();if(c.DB&&c.DB.add&&!c.DB.fs)return c.DB.add('drills',d);const f=fs();if(f)return f.collection('drills').add(d);throw new Error('no db')}
+async function getS(){const c=A.ctx()||{};if(c.DB&&c.DB.get&&!c.DB.fs)return c.DB.get(SET);const f=fs();if(!f)return null;const s=await f.doc(SET).get();return s.exists?s.data():null}
+async function setS(v){const c=A.ctx()||{};if(c.DB&&c.DB.set&&!c.DB.fs)return c.DB.set(SET,v);return fs().doc(SET).set(v)}
+async function qDrills(id,code){const c=A.ctx()||{};if(c.DB&&c.DB.q&&!c.DB.fs)return (await c.DB.q('drills',[id?['drillId','==',id]:['c','==',code]])).filter(x=>(x.site||'m1')===A.site);
+ const s=await fs().collection('drills').where(id?'drillId':'c','==',id||code).get();return s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>(x.site||'m1')===A.site)}
+/* ---------- แถบในหน้าบทเรียน ---------- */
+function bar(host,c,where){if(!host||host.querySelector(':scope > .kd-bar'))return;const b=document.createElement('div');b.className='kd-bar';
+ b.innerHTML=`<div><b>🎯 ฝึกในคาบ</b><p>โจทย์สุ่มตัวเลขใหม่ทุกข้อ ระดับปรับตามคำตอบของเรา ตอบถูก 10 ข้อเพื่อผ่าน</p></div><div class="kd-t"><button type="button" class="kd-btn p kdGo">เริ่มฝึก</button><span class="kdT" hidden></span></div>`;
+ if(where==='prepend')host.prepend(b);else if(where&&where.after)where.after.after(b);else host.appendChild(b);
+ b.querySelector('.kdGo').onclick=()=>open(c,ACTIVE&&ACTIVE.c===c?{goal:ACTIVE.goal,id:ACTIVE.id}:{});tools(b,c)}
+function tools(b,c){const x=A.ctx()||{},s=b.querySelector('.kdT');if(!x.T){s.hidden=true;return}s.hidden=false;
+ s.innerHTML=`<label>ข้อ <input type="number" class="kdN" min="3" max="30" value="10"></label><label>นาที <input type="number" class="kdM" min="5" max="120" value="20"></label><button type="button" class="kd-btn kdS">เริ่มให้ทั้งห้อง</button><button type="button" class="kd-btn kdL">ดูผลสด</button>`;
+ s.querySelector('.kdS').onclick=async()=>{const goal=Math.max(3,Math.min(30,+s.querySelector('.kdN').value||10)),mins=Math.max(5,Math.min(120,+s.querySelector('.kdM').value||20)),id=A.site+'-'+c+'-'+Date.now().toString(36);
+  const v={c,goal,id,until:Date.now()+mins*60000};try{await setS(v);ACTIVE=v;banner();live(c,id)}catch(e){alert('เริ่มไม่สำเร็จ ตรวจว่าใช้บัญชีครู')}};
+ s.querySelector('.kdL').onclick=()=>live(c,ACTIVE&&ACTIVE.c===c?ACTIVE.id:'')}
+async function live(c,id){const B=overlay();clearInterval(liveT);
+ const draw=async()=>{if(!ov)return clearInterval(liveT);let r=[];try{r=await qDrills(id,c)}catch(e){B.innerHTML='<p>โหลดผลไม่ได้ ตรวจกฎ Firestore ของ drills</p><button class="kd-btn" id="kdX">ปิด</button>';B.querySelector('#kdX').onclick=close;return}
+  const best={};r.forEach(x=>{if(!best[x.uid]||x.right>best[x.uid].right)best[x.uid]=x});const L=Object.values(best).sort((a,b)=>String(a.cls).localeCompare(b.cls,'th',{numeric:true})||(+a.no||0)-(+b.no||0));
+  const left=ACTIVE&&ACTIVE.id===id?Math.max(0,Math.round((ACTIVE.until-Date.now())/60000)):null;
+  B.innerHTML=`<div class="kd-top"><h2>ผลฝึกในคาบ · ${esc(A.title(c))}</h2><button type="button" class="kd-btn" id="kdX">ปิด ✕</button></div>
+  <p>${id?'รอบนี้':'ทุกรอบ'} · ส่งแล้ว ${L.length} คน · ผ่าน ${L.filter(x=>x.pass).length} คน${left!=null?` · เหลือเวลา ${left} นาที`:''} · อัปเดตทุก 10 วินาที</p>
+  ${id?'<div class="kd-acts"><button type="button" class="kd-btn" id="kdStop">ปิดภารกิจรอบนี้</button></div>':''}
+  <div style="overflow:auto;margin-top:8px"><table><tr><th>ชั้น</th><th>เลขที่</th><th>ชื่อ</th><th>ถูก/ทำ</th><th>ระดับ</th><th>ผล</th></tr>${L.map(x=>`<tr><td>${esc(x.cls)}</td><td>${esc(x.no)}</td><td>${esc(x.name)}</td><td>${x.right}/${x.done}</td><td>${x.level||1}</td><td>${x.pass?'ผ่าน':'ยังไม่ผ่าน'}</td></tr>`).join('')||'<tr><td colspan="6">ยังไม่มีใครส่ง</td></tr>'}</table></div>`;
+  B.querySelector('#kdX').onclick=close;const st=B.querySelector('#kdStop');if(st)st.onclick=async()=>{try{await setS({c:'',id:'',until:0});ACTIVE=null;banner();st.remove()}catch(e){}}};
+ await draw();liveT=setInterval(draw,10000)}
+/* ---------- แถบแจ้งนักเรียน ---------- */
+const ban=document.createElement('div');ban.className='kd-ban';ban.hidden=true;document.body.appendChild(ban);
+function banner(){const on=ACTIVE&&ACTIVE.c&&ACTIVE.until>Date.now()&&A.levels(ACTIVE.c).length;ban.hidden=!on;if(!on)return;
+ ban.innerHTML=`<span>🎯 ครูเปิดภารกิจฝึกในคาบ: <b>${esc(A.title(ACTIVE.c))}</b> · ตอบถูก ${ACTIVE.goal} ข้อ · เหลือ ${Math.max(1,Math.round((ACTIVE.until-Date.now())/60000))} นาที</span><button type="button">เริ่มเลย</button>`;
+ ban.querySelector('button').onclick=()=>open(ACTIVE.c,{goal:ACTIVE.goal,id:ACTIVE.id})}
+let lastU='?';
+async function poll(){const c=A.ctx()||{};if(!c.DB&&!fs())return;try{const s=await getS();ACTIVE=s&&s.c?s:null}catch(e){}banner()}
+setInterval(()=>{const c=A.ctx()||{},k=(c.U&&c.U.uid||'')+(c.T?'T':'');if(k!==lastU){lastU=k;poll();document.querySelectorAll('.kd-bar').forEach(b=>tools(b,b.dataset.c))}},1500);
+setInterval(()=>{if(!document.hidden)poll()},60000);
+return{bar:(host,c,where)=>{bar(host,c,where);const b=host&&host.querySelector('.kd-bar');if(b)b.dataset.c=c},open,close,_state:()=>({D,ACTIVE})};
+};
+
+(function(){const K=KDrill({site:'m3',kind:'m3',ctx:()=>window.M3X?M3X():{},
+ title:c=>{const m=document.getElementById('p-'+c);if(!m)return c;const e=m.querySelector('.eyebrow'),h=m.querySelector('h1');return ((e?e.textContent.split('·')[0].trim()+' ':'')+(h?h.textContent:'')).trim()},
+ levels:c=>{const p=document.querySelector('#p-'+c+' .pz');if(!p||!p.dataset.modes)return[];return p.dataset.modes.split(',').filter(m=>typeof GEN[m]==='function').map(m=>[()=>GEN[m]()])}});
+ document.querySelectorAll('main.topic').forEach(m=>{if(!m.querySelector('.pz'))return;const c=m.id.replace('p-','');K.bar(m,c,{after:m.querySelector('.uband')||m.querySelector('h1')})});
+ window.M3Drill=K})();
 </script>
 </html>
