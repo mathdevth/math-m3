@@ -1391,7 +1391,7 @@ document.querySelectorAll('main.topic[data-t]').forEach(m=>{const items=BANK.fil
 /* ===== แสดงเศษส่วน a/b เป็นเศษส่วนแนวตั้ง ===== */
 (function(){const s=document.createElement('style');s.textContent=`.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.88em;line-height:1.15;margin:0 .12em}.fr>span{padding:0 .15em;white-space:nowrap}.fr>span:first-child{border-bottom:1.2px solid currentColor}`;document.head.appendChild(s);
  const T='[0-9A-Za-zπ√²³.]+',RE=new RegExp(`(\\([^()]{1,24}\\)|[−-]?${T})\\/(\\([^()]{1,24}\\)|${T})(?![0-9A-Za-z/])`,'g');
- const SKIP='script,style,svg,textarea,input,select,a,code,.fr,.keys,title,.kktv,.kd-box,.kd-ban,.kd-bar,#fbHome,table,.slc';
+ const SKIP='script,style,svg,textarea,input,select,a,code,.fr,.keys,title,.kktv,.kd-box,.kd-ban,.kd-bar,#fbHome,table,.slc,.phx';
  function conv(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.nodeValue.includes('/')&&!(n.parentElement&&n.parentElement.closest(SKIP))?1:2});const ns=[];while(w.nextNode())ns.push(w.currentNode);
   ns.forEach(n=>{const v=n.nodeValue;RE.lastIndex=0;if(!RE.test(v))return;RE.lastIndex=0;const f=document.createDocumentFragment();let i=0,m;
    while((m=RE.exec(v))){let a=m[1],b=m[2];if(/^\d{3,}$/.test(b)&&/^\d+$/.test(a)&&+b>1000)continue; /* ไม่แปลงแบบวันที่/ปี */
@@ -2017,25 +2017,6 @@ const AX=(W,H,L,B,T,R,lo,hi,Y,f)=>{let g='';for(let k=0;k<=4;k++){const v=lo+(hi
 const ledCalc=(rows,ex)=>{const e=num(ex);const b=rows.map(r=>({x:r[0]||'?',p:num(r[1]),w:num(r[2])})).filter(v=>v.p!=null&&v.w!=null&&v.p>=0&&v.w>0);return e&&e>0?b.slice(0,2).map(v=>({...v,k:v.w/1000*e})):[]};
 const ledBE=p=>{if(p.length<2)return null;const[A,B]=p;if(A.k===B.k)return null;const h=(B.p-A.p)/(A.k-B.k);return h>0?h:null};
 const SELC_M3=[
-{id:'led',where:'e3',title:'เปลี่ยนเป็นหลอด LED คุ้มเมื่อไร? — ระบบสมการและจุดคุ้มทุน',
- ccc:'ระบบและแบบจำลอง · พลังงาน',
- ph:'ห้องเรียนเปิดไฟวันละหลายชั่วโมง ไฟฟ้าส่วนใหญ่ของประเทศผลิตจากเชื้อเพลิงที่ปล่อยก๊าซเรือนกระจก หลอด LED ราคาแพงกว่าแต่กินไฟน้อยกว่า',
- ask:'ต้องเปิดไฟกี่ชั่วโมง ค่าใช้จ่ายรวมของหลอด LED จึงจะเท่ากับหลอดแบบเดิม และหลังจากนั้นอะไรถูกกว่า?',
- how:['สำรวจราคาจริงและกำลังไฟ (วัตต์) ที่พิมพ์บนกล่องหลอด 2 แบบ จากร้านหรือเว็บร้านค้า','ดูค่าไฟต่อหน่วยจากบิลค่าไฟที่บ้าน (1 หน่วย = 1 กิโลวัตต์-ชั่วโมง)','ค่าใช้จ่ายรวม y = ราคาหลอด + (วัตต์ ÷ 1000) × ค่าไฟต่อหน่วย × x เมื่อ x คือจำนวนชั่วโมง','ได้สมการ 2 เส้น จุดตัดคือจุดคุ้มทุน ตรวจด้วยการแก้ระบบสมการในสมุด'],
- extra:{label:'ค่าไฟต่อหน่วย (บาท) — ดูจากบิลที่บ้าน',def:''},
- cols:['หลอด','ราคา (บาท)','กำลังไฟ (วัตต์)'],rows:[['หลอดแบบเดิม','',''],['หลอด LED','','']],
- calc:ledCalc,
- sum:(p,ex)=>{if(!(num(ex)>0))return'ใส่ค่าไฟต่อหน่วยจากบิล';if(p.length<2)return'กรอกราคาและวัตต์ให้ครบ 2 หลอด';const f=v=>`y = ${r2(v.p)} + ${+v.k.toFixed(4)}x`;const h=ledBE(p);
-  return`${esc(p[0].x)}: <b>${f(p[0])}</b><br>${esc(p[1].x)}: <b>${f(p[1])}</b><br>`+(h?`จุดคุ้มทุน ≈ <b>${r2(h)} ชั่วโมง</b> ค่าใช้จ่ายเท่ากันประมาณ ${r2(p[0].p+p[0].k*h)} บาท · ถ้าเปิดวันละ 8 ชั่วโมง ≈ ${Math.ceil(h/8)} วัน`:'สองเส้นไม่ตัดกันในช่วงเวลาที่เป็นบวก ลองดูว่าหลอดไหนถูกกว่าตลอด')},
- draw:p=>{if(p.length<2)return'<p class="msg">กรอกข้อมูลครบแล้วกราฟจะขึ้นที่นี่</p>';const W=560,H=280,L=56,B=40,T=16,R=14,h=ledBE(p),xm=h?Math.max(h*2,10):1000;
-  const hi=Math.max(...p.map(v=>v.p+v.k*xm))||1,X=x=>L+x/xm*(W-L-R),Y=v=>H-B-v/hi*(H-B-T);const C=['#d94f3d','#17a673'];
-  let s=AX(W,H,L,B,T,R,0,hi,Y);p.forEach((v,i)=>{s+=`<line x1="${X(0)}" y1="${Y(v.p)}" x2="${X(xm)}" y2="${Y(v.p+v.k*xm)}" stroke="${C[i]}" stroke-width="3"/><text x="${X(xm)-4}" y="${Math.max(14,Y(v.p+v.k*xm)-8)+i*14}" font-size="12" text-anchor="end" fill="${C[i]}">${esc(v.x)}</text>`});
-  if(h)s+=`<circle cx="${X(h)}" cy="${Y(p[0].p+p[0].k*h)}" r="6" fill="#f2a33a"/><text x="${X(h)}" y="${Y(p[0].p+p[0].k*h)+24}" font-size="12" font-weight="700" text-anchor="start" dx="8" fill="currentColor">คุ้มทุน ${r2(h)} ชม.</text>`;
-  for(let k=0;k<=4;k++)s+=`<text x="${X(xm*k/4)}" y="${H-B+16}" font-size="11" text-anchor="middle" fill="currentColor" opacity=".7">${r2(xm*k/4)}</text>`;
-  return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="กราฟค่าใช้จ่ายรวมของหลอดไฟสองแบบ">${s}<line x1="${L}" x2="${W-R}" y1="${H-B}" y2="${H-B}" stroke="currentColor" stroke-opacity=".5"/><text x="${(W+L)/2}" y="${H-4}" font-size="12" text-anchor="middle" fill="currentColor">จำนวนชั่วโมงที่เปิดไฟ x</text><text x="12" y="${(H-B+T)/2}" font-size="12" fill="currentColor" transform="rotate(-90 12 ${(H-B+T)/2})" text-anchor="middle">ค่าใช้จ่ายรวม y (บาท)</text></svg>`},
- csv:(st,p)=>{const h=ledBE(p),xm=h?Math.max(h*2,10):1000,step=xm/10;const rows=[];for(let i=0;i<=10;i++){const x=r2(step*i);rows.push([x,...p.map(v=>r2(v.p+v.k*x))])}return[['ชั่วโมง',...p.map(v=>'ค่าใช้จ่าย_'+v.x)],rows]},
- codap:['ลากไฟล์ CSV ลงใน CODAP','ลาก "ชั่วโมง" ไปแกนนอน และค่าใช้จ่ายของหลอดแรกไปแกนตั้ง','ลากค่าใช้จ่ายของอีกหลอดไปวางที่แกนตั้งเดิมเพื่อซ้อนสองชุด แล้วหาจุดที่สองชุดตัดกัน'],
- limit:'แบบจำลองนี้คิดแค่ราคาหลอดกับค่าไฟ ยังไม่คิดอายุการใช้งาน (หลอดแบบเดิมอาจต้องซื้อใหม่ก่อน) และยังไม่ได้คิดปริมาณก๊าซเรือนกระจกที่ลดได้ ซึ่งต้องใช้ข้อมูลเพิ่ม'},
 {id:'albedo',where:'t3',title:'สีขาวหรือสีดำร้อนกว่า? — ทดลอง Ice–Albedo ด้วยแผนภาพกล่อง',
  ccc:'ระบบ · เหตุและผล · ความเสถียรและการเปลี่ยนแปลง',
  ph:'น้ำแข็งขั้วโลกสีขาวสะท้อนแสงแดดได้มาก เมื่อน้ำแข็งละลายเหลือน้ำทะเลสีเข้ม พื้นผิวจะดูดความร้อนมากขึ้น ทำให้ร้อนขึ้นอีก (วงจรป้อนกลับ: ร้อนขึ้น → น้ำแข็งละลาย → ผิวมืดขึ้น → ดูดความร้อนมากขึ้น → ร้อนขึ้นอีก)',
@@ -2066,9 +2047,342 @@ const SELC_M3=[
  codap:['ลากไฟล์ CSV ลงใน CODAP','ลาก "ลำดับวัน" ไปแกนนอน และ "ความถี่สัมพัทธ์สะสม" ไปแกนตั้ง','รวมข้อมูลจากหลายห้องหรือหลายเดือน แล้วดูว่าค่านิ่งที่ประมาณเท่าไร'],
  limit:'ข้อมูลไม่กี่สิบวันบอกได้แค่โอกาสฝนตก "ในช่วงที่เก็บ" ฤดูต่างกันโอกาสก็ต่างกัน ถ้าจะบอกว่าฝนตกบ่อยขึ้นหรือน้อยลงจากอดีต ต้องใช้ข้อมูลหลายสิบปีของกรมอุตุนิยมวิทยา'}
 ];
-SELC_M3.push({id:'cerpre',test:1,where:'e1',title:'แบบวัดการอธิบายด้วยหลักฐาน (ก่อนเรียน)'},{id:'cerpost',test:1,where:'p3',title:'แบบวัดการอธิบายด้วยหลักฐาน (หลังเรียน)'});
 window.SELC3=KSelc({site:'m3',ctx:()=>window.M3X?M3X():{},place:w=>document.getElementById('p-'+w),isT:c=>!!c.T,acts:SELC_M3});
 })();
+
+/* หน่วย PhBL ม.3 — ข้อมูลกลาง ใช้ร่วมกับเว็บ ใบงาน คู่มือครู และสไลด์ · ลิขสิทธิ์ครูคุ้ม */
+const PHBL3={
+id:'phbl3',site:'m3',ico:'💡',
+name:'ค่าไฟห้องเรียนของเรา: เปลี่ยนหลอดไฟเมื่อไรถึงคุ้ม',
+subject:'คณิตศาสตร์พื้นฐาน ม.3 ภาคเรียนที่ 2 · บทที่ 1 ระบบสมการเชิงเส้นสองตัวแปร',
+indicator:'ค 1.3 ม.3/1 ประยุกต์ใช้ระบบสมการเชิงเส้นสองตัวแปรในการแก้ปัญหาคณิตศาสตร์และปัญหาในชีวิตจริง',
+time:'8 ภารกิจ 10 คาบ (คาบละ 50 นาที) ไม่นับเวลาสำรวจห้องและบิลค่าไฟนอกเวลา',
+phenomenon:'ห้องเรียนเปิดไฟและพัดลมเกือบทั้งวัน โรงเรียนจ่ายค่าไฟหลายพันบาทต่อเดือน หลอด LED กินไฟน้อยกว่าแต่ราคาแพงกว่า ไฟฟ้าส่วนใหญ่ยังผลิตจากเชื้อเพลิงที่ปล่อยก๊าซเรือนกระจก',
+dqHint:'เช่น ค่าไฟต่อหน่วยเท่าไร / หลอดในห้องกี่วัตต์',
+question:'ห้องเราควรขอเปลี่ยนหลอดไฟเป็น LED ไหม ถ้าเปลี่ยน ต้องใช้ไปกี่เดือนจึงคุ้มทุน และมีทางเลือกที่ดีกว่าหรือไม่',
+product:'ข้อเสนอ 1 หน้าถึงฝ่ายอาคารสถานที่: เลือกทางเลือกที่คุ้มที่สุด บอกจุดคุ้มทุนจากระบบสมการ ตัวเลขจากการสำรวจจริง เหตุผล และสิ่งที่ข้อมูลยังบอกไม่ได้',
+data:'ข้อมูลทุกชุดนักเรียนสำรวจเอง: จำนวนและวัตต์ของหลอดไฟ/พัดลมในห้อง ชั่วโมงเปิดใช้ ราคาหลอดจากร้านหรือเว็บร้านค้า ค่าไฟต่อหน่วยจากบิลค่าไฟ ตัวเลขในคู่มือที่ติดป้าย "ตัวอย่าง" เป็นตัวเลขสมมุติสำหรับครู',
+lang:{1:['ฉันคิดว่า…','เพราะฉันเห็นว่า…','ฉันยังไม่แน่ใจเรื่อง…'],2:['ฉันคิดว่า…','ตัวเลขที่ทำให้ฉันคิดแบบนี้คือ…','ตัวเลขนี้เกี่ยวกับคำตอบเพราะ…'],3:['ฉันคิดว่า… (ข้อกล่าวอ้าง)','ตัวเลขที่ทำให้ฉันคิดแบบนี้… (หลักฐาน)','ตัวเลขนี้เกี่ยวกับคำตอบเพราะ… (เหตุผล)'],4:['C ข้อกล่าวอ้าง','E หลักฐาน — ตัวเลขจากข้อมูลอย่างน้อย 2 จุด','R เหตุผล — หลักคณิตศาสตร์ที่เชื่อมหลักฐานกับข้อกล่าวอ้าง']},
+langNote:{1:'ภาษาของนักเรียน ยังไม่พูดคำว่า CER',2:'ภาษาของนักเรียน + ชวนใช้ตัวเลข',3:'ครูตั้งชื่อ ข้อกล่าวอ้าง · หลักฐาน · เหตุผล คู่กับภาษาเดิม',4:'CER เต็มรูปแบบ + ข้อจำกัดของหลักฐาน'},
+lessons:[
+{n:1,where:'e1',periods:1,lv:1,title:'ปรากฏการณ์หลัก: ห้องเรากินไฟแค่ไหน',
+ knot:'ไฟกับพัดลมเปิดทั้งวัน ค่าไฟของห้องเราต่อเดือนประมาณเท่าไร และอะไรกินไฟมากที่สุด',
+ learn:'นักเรียนสำรวจและตั้งคำถามเอง ยังไม่ต้องใช้สูตร',
+ try:['สำรวจห้อง: นับหลอดไฟและพัดลม อ่านกำลังไฟ (วัตต์) ที่ตัวหลอดหรือฉลาก','ถามหรือสังเกตว่าเปิดวันละกี่ชั่วโมง ดูค่าไฟต่อหน่วยจากบิลค่าไฟที่บ้าน','กลุ่มเขียนคำแนะนำแรก: ควรเปลี่ยนอะไรก่อน เพราะอะไร'],
+ tool:{cols:['อุปกรณ์','จำนวน','วัตต์ต่อเครื่อง','ชั่วโมงต่อวัน'],rows:[['หลอดไฟ','','',''],['พัดลม','','','']],calc:'room'},
+ formal:'ยังไม่ตั้งชื่อเรื่องใหม่ ทบทวน: พลังงานไฟฟ้า (หน่วย) = กำลังไฟ (kW) × เวลา (ชั่วโมง) · 1 หน่วย = 1 kWh · ครูชวนจัดกลุ่มคำถามบน DQB',
+ stuck:'คูณวัตต์กับชั่วโมงแล้วเรียกว่า "หน่วย" เลย โดยไม่หาร 1,000',
+ probe:['หลอด 18 W เปิด 8 ชั่วโมง ใช้ไฟกี่หน่วย','ถ้าเปลี่ยนหลอด แต่ยังเปิดพัดลมเท่าเดิม ค่าไฟลดลงมากไหม'],
+ out:'ตารางสำรวจห้อง · ค่าไฟโดยประมาณต่อเดือน · คำแนะนำแรก · คำถามบน DQB',
+ next:'ถ้าเปิดไฟไปเรื่อย ๆ ค่าใช้จ่ายรวมของหลอดแต่ละแบบเพิ่มขึ้นอย่างไร'},
+{n:2,where:'e1',periods:1,lv:1,title:'ค่าใช้จ่ายรวมเพิ่มขึ้นแบบไหน',
+ knot:'หลอดเดิมราคาถูกแต่กินไฟ หลอด LED แพงแต่ประหยัด ถ้าเปิดไปเรื่อย ๆ ค่าใช้จ่ายรวม (ค่าหลอด + ค่าไฟ) ของแต่ละแบบเพิ่มขึ้นอย่างไร',
+ learn:'ความสัมพันธ์เชิงเส้น y = a + bx และกราฟ (ทบทวน ม.2)',
+ try:['หาราคาจริงและวัตต์ของหลอด 2 แบบ','ทำตารางค่าใช้จ่ายรวมเมื่อเปิด 0, 500, 1,000, 2,000 ชั่วโมง','วาดกราฟของแต่ละหลอด แล้วสังเกตว่าเป็นเส้นแบบไหน'],
+ tool:{cols:['รายการ','หลอดเดิม','หลอด LED'],rows:[['ราคาหลอด (บาท)','',''],['กำลังไฟ (วัตต์)','',''],['ค่าไฟต่อหน่วย (บาท)','','']],calc:'line2t'},
+ formal:'ค่าใช้จ่ายรวม y = ราคาหลอด + (วัตต์ ÷ 1000) × ค่าไฟต่อหน่วย × x เป็นสมการเชิงเส้นสองตัวแปร y = a + bx · a = จุดตัดแกน y · b = ความชัน (บาทต่อชั่วโมง)',
+ stuck:'ใส่ราคาหลอดซ้ำทุกชั่วโมง (คิดเป็นค่าใช้จ่ายต่อชั่วโมง)',
+ probe:['ทำไมเส้นของ LED เริ่มสูงกว่า แต่ชันน้อยกว่า','ความชันของแต่ละเส้นบอกอะไรในชีวิตจริง'],
+ out:'ตารางค่าใช้จ่ายรวม · กราฟ 2 เส้น · สมการของแต่ละหลอด',
+ next:'สองเส้นตัดกันที่ไหน และจุดนั้นบอกอะไร'},
+{n:3,where:'e1',periods:1,lv:2,title:'สองเส้นตัดกันตรงไหน',
+ knot:'กราฟสองเส้นตัดกันที่จุดหนึ่ง จุดนั้นหมายความว่าอะไร และถ้าสองเส้นไม่ตัดกันเลยล่ะ',
+ learn:'ระบบสมการเชิงเส้นสองตัวแปร · คำตอบของระบบ = จุดตัด · กรณีขนานและทับกัน',
+ try:['อ่านจุดตัดของสองเส้นจากกราฟบทที่แล้ว บอกพิกัด (x, y)','อธิบายว่าก่อนและหลังจุดตัด หลอดไหนถูกกว่า','ลองหาหลอดสองแบบที่เส้นขนานกัน หรือทับกัน มันหมายความว่าอะไร'],
+ tool:{cols:['รายการ','หลอดเดิม','หลอด LED'],rows:[['ราคาหลอด (บาท)','',''],['กำลังไฟ (วัตต์)','',''],['ค่าไฟต่อหน่วย (บาท)','','']],calc:'line2x'},
+ formal:'ระบบสมการเชิงเส้นสองตัวแปร คือสมการเชิงเส้นสองตัวแปรสองสมการที่ต้องเป็นจริงพร้อมกัน · คำตอบของระบบ = จุดที่กราฟทั้งสองผ่านร่วมกัน · ตัดกัน = 1 คำตอบ · ขนาน = ไม่มีคำตอบ · ทับกัน = มีคำตอบมากมาย',
+ stuck:'อ่านพิกัดจากกราฟแล้วเชื่อว่าแม่นยำ ทั้งที่สเกลหยาบ',
+ probe:['ถ้าหลอดสองแบบกินไฟเท่ากัน กราฟเป็นอย่างไร และมีจุดคุ้มทุนไหม','อ่านจากกราฟได้ 2,000 ชั่วโมงพอดีหรือประมาณ'],
+ out:'จุดตัดจากกราฟ · คำอธิบายความหมายของจุดตัด',
+ next:'อ่านจากกราฟไม่แม่น จะหาจุดตัดให้ได้ค่าที่แน่นอนอย่างไร'},
+{n:4,where:'e2',periods:2,lv:2,title:'หาจุดคุ้มทุนให้แม่นด้วยการคำนวณ',
+ knot:'อ่านจุดตัดจากกราฟได้แค่ประมาณ ฝ่ายอาคารสถานที่ต้องการตัวเลขที่แน่นอน จะคำนวณอย่างไร',
+ learn:'การแก้ระบบสมการด้วยวิธีแทนค่าและวิธีกำจัดตัวแปร',
+ try:['เขียนสมการของสองหลอดในรูป y = a + bx','คิดวิธีหาค่า x ที่ทำให้ y ของสองสมการเท่ากัน','ตรวจคำตอบด้วยการแทนค่ากลับในทั้งสองสมการ'],
+ tool:{cols:['สมการ','a (ค่าเริ่มต้น)','b (ต่อหน่วย x)'],rows:[['เส้นที่ 1: y = a + bx','',''],['เส้นที่ 2: y = a + bx','','']],calc:'solveAB'},
+ formal:'วิธีแทนค่า: ให้ a₁ + b₁x = a₂ + b₂x แล้วแก้หา x · วิธีกำจัดตัวแปร: นำสมการมาลบกันเพื่อกำจัด y · ตรวจคำตอบโดยแทนค่าในทุกสมการ',
+ stuck:'ลบสมการแล้วเครื่องหมายผิด หรือหา x ได้แล้วไม่หา y',
+ probe:['ทำไมต้องหาทั้ง x และ y ค่า y บอกอะไร','ถ้า b₁ = b₂ จะเกิดอะไรขึ้นตอนหาร'],
+ out:'จุดคุ้มทุนที่คำนวณได้ · การตรวจคำตอบ',
+ next:'ถ้ารู้แค่ "ผลรวม" ของห้องอื่น จะย้อนหาว่ามีอุปกรณ์อย่างละกี่เครื่องได้ไหม'},
+{n:5,where:'e2',periods:1,lv:3,title:'ห้องข้าง ๆ มีอะไรบ้าง',
+ knot:'ห้องข้าง ๆ บอกแค่ว่ามีหลอดไฟกับพัดลมรวมกันกี่เครื่อง และกินไฟรวมกี่วัตต์ เราจะรู้ไหมว่ามีอย่างละกี่เครื่อง',
+ learn:'ระบบสมการรูป ax + by = c · การแก้ด้วยวิธีกำจัดตัวแปร · ครูตั้งชื่อ ข้อกล่าวอ้าง · หลักฐาน · เหตุผล',
+ try:['ตั้งตัวแปร x = จำนวนหลอด y = จำนวนพัดลม แล้วเขียนสมการ 2 สมการจากข้อมูลห้องข้าง ๆ','ลองแก้เองด้วยวิธีใดก็ได้','สลับกันสร้างโจทย์จากข้อมูลห้องตัวเองให้อีกกลุ่มแก้'],
+ tool:{cols:['สมการ','สัมประสิทธิ์ของ x','สัมประสิทธิ์ของ y','ค่าคงตัว'],rows:[['สมการที่ 1','','',''],['สมการที่ 2','','','']],calc:'solve2'},
+ formal:'ระบบ a₁x + b₁y = c₁ และ a₂x + b₂y = c₂ · คูณสมการให้สัมประสิทธิ์ของตัวแปรหนึ่งเท่ากันแล้วลบกัน · คำตอบต้องสมเหตุสมผลกับบริบท (จำนวนเครื่องเป็นจำนวนเต็มไม่ลบ) · และครูชี้ว่าสามช่องที่เขียนมาตลอดคือ ข้อกล่าวอ้าง · หลักฐาน · เหตุผล',
+ stuck:'ได้คำตอบเป็นเศษส่วนหรือติดลบแล้วไม่สงสัยว่าข้อมูลผิด',
+ probe:['ถ้าได้ x = 7.5 เครื่อง แปลว่าอะไร','ข้อมูลอะไรที่ทำให้แก้ไม่ได้'],
+ out:'ระบบสมการจากข้อมูลจริง · คำตอบพร้อมตรวจความสมเหตุสมผล · โจทย์ที่สร้างเอง',
+ next:'ถ้าเปลี่ยนหลอดทั้งห้อง คิดเป็นเดือนจะคุ้มเมื่อไร'},
+{n:6,where:'e3',periods:2,lv:3,title:'เปลี่ยนทั้งห้อง คุ้มกี่เดือน',
+ knot:'ห้องเรามีหลอดหลายดวง เปิดวันละหลายชั่วโมง ถ้าซื้อ LED ใหม่ทั้งห้อง ต้องใช้ไปกี่เดือนจึงคุ้มทุน',
+ learn:'โจทย์ปัญหาระบบสมการ · การสร้างแบบจำลองจากข้อมูลจริง',
+ try:['ใช้ข้อมูลห้องจริง: จำนวนหลอด วัตต์เดิม วัตต์ LED ราคา LED ชั่วโมงต่อวัน วันเรียนต่อเดือน ค่าไฟต่อหน่วย','เขียนสมการค่าใช้จ่ายสะสมรายเดือนของ "ใช้หลอดเดิมต่อ" กับ "เปลี่ยนเป็น LED"','หาเดือนที่คุ้มทุน แล้วตรวจกับแบบจำลองในเว็บ'],
+ tool:{cols:['รายการ','ค่า'],rows:[['จำนวนหลอด',''],['วัตต์หลอดเดิม',''],['วัตต์หลอด LED',''],['ราคา LED ต่อหลอด (บาท)',''],['ชั่วโมงต่อวัน',''],['วันเรียนต่อเดือน',''],['ค่าไฟต่อหน่วย (บาท)','']],calc:'roomBE'},
+ formal:'เดิม: y = c₁m · LED: y = I + c₂m (I = ค่าหลอดทั้งหมด, c = ค่าไฟต่อเดือน, m = เดือน) · จุดคุ้มทุน m = I ÷ (c₁ − c₂) · ใช้หน่วยให้ตรงกันทั้งระบบ',
+ stuck:'ลืมคูณจำนวนหลอด หรือใช้ชั่วโมงต่อวันกับเดือนปนกัน',
+ probe:['ถ้าวันเรียนต่อเดือนลดลง (ปิดเทอม) จุดคุ้มทุนเลื่อนไปทางไหน','ถ้าค่าไฟขึ้นราคา จุดคุ้มทุนเร็วขึ้นหรือช้าลง'],
+ out:'สมการสองสมการจากข้อมูลห้องจริง · เดือนคุ้มทุน',
+ next:'นอกจากเปลี่ยนหลอด ยังมีทางเลือกอื่นที่ไม่ต้องลงทุนไหม แบบไหนดีกว่ากัน'},
+{n:7,where:'e3',periods:1,lv:3,title:'ทางเลือกไหนดีกว่า',
+ knot:'ทางเลือก A: ซื้อ LED ทั้งห้อง · ทางเลือก B: ไม่ซื้ออะไร แต่ปิดไฟตอนพักกลางวันและเปิดเฉพาะแถวที่มืด ทางไหนประหยัดกว่าในระยะยาว',
+ learn:'เปรียบเทียบสองแผนด้วยระบบสมการ · ตีความจุดตัดเพื่อตัดสินใจ',
+ try:['ประมาณค่าไฟต่อเดือนของแต่ละทางเลือกจากข้อมูลห้องจริง','เขียนสมการค่าใช้จ่ายสะสมของ A และ B','หาว่าก่อนและหลังจุดตัด ทางไหนดีกว่า และควรทำทั้งสองอย่างไหม'],
+ tool:{cols:['ทางเลือก','ลงทุนครั้งแรก (บาท)','ค่าไฟต่อเดือน (บาท)'],rows:[['A: เปลี่ยน LED','',''],['B: ปิดไฟพักเที่ยง','','']],calc:'plans'},
+ formal:'ค่าใช้จ่ายสะสม y = ลงทุนครั้งแรก + ค่าไฟต่อเดือน × m · จุดตัดบอกเดือนที่สองแผนใช้เงินเท่ากัน · การตัดสินใจขึ้นกับว่าใช้ไปนานแค่ไหน',
+ stuck:'ตัดสินจากค่าไฟต่อเดือนอย่างเดียว ลืมเงินลงทุนครั้งแรก',
+ probe:['ถ้าโรงเรียนจะย้ายห้องในอีก 3 เดือน ควรเลือกแบบไหน','ทำทั้ง A และ B พร้อมกัน สมการเป็นอย่างไร'],
+ out:'สมการสองแผน · จุดตัด · ทางเลือกที่แนะนำพร้อมเงื่อนไข',
+ next:'พร้อมเขียนข้อเสนอถึงฝ่ายอาคารสถานที่ ตัวเลขเชื่อได้แค่ไหน และยังขาดข้อมูลอะไร'},
+{n:8,where:'e3',periods:1,lv:4,title:'ข้อเสนอถึงฝ่ายอาคารสถานที่',
+ knot:'จะเขียนข้อเสนอที่ฝ่ายอาคารสถานที่เชื่อและนำไปใช้ได้อย่างไร และหลักฐานของเรายังบอกอะไรไม่ได้',
+ learn:'ใช้ CER เต็มรูปแบบ · ถ่ายโอนไปสถานการณ์ใหม่',
+ try:['เขียนข้อเสนอ 1 หน้า: ทางเลือกที่แนะนำ จุดคุ้มทุนจากระบบสมการ ตัวเลขจากการสำรวจ เหตุผล และข้อจำกัด','แลกกันอ่านกับอีกกลุ่ม ให้ข้อเสนอแนะตามรูบริก','ถ่ายโอน: ใช้วิธีเดียวกันกับบ้านตัวเอง (หลอดไฟ แอร์ หรือตู้เย็น) ต้องเปลี่ยนอะไรบ้าง'],
+ formal:'CER เต็มรูปแบบ + ข้อจำกัดของหลักฐาน · กลับไปเทียบกับคำแนะนำแรกในภารกิจที่ 1',
+ stuck:'สรุปเกินหลักฐาน เช่น "เปลี่ยน LED แล้วค่าไฟโรงเรียนจะลดลงครึ่งหนึ่ง" ทั้งที่คิดเฉพาะหลอดในห้องเดียว',
+ probe:['แบบจำลองของเรายังไม่ได้คิดถึงอะไรบ้าง (อายุหลอด ค่าแรงติดตั้ง ค่าไฟที่ขึ้นลง)','คำแนะนำของเราเปลี่ยนจากภารกิจที่ 1 อย่างไร หลักฐานไหนทำให้เปลี่ยน'],
+ out:'ข้อเสนอ 1 หน้า · การเทียบกับคำแนะนำแรก · งานถ่ายโอน',
+ next:'นำเสนอฝ่ายอาคารสถานที่ / สภานักเรียน'}
+],
+rubric:{C:['ไม่มีหรือไม่ตรงคำถาม','ตอบบางส่วน','ตอบตรงแต่ยังไม่ชัด','ตอบตรง ชัดเจน ครบ'],E:['ไม่มีหลักฐาน','อ้างข้อมูลแต่ไม่มีตัวเลข','มีตัวเลข 1 จุด หรือบางจุดไม่เกี่ยว','ตัวเลขถูกต้อง เกี่ยวข้อง อย่างน้อย 2 จุด'],R:['ไม่มีเหตุผล','ใช้ความรู้สึกหรือทวนหลักฐาน','เชื่อมหลักฐานกับข้อกล่าวอ้างด้วยหลักคณิต','เชื่อมชัด และบอกข้อจำกัดของหลักฐานได้']}
+};
+if(typeof module!=='undefined')module.exports=PHBL3;
+
+/* ===== หน่วย PhBL ม.1 v2: แท็บเนื้อหา/ภารกิจ · ภารกิจวันนี้ · รหัสสีช่วยจำ · กระดานคำถาม DQB · ปลดล็อกการตั้งชื่อ · ภาษาไล่ระดับสู่ CER · ลิขสิทธิ์ครูคุ้ม ===== */
+window.KPhbl=function(A){
+const U=A.U;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=v=>{const n=parseFloat(String(v).replace(/,/g,''));return isFinite(n)?n:null};
+const r2=x=>Math.round(x*100)/100;const fmt=x=>r2(x).toLocaleString('th-TH');
+const gcd=(a,b)=>{a=Math.abs(Math.round(a));b=Math.abs(Math.round(b));while(b){[a,b]=[b,a%b]}return a||1};
+const ctx=()=>(A.ctx()||{});const isT=()=>!!A.isT(ctx());
+const ts=()=>window.firebase&&firebase.firestore?firebase.firestore.FieldValue.serverTimestamp():new Date();
+/* รหัสสีช่วยจำ: เรื่องคณิต 3 สี (ฟ้า/ส้ม/เขียว) · CER 3 สี (ม่วง/เขียวน้ำทะเล/ชมพู) · ปม = เหลือง · ไม่ซ้ำกัน */
+const TOPIC=A.topics;
+const CER=[{k:'C',c:'#7c5ce0',ico:'💬',w:'ข้อกล่าวอ้าง'},{k:'E',c:'#0e9aa7',ico:'🔢',w:'หลักฐาน'},{k:'R',c:'#d9467f',ico:'🔗',w:'เหตุผล'}];
+let S={open:[],today:0,tab:'m'},MODE=null;
+if(!document.getElementById('phxCss')){const css=document.createElement('style');css.id='phxCss';css.textContent=`
+.phx{--pc:#2f7de1;--pln:var(--line,rgba(96,112,190,.22));box-sizing:border-box;margin:0 0 16px;border-radius:24px;padding:22px;border:1px solid var(--pln);background:color-mix(in srgb,Canvas 74%,transparent);box-shadow:0 10px 34px rgba(70,90,190,.13);text-align:left!important;font-size:17px;line-height:1.6}
+.phx *{text-align:left;box-sizing:border-box}.phx h2,.phx h3{margin:0 0 8px;line-height:1.35}.phx h2::before,.phx h2::after,.phx h3::before,.phx h3::after{content:none!important;display:none!important}
+.phx h2{font-size:24px}.phx h3{font-size:20px}.phx p{margin:0 0 8px}
+.phx .pb-tg{display:inline-block!important;width:auto!important;font-size:13px;font-weight:700;border-radius:999px;padding:2px 11px;margin:0 6px 8px 0;background:var(--pc);color:#fff;line-height:1.6}
+.phx .pb-tg.pb-ok{background:#5b6475}.phx .pb-tg.pb-now{background:#1d2b4f}.phx .pb-tg.pb-y{background:#ffc93c;color:#1d1830}
+.phx .pb-q{font-size:18px;font-weight:600;margin:12px 0;padding:14px 16px;border-radius:16px;background:color-mix(in srgb,#ffc93c 20%,transparent);border-left:6px solid #ffc93c}
+.phx .pb-box{margin-top:16px;border-radius:18px;padding:16px;background:color-mix(in srgb,currentColor 4%,transparent)}
+.phx .pb-box>b{display:block;margin-bottom:8px;font-size:18px}
+.phx .pb-step{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--pc);color:#fff;font-size:15px;margin-right:8px;vertical-align:-3px}
+.phx textarea,.phx input,.phx select{font:inherit;font-size:16px;width:100%;border-radius:12px;border:1px solid color-mix(in srgb,currentColor 25%,transparent);background:color-mix(in srgb,Canvas 85%,transparent);color:inherit;padding:9px 12px;min-height:44px}
+.phx textarea{min-height:64px;display:block}.phx label{display:block!important;margin:12px 0 4px;font-size:16px;font-weight:600}
+.phx .pb-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.phx button{font:inherit;font-size:16px;min-height:44px;border-radius:14px;padding:8px 16px;cursor:pointer;border:1px solid color-mix(in srgb,currentColor 25%,transparent);background:transparent;color:inherit}
+.phx button.pb-p{background:var(--pc);border-color:var(--pc);color:#fff;font-weight:600}.phx button.pb-s{min-height:40px;padding:6px 12px;font-size:15px}
+.phx table{width:100%;border-collapse:collapse;font-size:16px;table-layout:fixed}.phx td,.phx th{padding:6px;border-bottom:1px solid color-mix(in srgb,currentColor 12%,transparent)}.phx td input{min-width:0}
+.phx ol,.phx ul{margin:4px 0 0 22px;padding:0}.phx li{margin:4px 0}
+.phx .pb-lock{font-size:16px;border:2px dashed color-mix(in srgb,currentColor 25%,transparent);border-radius:14px;padding:12px 14px}
+.phx .pb-formal{border:2px solid var(--pc);border-radius:14px;padding:12px 14px;background:color-mix(in srgb,var(--pc) 10%,transparent)}
+.phx .pb-res{margin-top:10px;display:block!important}.pb-res b{display:inline!important}.phx .pb-msg{font-size:15px;opacity:.8;margin:6px 0 0}
+.phx .pb-out{font-size:15px;margin-top:8px;font-weight:600}
+.phx .pb-dq{display:grid;gap:8px;margin-top:10px}.phx .pb-dq .pb-it{border-radius:14px;padding:10px 12px;border:1px solid color-mix(in srgb,currentColor 15%,transparent);display:flex;gap:8px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;border-left:5px solid #ffc93c;background:color-mix(in srgb,Canvas 60%,transparent)}
+.phx .pb-dq .pb-it.pb-pin{background:color-mix(in srgb,#ffc93c 14%,transparent)}.phx .pb-dq .pb-it.pb-ans{opacity:.7;border-left-color:#5b6475}
+.phx .pb-dq small{opacity:.7}.phx .pb-grp{font-weight:700;margin-top:10px;font-size:16px}
+.phx .pb-tnote{font-size:15px;border-radius:12px;padding:10px 12px;background:color-mix(in srgb,#ffc93c 18%,transparent);margin-top:10px}
+.phx details>summary::marker{content:''}.phx details>summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none}.phx details>summary::-webkit-details-marker{display:none}
+.phx details>summary::after{content:'▾';margin-left:auto;opacity:.6}.phx details[open]>summary::after{content:'▴'}
+.phx .pb-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:15px;margin-top:10px}.phx .pb-legend span{display:inline-flex;align-items:center;gap:6px}.phx .pb-legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+.pb-tabs{display:grid!important;grid-template-columns:1fr 1fr;gap:6px;padding:6px!important;border-radius:20px!important;margin-bottom:16px!important}
+.pb-tabs button{font-weight:700;font-size:16px;min-height:50px;border-radius:15px;border:0;background:transparent;line-height:1.3}
+.pb-tabs button[aria-pressed="true"]{background:var(--pc);color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--pc) 40%,transparent)}
+@media(max-width:560px){.pb-tabs button{font-size:14.5px;padding:6px 8px}}
+.pb-strip{padding:14px!important}
+.pb-strip .pb-sh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-weight:700}
+.pb-strip .pb-chips{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}@media(max-width:760px){.pb-strip .pb-chips{grid-template-columns:repeat(4,1fr)}}
+.pb-strip .pb-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;padding:6px 4px;border-radius:16px;border:2px solid color-mix(in srgb,var(--mc) 40%,transparent);background:color-mix(in srgb,var(--mc) 8%,transparent);color:inherit;font-weight:700;text-align:center}
+.pb-strip .pb-chip b{font-size:22px;line-height:1;color:var(--mc)}.pb-strip .pb-chip small{font-size:12.5px;font-weight:600;opacity:.85;line-height:1.2}
+.pb-strip .pb-chip[aria-pressed="true"]{background:var(--mc);border-color:var(--mc);color:#fff;box-shadow:0 6px 16px color-mix(in srgb,var(--mc) 45%,transparent)}.pb-strip .pb-chip[aria-pressed="true"] b{color:#fff}
+.pb-strip .pb-chip.pb-now:not([aria-pressed="true"]){outline:3px solid #1d2b4f;outline-offset:1px}
+.pb-strip .pb-chip:disabled{opacity:.45;border-style:dashed;cursor:not-allowed}
+.pb-mis{display:none!important}.pb-mis.pb-sel{display:block!important}
+.pb-mis .pb-mh{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:4px}
+.pb-mis .pb-mh h3{flex:1 1 100%;margin:0;font-size:22px}
+.pb-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.pb-link{padding:14px 18px!important;font-size:16px}
+.phx th,.phx td{white-space:normal!important;min-width:0!important;word-break:break-word;vertical-align:middle}.phx table{max-width:100%;min-width:0!important}
+@media(max-width:560px){.phx{padding:16px;border-radius:20px}.phx .pb-box{padding:12px}.phx table{font-size:14.5px}.phx td,.phx th{padding:4px 3px}.phx td input{padding:6px 6px}}
+.pb-mode-m>:not(.phx){display:none!important}
+.pb-mode-c>.phx:not(.pb-tabs):not(.pb-link){display:none!important}.pb-mode-m>.pb-link{display:none!important}`;document.head.appendChild(css)}
+if(A.css){const c2=document.createElement('style');c2.textContent=A.css;document.head.appendChild(c2)}
+const topicOf=l=>TOPIC[l.where];
+const stOf=n=>{if(!S.today||isT())return n===S.today?'now':'free';return n<S.today?'done':n===S.today?'now':'lock'};
+/* ---------- เครื่องคิด (แสดงผลหลังครูปลดล็อก) ---------- */
+const CALC={
+ ratio2:rows=>rows.filter(r=>num(r[1])>0&&num(r[2])>0).map(r=>{const a=num(r[1]),b=num(r[2]),g=gcd(a,b);return`${esc(r[0])}: แข็ง : เขียว = ${a} : ${b}${g>1&&Number.isInteger(a)&&Number.isInteger(b)?` = <b>${a/g} : ${b/g}</b>`:''} ≈ <b>${r2(a/b)} : 1</b>`}).join('<br>'),
+ ratio3:rows=>{const v=rows.map(r=>num(r[1]));if(v.some(x=>!(x>0)))return'';const g=v.reduce((a,b)=>gcd(a,b));return`${rows.map(r=>esc(r[0])).join(' : ')} = ${v.join(' : ')}${g>1&&v.every(Number.isInteger)?` = <b>${v.map(x=>x/g).join(' : ')}</b>`:''}`},
+ soak:rows=>rows.filter(r=>num(r[1])>0&&num(r[2])!=null&&num(r[2])>=0&&num(r[2])<=num(r[1])).map(r=>{const p=num(r[1]),s=p-num(r[2]);return`${esc(r[0])}: ซึม ${fmt(s)} จาก ${fmt(p)} mL → ซึม : เท = ${fmt(s)} : ${fmt(p)} = <b>${fmt(s/p*100)} : 100</b>`}).join('<br>'),
+ scale:rows=>{const w=num(rows[0][1]),l=num(rows[1][1]),mm=num(rows[2][1]),pc=num(rows[3][1]);if(!(w>0&&l>0&&mm>=0))return'';const A=w*l,L=A*mm;let s=`พื้นที่ลาน = ${fmt(w)} × ${fmt(l)} = <b>${fmt(A)} m²</b><br>ฝน ${fmt(mm)} mm → น้ำ = ${fmt(A)} × ${fmt(mm)} = <b>${fmt(L)} ลิตร</b> (1 mm บน 1 m² = 1 L)<br>เทียบถาด 0.06 m² ได้ ${fmt(0.06*mm*1000)} mL · ลานใหญ่กว่าถาด ${fmt(A/0.06)} เท่า`;if(pc!=null&&pc>=0&&pc<=100)s+=`<br>ถ้าทั้งลานเป็นคอนกรีตที่ซึม ${fmt(pc)}% → น้ำเหลือบนผิวประมาณ <b>${fmt(L*(1-pc/100))} ลิตร</b>`;return s},
+ pct:rows=>rows.filter(r=>num(r[1])!=null&&num(r[2])>0).map(r=>`${esc(r[0])}: ${fmt(num(r[1]))} : ${fmt(num(r[2]))} = <b>${fmt(num(r[1])/num(r[2])*100)}%</b>`).join('<br>'),
+ model:rows=>{const A=num(rows[0][1]),mm=num(rows[1][1]),ac=num(rows[2][1]),an=num(rows[3][1]),t=num(rows[4][1]);if(!(A>0&&mm>=0&&ac>=0&&ac<=100&&an>=0&&an<=100))return'';const W=A*mm,c=1-ac/100,n=1-an/100,cur=W*c;
+  let s=`น้ำฝนทั้งหมด ${fmt(W)} ลิตร · ตอนนี้ (คอนกรีตทั้งลาน) น้ำเหลือ <b>${fmt(cur)} ลิตร</b><table><tr><th>เปลี่ยนพื้น</th><th>น้ำเหลือบนลาน (ลิตร)</th><th>เทียบกับตอนนี้</th></tr>`;
+  for(let f=0;f<=100;f+=20){const v=W*((1-f/100)*c+(f/100)*n);s+=`<tr><td>${f}%</td><td>${fmt(v)}</td><td>${cur?fmt(v/cur*100)+'%':'–'}</td></tr>`}s+='</table>';
+  if(t!=null&&t>=0&&t<=100&&an>ac){const f=c*(1-t/100)/(c-n)*100;s+=f<=100?`เป้า: น้ำเหลือไม่เกิน ${fmt(t)}% ของตอนนี้ → ต้องเปลี่ยนพื้นอย่างน้อย <b>${fmt(Math.ceil(f*100)/100)}%</b> ของลาน`:`เป้า ${fmt(t)}% ทำไม่ได้แม้เปลี่ยนทั้งลาน (เปลี่ยนทั้งลานเหลือ ${fmt(n/c*100)}%)`}else if(an<=ac)s+='พื้นใหม่ต้องซึมน้ำได้มากกว่าคอนกรีต';return s}};
+/* ---------- เครื่องคิดของ ม.3 (ระบบสมการ) ---------- */
+const lineOf=(r,i)=>{const P=num(r[0][i]),W=num(r[1][i]),e=num(r[2][i])??num(r[2][1]);return P!=null&&P>=0&&W>0&&e>0?{a:P,b:W/1000*e}:null};
+const meet=(L1,L2)=>{if(L1.b===L2.b)return L1.a===L2.a?'same':'par';const x=(L2.a-L1.a)/(L1.b-L2.b);return{x,y:L1.a+L1.b*x}};
+const f5=x=>(+(+x).toFixed(5)).toLocaleString('th-TH',{maximumFractionDigits:5});
+const eqs=(L,n)=>`${n}: <b>y = ${fmt(L.a)} + ${+L.b.toFixed(5)}x</b>`;
+Object.assign(CALC,{
+ room:rows=>{let t=0,out=[];rows.forEach(r=>{const n=num(r[1]),W=num(r[2]),h=num(r[3]);if(n>0&&W>0&&h>0){const k=n*W/1000*h;t+=k;out.push(`${esc(r[0])}: ${fmt(n)} × ${fmt(W)} W × ${fmt(h)} ชม. = <b>${fmt(k)} หน่วย/วัน</b>`)}});if(!out.length)return'';return out.join('<br>')+`<br>รวม <b>${fmt(t)} หน่วย/วัน</b> · ถ้าเรียน 22 วันต่อเดือน ≈ <b>${fmt(t*22)} หน่วย/เดือน</b> (คูณค่าไฟต่อหน่วยจากบิลเพื่อได้เป็นบาท)`},
+ line2t:rows=>{const A=lineOf(rows,1),B=lineOf(rows,2);if(!A||!B)return'';const hs=[0,500,1000,2000,4000];return`${eqs(A,'หลอดเดิม')}<br>${eqs(B,'หลอด LED')}<table><tr><th>ชั่วโมง x</th><th>หลอดเดิม (บาท)</th><th>LED (บาท)</th></tr>${hs.map(h=>`<tr><td>${fmt(h)}</td><td>${fmt(A.a+A.b*h)}</td><td>${fmt(B.a+B.b*h)}</td></tr>`).join('')}</table>`},
+ line2x:rows=>{const A=lineOf(rows,1),B=lineOf(rows,2);if(!A||!B)return'';const m=meet(A,B);let s=`${eqs(A,'หลอดเดิม')}<br>${eqs(B,'หลอด LED')}<br>`;
+  if(m==='same')return s+'สองเส้นทับกัน → ค่าใช้จ่ายเท่ากันทุกชั่วโมง (คำตอบมากมาย)';if(m==='par')return s+'สองเส้นขนานกัน → ไม่มีจุดตัด หลอดที่เริ่มถูกกว่าจะถูกกว่าตลอด';
+  return s+(m.x>=0?`จุดตัด ≈ <b>(${fmt(m.x)}, ${fmt(m.y)})</b> → เปิดประมาณ ${fmt(m.x)} ชั่วโมง ค่าใช้จ่ายรวมเท่ากันที่ ${fmt(m.y)} บาท`:`จุดตัดอยู่ที่ x ติดลบ (${fmt(m.x)}) → ในชีวิตจริงไม่มีจุดคุ้มทุน หลอดหนึ่งถูกกว่าตลอด`)},
+ solveAB:rows=>{const a1=num(rows[0][1]),b1=num(rows[0][2]),a2=num(rows[1][1]),b2=num(rows[1][2]);if([a1,b1,a2,b2].some(v=>v==null))return'';const m=meet({a:a1,b:b1},{a:a2,b:b2});
+  if(m==='same')return'สองสมการเหมือนกัน → มีคำตอบมากมายไม่จำกัด';if(m==='par')return`b₁ = b₂ แต่ a₁ ≠ a₂ → ${fmt(a1)} + ${f5(b1)}x = ${fmt(a2)} + ${f5(b2)}x ไม่มีค่า x ใดเป็นจริง → ไม่มีคำตอบ`;
+  return`${fmt(a1)} + ${f5(b1)}x = ${fmt(a2)} + ${f5(b2)}x<br>${f5(b1)}x − ${f5(b2)}x = ${fmt(a2)} − ${fmt(a1)}<br>${f5(b1-b2)}x = ${fmt(a2-a1)} → <b>x = ${fmt(m.x)}</b><br>แทนค่า: y = ${fmt(a1)} + ${f5(b1)}(${fmt(m.x)}) = <b>${fmt(m.y)}</b> · ตรวจ: ${fmt(a2)} + ${f5(b2)}(${fmt(m.x)}) = ${fmt(a2+b2*m.x)} ✓`},
+ solve2:rows=>{const[a1,b1,c1]=[1,2,3].map(j=>num(rows[0][j])),[a2,b2,c2]=[1,2,3].map(j=>num(rows[1][j]));if([a1,b1,c1,a2,b2,c2].some(v=>v==null))return'';const D=a1*b2-a2*b1;
+  if(D===0)return(a1*c2-a2*c1===0&&b1*c2-b2*c1===0)?'สองสมการเป็นเส้นเดียวกัน → มีคำตอบมากมาย ข้อมูลไม่พอหาจำนวนแต่ละอย่าง':'สองเส้นขนานกัน → ไม่มีคำตอบ ข้อมูลอาจขัดกันเอง';
+  const x=(c1*b2-c2*b1)/D,y=(a1*c2-a2*c1)/D;const ok=Number.isInteger(r2(x))&&Number.isInteger(r2(y))&&x>=0&&y>=0;
+  return`${fmt(a1)}x + ${fmt(b1)}y = ${fmt(c1)}<br>${fmt(a2)}x + ${fmt(b2)}y = ${fmt(c2)}<br>คำตอบ: <b>x = ${fmt(x)}, y = ${fmt(y)}</b> · ตรวจ: ${fmt(a1*x+b1*y)} และ ${fmt(a2*x+b2*y)}<br>${ok?'✓ เป็นจำนวนเต็มไม่ลบ สมเหตุสมผลกับจำนวนเครื่อง':'⚠️ ไม่ใช่จำนวนเต็มไม่ลบ ถ้าโจทย์นับจำนวนเครื่อง ข้อมูลอาจผิดหรือยังไม่ครบ'}`},
+ roomBE:rows=>{const[n,Wo,Wn,P,h,d,e]=rows.map(r=>num(r[1]));if(!(n>0&&Wo>0&&Wn>0&&P>=0&&h>0&&d>0&&e>0))return'';const c1=n*Wo/1000*h*d*e,c2=n*Wn/1000*h*d*e,I=n*P;
+  let s=`ใช้หลอดเดิมต่อ: <b>y = ${fmt(c1)}m</b><br>เปลี่ยน LED: <b>y = ${fmt(I)} + ${fmt(c2)}m</b> (m = จำนวนเดือน)<br>`;if(c1<=c2)return s+'LED ไม่ได้ประหยัดค่าไฟกว่า → ไม่มีจุดคุ้มทุน';const m=I/(c1-c2);
+  return s+`จุดคุ้มทุน: ${fmt(c1)}m = ${fmt(I)} + ${fmt(c2)}m → m = ${fmt(I)} ÷ ${fmt(c1-c2)} = <b>${fmt(m)} เดือน</b> (ประมาณ ${Math.ceil(m)} เดือนเรียน) · หลังจากนั้นประหยัดเดือนละ ${fmt(c1-c2)} บาท`},
+ plans:rows=>{const IA=num(rows[0][1]),cA=num(rows[0][2]),IB=num(rows[1][1]),cB=num(rows[1][2]);if([IA,cA,IB,cB].some(v=>v==null||v<0))return'';
+  let s=`A: <b>y = ${fmt(IA)} + ${fmt(cA)}m</b><br>B: <b>y = ${fmt(IB)} + ${fmt(cB)}m</b><br>`;const m=meet({a:IA,b:cA},{a:IB,b:cB});
+  if(m==='same')return s+'สองแผนใช้เงินเท่ากันทุกเดือน';if(m==='par')return s+`ค่าไฟต่อเดือนเท่ากัน → แผนที่ลงทุนน้อยกว่า (${IA<IB?'A':'B'}) ถูกกว่าตลอด`;
+  if(m.x<=0)return s+`ไม่มีจุดตัดในเดือนที่เป็นบวก → แผน ${IA+cA<=IB+cB?'A':'B'} ถูกกว่าตั้งแต่เดือนแรก`;
+  const early=IA<IB?'A':'B',late=early==='A'?'B':'A';return s+`จุดตัด m ≈ <b>${fmt(m.x)} เดือน</b> (ใช้เงินเท่ากัน ${fmt(m.y)} บาท) → ก่อนเดือนนี้แผน ${early} ถูกกว่า · หลังจากนี้แผน ${late} ถูกกว่า`}});
+/* ---------- กระดาน DQB ---------- */
+let DQ=[],dqCls='';
+async function dqLoad(){const c=ctx();if(!c.DB||!c.U){DQ=[];return}try{DQ=await c.DB.q('dqb',[['unit','==',U.id]])}catch(e){DQ=null}}
+function dqHTML(){const c=ctx(),T=isT();if(!c.U)return'<p class="pb-msg">เข้าสู่ระบบเพื่อดูและเพิ่มคำถามบนกระดาน</p>';if(DQ===null)return'<p class="pb-msg">โหลดกระดานไม่ได้ (ครู: ตรวจว่า Publish firestore.rules ที่มี dqb แล้ว)</p>';
+ const myCls=c.ME&&c.ME.cls||'',classes=[...new Set(DQ.map(x=>x.cls).filter(Boolean))].sort();const cls=T?dqCls:myCls;
+ const L=DQ.filter(x=>x.status!=='hidden'&&(!cls||x.cls===cls));const g=(n,a)=>a.length?`<div class="pb-grp">${n} (${a.length})</div>`+a.map(it).join(''):'';
+ return(T?`<div class="pb-row"><select class="pb-dqc" aria-label="เลือกห้อง"><option value="">ทุกห้อง</option>${classes.map(x=>`<option ${x===dqCls?'selected':''}>${esc(x)}</option>`).join('')}</select></div>`:'')+
+  `<div class="pb-dq">${g('📌 ปักหมุดโดยครู',L.filter(x=>x.pin&&x.status!=='answered'))}${g('❓ ยังตามหาคำตอบ',L.filter(x=>!x.pin&&x.status!=='answered'))}${g('✅ ตอบได้แล้ว',L.filter(x=>x.status==='answered'))}${L.length?'':'<p class="pb-msg">ยังไม่มีคำถาม เริ่มเพิ่มคำถามแรกได้เลย</p>'}</div>`;
+ function it(x){return`<div class="pb-it ${x.pin?'pb-pin':''} ${x.status==='answered'?'pb-ans':''}" data-id="${esc(x.id)}"><div><div>${esc(x.q)}</div><small>${x.lesson?'จากภารกิจที่ '+esc(x.lesson)+' · ':''}${esc(x.cls||'')}${x.status==='answered'&&x.ansIn?' · ตอบได้ในภารกิจที่ '+esc(x.ansIn):''}${T?' · '+esc(x.name||''):''}</small></div>${T?`<div class="pb-row" style="margin:0"><button type="button" class="pb-s" data-a="pin">${x.pin?'เลิกปักหมุด':'ปักหมุด'}</button><select class="pb-s" data-a="ans" aria-label="ตอบได้ในภารกิจที่" style="width:auto;min-height:34px"><option value="">ตอบได้ในภารกิจที่…</option>${U.lessons.map(l=>`<option value="${l.n}" ${+x.ansIn===l.n?'selected':''}>ภารกิจที่ ${l.n}</option>`).join('')}<option value="0">ยังไม่ได้ตอบ</option></select><button type="button" class="pb-s" data-a="hide" aria-label="ซ่อนคำถามนี้">ซ่อน</button></div>`:''}</div>`}}
+function dqBind(root){const c=ctx();const s=root.querySelector('.pb-dqc');if(s)s.onchange=()=>{dqCls=s.value;dqDraw()};
+ root.querySelectorAll('.pb-dq .pb-it').forEach(el=>{const id=el.dataset.id;el.querySelectorAll('[data-a]').forEach(b=>{const act=b.dataset.a,go=async d=>{try{await c.DB.set('dqb/'+id,d,true);Object.assign(DQ.find(x=>x.id===id),d);dqDraw()}catch(e){alert('บันทึกไม่ได้')}};
+  if(act==='pin')b.onclick=()=>go({pin:!DQ.find(x=>x.id===id).pin});if(act==='hide')b.onclick=()=>{if(confirm('ซ่อนคำถามนี้จากกระดาน?'))go({status:'hidden'})};if(act==='ans')b.onchange=()=>go(b.value&&b.value!=='0'?{status:'answered',ansIn:+b.value}:{status:'open',ansIn:null})})})}
+function dqDraw(){document.querySelectorAll('.pb-dqw').forEach(w=>{w.innerHTML=dqHTML();dqBind(w)})}
+async function dqAdd(q,lesson,msg){const c=ctx();q=String(q||'').trim().slice(0,200);if(!q)return;if(!c.DB||!c.U||!c.ME){msg.textContent='เข้าสู่ระบบก่อนจึงจะเพิ่มคำถามได้';return}
+ try{const d={unit:U.id,site:A.site,uid:c.U.uid,name:c.ME.name||'',cls:c.ME.cls||'',no:c.ME.no||'',q,lesson:lesson||null,status:'open',pin:false,time:ts()};const r=await c.DB.add('dqb',d);DQ=(DQ||[]).concat([{id:r&&r.id||String(Date.now()),...d}]);dqDraw();msg.textContent='เพิ่มคำถามบนกระดานแล้ว ✓'}catch(e){msg.textContent='เพิ่มไม่สำเร็จ ลองใหม่อีกครั้ง'}}
+
+
+/* ---------- แท็บ: เนื้อหาบทเรียน / ภารกิจ ---------- */
+/* ---------- เครื่องคิดของ ม.5 (ลำดับ อนุกรม ดอกเบี้ย มูลค่าของเงิน) ---------- */
+const v5=(r,i)=>num(r[i]&&r[i][1]);
+const nInt=(n,hi)=>n!=null&&Number.isInteger(n)&&n>=1&&n<=hi;
+const f4=x=>(+(+x).toFixed(4)).toLocaleString('th-TH',{maximumFractionDigits:4});
+const termsTxt=(f,n)=>{const k=Math.min(n,6),a=[];for(let i=1;i<=k;i++)a.push(fmt(f(i)));return a.join(', ')+(n>6?', …, '+fmt(f(n)):'')};
+Object.assign(CALC,{
+ bills:rows=>{const u=[],b=[];rows.forEach(r=>{const x=num(r[1]),y=num(r[2]);if(x>0){u.push(x);b.push(y>0?y:null)}});if(u.length<2)return'';
+  const d=u.slice(1).map((v,i)=>r2(v-u[i])),q=u.slice(1).map((v,i)=>v/u[i]);const bb=b.filter((v,i)=>v!=null),uu=u.filter((v,i)=>b[i]!=null),su=uu.reduce((s,v)=>s+v,0),sb=bb.reduce((s,v)=>s+v,0);
+  return`หน่วยไฟเรียงตามเดือน: <b>${u.map(fmt).join(', ')}</b><br>เพิ่ม/ลดจากเดือนก่อน: ${d.map(x=>(x>0?'+':'')+fmt(x)).join(', ')}<br>เดือนถัดไป ÷ เดือนก่อน: ${q.map(f4).join(', ')}${su>0&&bb.length?`<br>ค่าไฟเฉลี่ยต่อหน่วย ≈ <b>${f4(sb/su)} บาท</b> (รวมค่าไฟ ÷ รวมหน่วย)`:''}`},
+ arith:rows=>{const a=v5(rows,0),d=v5(rows,1),n=v5(rows,2);if(a==null||d==null||!nInt(n,60))return'';const f=k=>a+(k-1)*d;
+  return`พจน์ที่ 1 ถึง ${n}: ${termsTxt(f,n)}<br>พจน์ที่ ${n} = ${fmt(a)} + (${n} − 1)(${fmt(d)}) = <b>${fmt(f(n))}</b>`},
+ geo:rows=>{const a=v5(rows,0),p=v5(rows,1),n=v5(rows,2);if(!(a>0)||p==null||p<0||p>=100||!nInt(n,60))return'';const r=1-p/100,f=k=>a*Math.pow(r,k-1);
+  return`ลดลงปีละ ${fmt(p)}% แปลว่าแต่ละปีเหลือ ${f4(r)} เท่าของปีก่อน<br>ปีที่ 1 ถึง ${n}: ${termsTxt(f,n)}<br>ปีที่ ${n} = ${fmt(a)} × ${f4(r)}<sup>${n-1}</sup> ≈ <b>${fmt(f(n))}</b>`},
+ aser:rows=>{const a=v5(rows,0),d=v5(rows,1),n=v5(rows,2),C=v5(rows,3);if(a==null||d==null||!nInt(n,60))return'';const S=k=>k/2*(2*a+(k-1)*d);let pb=0;if(C>0)for(let k=1;k<=n;k++){if(S(k)>=C){pb=k;break}}
+  return`ผลรวม ${n} ปี = ${n}/2 × [2(${fmt(a)}) + (${n} − 1)(${fmt(d)})] = <b>${fmt(S(n))}</b>${C>0?`<br>${pb?`เงินสะสมเกินค่าติดตั้ง ${fmt(C)} บาท ในปีที่ <b>${pb}</b>`:`ภายใน ${n} ปี เงินสะสมยังไม่ถึงค่าติดตั้ง ${fmt(C)} บาท`}`:''}`},
+ gser:rows=>{const a=v5(rows,0),p=v5(rows,1),n=v5(rows,2),e=v5(rows,3);if(!(a>0)||p==null||p<0||p>=100||!nInt(n,60))return'';const r=1-p/100,S=r===1?a*n:a*(1-Math.pow(r,n))/(1-r);
+  return`r = ${f4(r)} · ผลรวม ${n} ปี = ${r===1?`${fmt(a)} × ${n}`:`${fmt(a)}(1 − ${f4(r)}<sup>${n}</sup>) ÷ (1 − ${f4(r)})`} ≈ <b>${fmt(S)}</b> หน่วย${e>0?`<br>คิดเป็นเงิน ≈ ${fmt(S)} × ${fmt(e)} ≈ <b>${fmt(S*e)} บาท</b> (ถ้าค่าไฟต่อหน่วยคงที่)`:''}<br>ถ้าไม่เสื่อมเลย จะได้ ${fmt(a*n)} หน่วย · ส่วนต่าง ≈ ${fmt(a*n-S)} หน่วย`},
+ comp:rows=>{const P=v5(rows,0),i=v5(rows,1),n=v5(rows,2),k=v5(rows,3);if(!(P>0)||i==null||i<0||i>50||!nInt(n,60)||![1,2,4,12].includes(k))return'';const s=P*(1+i/100*n),c=P*Math.pow(1+i/100/k,n*k);
+  return`ดอกเบี้ยเชิงเดียว: ${fmt(P)}(1 + ${f4(i/100)} × ${n}) = <b>${fmt(s)}</b> บาท<br>ดอกเบี้ยทบต้นปีละ ${k} ครั้ง: ${fmt(P)}(1 + ${f4(i/100)}/${k})<sup>${n*k}</sup> ≈ <b>${fmt(c)}</b> บาท<br>ทบต้นได้มากกว่า ≈ ${fmt(c-s)} บาท`},
+ pv:rows=>{const C=v5(rows,0),A=v5(rows,1),i=v5(rows,2),n=v5(rows,3);if(!(C>0)||!(A>0)||i==null||i<0||i>50||!nInt(n,40))return'';const r=i/100;let s=0,dp=0;const L=[];for(let k=1;k<=n;k++){const pv=A/Math.pow(1+r,k);s+=pv;if(!dp&&s>=C)dp=k;if(k<=3||k===n)L.push(`ปีที่ ${k}: ${fmt(A)} ÷ (1 + ${f4(r)})<sup>${k}</sup> ≈ ${fmt(pv)}`)}
+  return`${L.join('<br>')}<br>มูลค่าปัจจุบันรวม ${n} ปี ≈ <b>${fmt(s)}</b> บาท เทียบค่าติดตั้ง ${fmt(C)} บาท<br>ไม่คิดดอกเบี้ย: คุ้มทุนเมื่อ ${fmt(C/A)} ปี · คิดมูลค่าปัจจุบัน: ${dp?`คุ้มทุนในปีที่ <b>${dp}</b>`:`ภายใน ${n} ปี <b>ยังไม่คุ้มทุน</b>`}`},
+ annu:rows=>{const L=v5(rows,0),i=v5(rows,1),n=v5(rows,2),S=v5(rows,3);if(!(L>0)||i==null||i<0||i>50||!nInt(n,360))return'';const j=i/100/12,M=j===0?L/n:L*j/(1-Math.pow(1+j,-n));
+  return`ค่างวดต่อเดือน = ${j===0?`${fmt(L)} ÷ ${n}`:`${fmt(L)} × ${f4(j)} ÷ [1 − (1 + ${f4(j)})<sup>−${n}</sup>]`} ≈ <b>${fmt(M)}</b> บาท<br>จ่ายรวม ≈ ${fmt(M*n)} บาท (ดอกเบี้ยรวม ≈ ${fmt(M*n-L)} บาท)${S>0?`<br>ค่าไฟที่ประหยัดต่อเดือน ${fmt(S)} บาท ${S>=M?'<b>มากกว่าหรือเท่ากับ</b>ค่างวด':'<b>น้อยกว่า</b>ค่างวด'} (ต่างกัน ${fmt(Math.abs(S-M))} บาทต่อเดือน)`:''}`}
+});
+const WHERE=A.where;
+function curMode(){if(MODE)return MODE;try{const m=sessionStorage.getItem('pb-mode-'+U.id);if(m==='m'||m==='c')return m}catch(e){}return S.tab==='c'?'c':'m'}
+function setMode(m){MODE=m;try{sessionStorage.setItem('pb-mode-'+U.id,m)}catch(e){}applyMode()}
+function applyMode(){const m=curMode();WHERE.forEach(w=>{const h=A.host(w);if(!h)return;h.classList.toggle('pb-mode-m',m==='m');h.classList.toggle('pb-mode-c',m==='c');h.querySelectorAll('.pb-tabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===m)))})}
+function tabs(w){const h=A.host(w);if(!h||h.querySelector('.pb-tabs'))return;const t=TOPIC[w];const d=document.createElement('div');d.className='phx pb-tabs';d.style.setProperty('--pc',t.c);d.setAttribute('role','group');d.setAttribute('aria-label','เลือกสิ่งที่จะดู');
+ d.innerHTML=`<button type="button" data-m="m">${U.ico||'🌧️'} ภารกิจของเรา</button><button type="button" data-m="c">📖 เนื้อหา ${t.page} ${t.name}</button>`;
+ h.prepend(d);d.querySelectorAll('button').forEach(b=>b.onclick=()=>{setMode(b.dataset.m);d.scrollIntoView({behavior:'smooth',block:'start'})})}
+function link(w){const h=A.host(w);if(!h||h.querySelector('.pb-link'))return;const t=TOPIC[w],ns=U.lessons.filter(l=>l.where===w).map(l=>l.n);const s=document.createElement('div');s.className='phx pb-link';s.style.setProperty('--pc',t.c);s.style.borderLeft='6px solid '+t.c;
+ s.innerHTML=`${t.ico} <b>เรื่อง${t.name}ในหน้านี้</b> ใช้ใน<b> ภารกิจที่ ${ns.length>1?ns[0]+'–'+ns[ns.length-1]:ns[0]}</b> · กดแท็บ ${U.ico||'🌧️'} เพื่อกลับไปทำภารกิจ`;
+ h.querySelector('.pb-tabs').after(s)}
+
+/* ---------- ภารกิจที่เลือก ---------- */
+const SEL={};
+function defSel(w){const ms=U.lessons.filter(l=>l.where===w).map(l=>l.n);if(S.today&&ms.includes(S.today))return S.today;const ok=ms.filter(n=>stOf(n)!=='lock');return ok.length?(S.today&&ok[ok.length-1]<S.today?ok[ok.length-1]:ok[0]):ms[0]}
+function pick(n){const l=U.lessons.find(x=>x.n===n);if(!l||(stOf(n)==='lock'))return;SEL[l.where]=n;setMode('m');
+ WHERE.forEach(w=>{const hh=A.host(w);if(!hh)return;hh.querySelectorAll('.pb-mis').forEach(c=>c.classList.toggle('pb-sel',+c.dataset.n===SEL[w]));hh.querySelectorAll('.pb-chip').forEach(c=>c.setAttribute('aria-pressed',String(+c.dataset.n===n)))});
+ A.nav(l.where);let k=0;const sc=()=>{const h=A.host(l.where),s=h&&h.querySelector('.pb-strip');if(s)s.scrollIntoView({behavior:'smooth',block:'start'});else if(++k<12)setTimeout(sc,120)};setTimeout(sc,80)}
+function stIcon(n){const s=stOf(n);return s==='done'?'✓ ทำแล้ว':s==='now'?'⭐ วันนี้':s==='lock'?'🔒':' '}
+function strip(w){const h=A.host(w);if(!h||h.querySelector('.pb-strip'))return;const s=document.createElement('div');s.className='phx pb-strip';s.style.setProperty('--pc',TOPIC[w].c);const cur=SEL[w]||defSel(w);
+ s.innerHTML=`<div class="pb-sh"><span>เลือกภารกิจ</span><span class="pb-msg" style="margin:0">${S.today?`ภารกิจวันนี้: ${S.today}`:''}</span></div><div class="pb-chips">${U.lessons.map(l=>{const t=topicOf(l),st=stOf(l.n);return`<button type="button" class="pb-chip ${st==='now'?'pb-now':''}" style="--mc:${t.c}" data-n="${l.n}" aria-pressed="${l.n===cur&&l.where===w}" ${st==='lock'?'disabled':''} aria-label="ภารกิจที่ ${l.n} ${esc(l.title)} ${stIcon(l.n)}"><b>${l.n}</b><small>${stIcon(l.n)}</small></button>`}).join('')}</div>`;
+ const anchor=h.querySelector('#pbMain')||h.querySelector('.pb-ban')||h.querySelector('.pb-tabs');anchor.after(s);s.querySelectorAll('.pb-chip').forEach(b=>b.onclick=()=>pick(+b.dataset.n))}
+
+/* ---------- การ์ดเรื่องของเรา + กระดาน ---------- */
+function panel(){const L=A.host(A.main);if(!L||L.querySelector('.pb-main'))return;const s=document.createElement('section');s.className='phx pb-main';s.id='pbMain';const T=isT();s.style.setProperty('--pc',TOPIC[A.main].c);
+ s.innerHTML=`<div><span class="pb-tg">PhBL · เรื่องเดียวทั้งหน่วย</span><span class="pb-tg pb-y">8 ภารกิจ</span></div><h2>${U.ico||'🌧️'} ${esc(U.name)}</h2>
+ <p>${esc(U.phenomenon)}</p><div class="pb-q">❓ คำถามใหญ่ของเรา: ${esc(U.question)}</div>
+ <details><summary>🎯 ปลายทาง และสีช่วยจำ</summary><p style="margin-top:6px">${esc(U.product)}</p>
+ <div class="pb-legend">${Object.values(TOPIC).filter((t,i,z)=>z.findIndex(x=>(x.g||x.name)===(t.g||t.name))===i).map(t=>`<span><i style="background:${t.c}"></i>${t.g||t.name}</span>`).join('')}<span><i style="background:#ffc93c"></i>ปม/คำถาม</span>${CER.map(x=>`<span><i style="background:${x.c}"></i>${x.ico} ${x.w}</span>`).join('')}</div></details>
+ ${T?`<div class="pb-box pb-tset"><b>⚙️ ครูตั้งค่า (นักเรียนไม่เห็น)</b><div class="pb-row"><label style="margin:0;font-weight:400">ภารกิจวันนี้ <select class="pb-today" style="width:auto">${['<option value="0">ไม่กำหนด (เปิดทุกภารกิจ)</option>'].concat(U.lessons.map(l=>`<option value="${l.n}" ${S.today===l.n?'selected':''}>ภารกิจที่ ${l.n}</option>`)).join('')}</select></label>
+ <label style="margin:0;font-weight:400">แท็บที่เด็กเห็นก่อน <select class="pb-deftab" style="width:auto"><option value="m" ${S.tab!=='c'?'selected':''}>${U.ico||'🌧️'} ภารกิจ</option><option value="c" ${S.tab==='c'?'selected':''}>📖 เนื้อหา</option></select></label></div><p class="pb-msg pb-tmsg"></p></div>`:''}`;
+ L.querySelector('.pb-tabs').after(s);
+ const save=async d=>{const m=s.querySelector('.pb-tmsg');try{await ctx().DB.set(A.setDoc,d,true);Object.assign(S,d);m.textContent='บันทึกแล้ว ✓';Object.keys(SEL).forEach(k=>delete SEL[k]);rebuild()}catch(e){m.textContent='บันทึกไม่ได้'}};
+ const td=s.querySelector('.pb-today');if(td)td.onchange=()=>save({today:+td.value});const dt=s.querySelector('.pb-deftab');if(dt)dt.onchange=()=>save({tab:dt.value})}
+function board(){const L=A.host(A.main);if(!L||L.querySelector('.pb-board'))return;const s=document.createElement('details');s.className='phx pb-board';s.id='pbBoard';s.style.setProperty('--pc','#c99a0e');s.open=true;
+ s.innerHTML=`<summary>🗂️ กระดานคำถามของห้อง</summary><p class="pb-msg">อยากรู้อะไรเพื่อตอบคำถามใหญ่ เขียนไว้ที่นี่ ทุกภารกิจเราจะกลับมาดูว่าตอบข้อไหนได้แล้ว</p>
+ <div class="pb-row"><input class="pb-dqi" maxlength="200" placeholder="${esc(U.dqHint||'พิมพ์คำถามของเรา')}" aria-label="คำถามใหม่" style="flex:1 1 240px"><button type="button" class="pb-p pb-dqb" style="background:#c99a0e;border-color:#c99a0e">เพิ่มคำถาม</button></div><p class="pb-msg pb-dqm"></p><div class="pb-dqw"></div>`;
+ L.appendChild(s);s.querySelector('.pb-dqb').onclick=()=>{const i=s.querySelector('.pb-dqi');dqAdd(i.value,null,s.querySelector('.pb-dqm')).then(()=>{i.value=''})}}
+function toBoard(){A.nav(A.main);setMode('m');let k=0;const sc=()=>{const b=document.getElementById('pbBoard');if(b){b.open=true;b.scrollIntoView({behavior:'smooth',block:'start'})}else if(++k<12)setTimeout(sc,120)};setTimeout(sc,120)}
+function go(n){pick(n)}
+function banner(w){const L=A.host(w);if(!L||L.querySelector('.pb-ban'))return;const t=TOPIC[w];const s=document.createElement('section');s.className='phx pb-ban';s.style.setProperty('--pc',t.c);
+ s.innerHTML=`<div><span class="pb-tg">${t.ico} ช่วง${t.name}</span></div><h3>${U.ico||'🌧️'} ${esc(U.name)}</h3><div class="pb-q" style="margin:8px 0 0">❓ ${esc(U.question)}</div><div class="pb-row"><button type="button" class="pb-s pb-back">🗂️ กระดานคำถามของห้อง</button></div>`;
+ L.querySelector('.pb-tabs').after(s);s.querySelector('.pb-back').onclick=toBoard}
+
+/* ---------- การ์ดภารกิจ ---------- */
+const lkey=n=>{const c=ctx();return'pb-'+U.id+'-'+(c.U&&c.U.uid||'guest')+'-'+n};
+const load=n=>{try{return JSON.parse(localStorage.getItem(lkey(n))||'null')}catch(e){return null}};
+const saveL=(n,st)=>{try{localStorage.setItem(lkey(n),JSON.stringify(st))}catch(e){}};
+function card(l){const host=A.host(l.where);if(!host||host.querySelector('#pbL'+l.n))return;const t=topicOf(l),stt=stOf(l.n);if(stt==='lock')return;
+ let st=load(l.n)||{rows:l.tool?l.tool.rows.map(r=>r.slice()):[]};const lab=U.lang[l.lv],open=S.open.includes(l.n),T=isT();
+ const F=(k,txt,col,ico)=>`<label for="pb${l.n}${k}" style="${col?`color:${col}`:''}">${ico?ico+' ':''}${esc(txt)}</label><textarea id="pb${l.n}${k}" data-k="${k}" style="${col?`border-left:5px solid ${col}`:''}">${esc(st[k]||'')}</textarea>`;
+ const d=document.createElement('section');d.className='phx pb-mis'+((SEL[l.where]||defSel(l.where))===l.n?' pb-sel':'');d.id='pbL'+l.n;d.dataset.n=l.n;d.style.setProperty('--pc',t.c);d.style.borderTop='6px solid '+t.c;
+ const ms=U.lessons.filter(x=>stOf(x.n)!=='lock').map(x=>x.n),pv=ms.filter(x=>x<l.n).pop(),nx=ms.find(x=>x>l.n);
+ d.innerHTML=`<div class="pb-mh"><span class="pb-tg">${t.ico} ${t.name}</span>${stt==='now'?'<span class="pb-tg pb-now">⭐ วันนี้</span>':stt==='done'?'<span class="pb-tg pb-ok">✓ ทำแล้ว</span>':''}<span class="pb-tg pb-ok" style="background:transparent;color:inherit;border:1px solid currentColor;opacity:.7">${l.periods} คาบ</span><h3>ภารกิจที่ ${l.n} · ${esc(l.title)}</h3></div>
+ <div class="pb-q">❓ ปมของภารกิจนี้: ${esc(l.knot)}</div>
+ <div class="pb-box"><b><span class="pb-step">1</span>ทบทวน</b>คำถามบนกระดานข้อไหนที่ภารกิจนี้จะช่วยตอบ? <div class="pb-row"><button type="button" class="pb-s pb-show">🗂️ เปิดกระดานคำถาม</button></div></div>
+ <div class="pb-box"><b><span class="pb-step">2</span>ลองเองก่อน (ยังไม่ต้องใช้สูตร)</b><ol>${l.try.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>
+ ${l.tool?`<div style="overflow-x:auto;margin-top:10px"><table><tr>${l.tool.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr><tbody class="pb-tb">${st.rows.map((r,i)=>`<tr>${l.tool.cols.map((c,j)=>`<td>${j===0&&l.tool.rows[i]&&l.tool.rows[i][0]?esc(r[0]):`<input ${j?'type="number" step="any" inputmode="decimal"':''} data-i="${i}" data-j="${j}" value="${esc(r[j]??'')}" aria-label="${esc(c)} แถว ${i+1}">`}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:''}
+ ${F('method','วิธีคิดของกลุ่มเรา (เขียนวิธีที่คิดเอง)')}</div>
+ <div class="pb-box"><b><span class="pb-step">3</span>เทียบวิธีกับเพื่อน แล้วครูตั้งชื่อ</b>${open||T?`<div class="pb-formal"><b>${t.ico} สิ่งที่เราเพิ่งค้นพบ มีชื่อเรียกว่า</b><br>${esc(l.formal)}</div>${l.tool?`<div class="pb-res"></div>`:''}<div class="pb-row"><button type="button" class="pb-s pb-goc">📖 ไปฝึกเรื่อง${t.name}ต่อ (เนื้อหา ${t.page})</button></div>`:`<div class="pb-lock">🔒 ครูจะเปิดส่วนนี้หลังทุกกลุ่มลองเองและนำเสนอแล้ว${l.tool?' (รวมถึงผลคำนวณอัตโนมัติ)':''}</div>`}
+ ${T?`<div class="pb-row"><button type="button" class="pb-s pb-unlock">${open?'🔒 ปิดการตั้งชื่ออีกครั้ง':'🔓 ปลดล็อกการตั้งชื่อ (ครู)'}</button><span class="pb-msg" style="margin:0">ครูเท่านั้นที่เห็นปุ่มนี้</span></div><div class="pb-tnote"><b>ครูระวัง:</b> ${esc(l.stuck)}<br><b>คำถามกระตุ้น:</b> ${l.probe.map(esc).join(' · ')}</div>`:''}</div>
+ <div class="pb-box"><b><span class="pb-step">4</span>อธิบาย และตั้งคำถามถัดไป</b>${l.lv>=3?`<p class="pb-msg" style="margin:0">${esc(U.langNote[l.lv])}</p>`:''}
+ ${F('C',lab[0],CER[0].c,CER[0].ico)}${F('E',lab[1],CER[1].c,CER[1].ico)}${F('R',lab[2],CER[2].c,CER[2].ico)}${l.lv>=4?F('lim','หลักฐานของเรายังบอกอะไรไม่ได้',null,'⚠️'):''}
+ ${F('find','ข้อค้นพบของภารกิจนี้ใน 1 ประโยค',null,'✨')}
+ <label for="pb${l.n}nq">🗂️ คำถามใหม่ที่เกิดขึ้น (จะขึ้นบนกระดาน)</label><div class="pb-row" style="margin-top:0"><input id="pb${l.n}nq" class="pb-nq" maxlength="200" placeholder="${esc(l.next)}" style="flex:1 1 240px"><button type="button" class="pb-s pb-nqb">ส่งขึ้นกระดาน</button></div>
+ <div class="pb-row"><button type="button" class="pb-p pb-send">ส่งงานภารกิจนี้ให้ครู</button></div><p class="pb-out"></p></div>
+ <div class="pb-nav">${pv?`<button type="button" class="pb-s" data-pick="${pv}">← ภารกิจที่ ${pv}</button>`:'<span></span>'}${nx?`<button type="button" class="pb-s" data-pick="${nx}">ภารกิจที่ ${nx} →</button>`:'<span></span>'}</div>`;
+ (host.querySelector('.pb-strip')).after(d);[...host.querySelectorAll('.pb-mis')].sort((a,b)=>a.dataset.n-b.dataset.n).forEach(x=>host.querySelector('.pb-board')?host.querySelector('.pb-board').before(x):host.appendChild(x));
+ const draw=()=>{const r=d.querySelector('.pb-res');if(r&&l.tool)r.innerHTML=CALC[l.tool.calc](st.rows)||'<span class="pb-msg">กรอกข้อมูลในตารางให้ครบ แล้วผลจะขึ้นที่นี่</span>';saveL(l.n,st)};draw();
+ const tb=d.querySelector('.pb-tb');if(tb)tb.addEventListener('input',e=>{const x=e.target;if(x.dataset.i==null)return;st.rows[+x.dataset.i][+x.dataset.j]=x.value;draw()});
+ d.querySelectorAll('textarea[data-k]').forEach(x=>x.oninput=()=>{st[x.dataset.k]=x.value;saveL(l.n,st)});
+ d.querySelector('.pb-show').onclick=toBoard;d.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>pick(+b.dataset.pick));
+ const gc=d.querySelector('.pb-goc');if(gc)gc.onclick=()=>{setMode('c');setTimeout(()=>host.querySelector('.pb-tabs').scrollIntoView({behavior:'smooth',block:'start'}),60)};
+ const msg=d.querySelector('.pb-out');d.querySelector('.pb-nqb').onclick=()=>{const i=d.querySelector('.pb-nq');dqAdd(i.value,l.n,msg).then(()=>{i.value=''})};
+ const ub=d.querySelector('.pb-unlock');if(ub)ub.onclick=async()=>{const nx2=S.open.includes(l.n)?S.open.filter(x=>x!==l.n):S.open.concat([l.n]);try{await ctx().DB.set(A.setDoc,{open:nx2},true);S.open=nx2;SEL[l.where]=l.n;rebuild()}catch(e){alert('บันทึกไม่ได้')}};
+ d.querySelector('.pb-send').onclick=async()=>{const c=ctx();if(!(st.C&&st.E)){msg.textContent='เขียนช่องอธิบายอย่างน้อย 2 ช่องแรกก่อนส่งนะ';return}if(!c.DB||!c.U||!c.ME){msg.textContent='เข้าสู่ระบบก่อนจึงจะส่งได้ (งานยังเก็บไว้ในเครื่อง)';return}msg.textContent='กำลังส่ง…';
+  try{await c.DB.set('selc/'+c.U.uid+'_'+A.site+'_'+U.id+'-L'+l.n,{uid:c.U.uid,sid:c.ME.sid||'',name:c.ME.name||'',cls:c.ME.cls||'',no:c.ME.no||'',site:A.site,act:U.id+'-L'+l.n,title:'ภารกิจที่ '+l.n+' '+l.title,lv:l.lv,method:st.method||'',C:st.C||'',E:st.E||'',R:st.R||'',lim:st.lim||'',find:st.find||'',pre:st.method||'',rows:JSON.stringify(st.rows||[]),time:ts()},true);msg.textContent='ส่งให้ครูแล้ว ✓ แก้แล้วส่งซ้ำได้'}catch(e){msg.textContent='ส่งไม่สำเร็จ ลองใหม่อีกครั้ง (งานยังเก็บไว้ในเครื่อง)'}}}
+
+function rebuild(){document.querySelectorAll('.phx').forEach(x=>x.remove());build()}
+function build(){WHERE.forEach(tabs);WHERE.forEach(link);panel();WHERE.filter(w=>w!==A.main).forEach(banner);WHERE.forEach(strip);board();U.lessons.forEach(l=>{try{card(l)}catch(e){console.error('phbl',l.n,e)}});dqDraw();applyMode()}
+async function init(){const c=ctx();try{const s=c.DB&&c.DB.get?await c.DB.get(A.setDoc):null;S={open:(s&&s.open)||[],today:(s&&+s.today)||0,tab:(s&&s.tab)||'m'}}catch(e){S={open:[],today:0,tab:'m'}}await dqLoad();rebuild()}
+setTimeout(init,400);
+if(A.hook)A.hook(()=>setTimeout(()=>{try{build()}catch(e){console.error('phbl',e)}},0));
+let lu='';setInterval(()=>{const c=ctx(),k=(c.U&&c.U.uid||'')+(isT()?'T':'')+(c.DB?'D':'');if(k!==lu){lu=k;init()}},1500);
+return{CALC,init,setMode,pick,state:()=>S};
+};
+
+window.PHBL3UI=KPhbl({U:PHBL3,site:'m3',ctx:()=>window.M3X?M3X():{},isT:c=>!!c.T,
+ host:w=>document.getElementById('p-'+w),nav:w=>{if((location.hash||'').slice(1)!==w)location.hash=w},
+ where:['e1','e2','e3'],main:'e1',setDoc:'settings/m3phbl',
+ topics:{e1:{name:'กราฟของระบบสมการ',ico:'🔵',c:'#2f7de1',page:'1.1'},e2:{name:'การแก้ระบบสมการ',ico:'🟠',c:'#e8891c',page:'1.2'},e3:{name:'โจทย์ปัญหาระบบสมการ',ico:'🟢',c:'#17a673',page:'1.3'}}});
 
 </script>
 </html>
