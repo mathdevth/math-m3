@@ -2161,7 +2161,7 @@ const ts=()=>window.firebase&&firebase.firestore?firebase.firestore.FieldValue.s
 /* รหัสสีช่วยจำ: เรื่องคณิต 3 สี (ฟ้า/ส้ม/เขียว) · CER 3 สี (ม่วง/เขียวน้ำทะเล/ชมพู) · ปม = เหลือง · ไม่ซ้ำกัน */
 const TOPIC=A.topics;
 const CER=[{k:'C',c:'#7c5ce0',ico:'💬',w:'ข้อกล่าวอ้าง'},{k:'E',c:'#0e9aa7',ico:'🔢',w:'หลักฐาน'},{k:'R',c:'#d9467f',ico:'🔗',w:'เหตุผล'}];
-let S={open:[],today:0,tab:'m'},MODE=null;
+let S={open:[],today:0,tab:''},MODE=null;
 if(!document.getElementById('phxCss')){const css=document.createElement('style');css.id='phxCss';css.textContent=`
 .phx{--pc:#2f7de1;--pln:var(--line,rgba(96,112,190,.22));box-sizing:border-box;margin:0 0 16px;border-radius:24px;padding:22px;border:1px solid var(--pln);background:color-mix(in srgb,Canvas 74%,transparent);box-shadow:0 10px 34px rgba(70,90,190,.13);text-align:left!important;font-size:17px;line-height:1.6}
 .phx *{text-align:left;box-sizing:border-box}.phx h2,.phx h3{margin:0 0 8px;line-height:1.35}.phx h2::before,.phx h2::after,.phx h3::before,.phx h3::after{content:none!important;display:none!important}
@@ -2294,7 +2294,7 @@ Object.assign(CALC,{
   return`ค่างวดต่อเดือน = ${j===0?`${fmt(L)} ÷ ${n}`:`${fmt(L)} × ${f4(j)} ÷ [1 − (1 + ${f4(j)})<sup>−${n}</sup>]`} ≈ <b>${fmt(M)}</b> บาท<br>จ่ายรวม ≈ ${fmt(M*n)} บาท (ดอกเบี้ยรวม ≈ ${fmt(M*n-L)} บาท)${S>0?`<br>ค่าไฟที่ประหยัดต่อเดือน ${fmt(S)} บาท ${S>=M?'<b>มากกว่าหรือเท่ากับ</b>ค่างวด':'<b>น้อยกว่า</b>ค่างวด'} (ต่างกัน ${fmt(Math.abs(S-M))} บาทต่อเดือน)`:''}`}
 });
 const WHERE=A.where;
-function curMode(){if(MODE)return MODE;try{const m=sessionStorage.getItem('pb-mode-'+U.id);if(m==='m'||m==='c')return m}catch(e){}return S.tab==='c'?'c':'m'}
+function curMode(){if(MODE)return MODE;try{const m=sessionStorage.getItem('pb-mode-'+U.id);if(m==='m'||m==='c')return m}catch(e){}if(S.tab==='c'||S.tab==='m')return S.tab;return S.today?'m':'c'}
 function setMode(m){MODE=m;try{sessionStorage.setItem('pb-mode-'+U.id,m)}catch(e){}applyMode()}
 function applyMode(){const m=curMode();WHERE.forEach(w=>{const h=A.host(w);if(!h)return;h.classList.toggle('pb-mode-m',m==='m');h.classList.toggle('pb-mode-c',m==='c');h.querySelectorAll('.pb-tabs button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.m===m)))})}
 function tabs(w){const h=A.host(w);if(!h||h.querySelector('.pb-tabs'))return;const t=TOPIC[w];const d=document.createElement('div');d.className='phx pb-tabs';d.style.setProperty('--pc',t.c);d.setAttribute('role','group');d.setAttribute('aria-label','เลือกสิ่งที่จะดู');
@@ -2322,7 +2322,7 @@ function panel(){const L=A.host(A.main);if(!L||L.querySelector('.pb-main'))retur
  <details><summary>🎯 ปลายทาง และสีช่วยจำ</summary><p style="margin-top:6px">${esc(U.product)}</p>
  <div class="pb-legend">${Object.values(TOPIC).filter((t,i,z)=>z.findIndex(x=>(x.g||x.name)===(t.g||t.name))===i).map(t=>`<span><i style="background:${t.c}"></i>${t.g||t.name}</span>`).join('')}<span><i style="background:#ffc93c"></i>ปม/คำถาม</span>${CER.map(x=>`<span><i style="background:${x.c}"></i>${x.ico} ${x.w}</span>`).join('')}</div></details>
  ${T?`<div class="pb-box pb-tset"><b>⚙️ ครูตั้งค่า (นักเรียนไม่เห็น)</b><div class="pb-row"><label style="margin:0;font-weight:400">ภารกิจวันนี้ <select class="pb-today" style="width:auto">${['<option value="0">ไม่กำหนด (เปิดทุกภารกิจ)</option>'].concat(U.lessons.map(l=>`<option value="${l.n}" ${S.today===l.n?'selected':''}>ภารกิจที่ ${l.n}</option>`)).join('')}</select></label>
- <label style="margin:0;font-weight:400">แท็บที่เด็กเห็นก่อน <select class="pb-deftab" style="width:auto"><option value="m" ${S.tab!=='c'?'selected':''}>${U.ico||'🌧️'} ภารกิจ</option><option value="c" ${S.tab==='c'?'selected':''}>📖 เนื้อหา</option></select></label></div><p class="pb-msg pb-tmsg"></p></div>`:''}`;
+ <label style="margin:0;font-weight:400">แท็บที่เด็กเห็นก่อน <select class="pb-deftab" style="width:auto"><option value="" ${S.tab!=='c'&&S.tab!=='m'?'selected':''}>อัตโนมัติ (มีภารกิจวันนี้ → ภารกิจ · ไม่มี → เนื้อหา)</option><option value="m" ${S.tab==='m'?'selected':''}>${U.ico||'🌧️'} ภารกิจ</option><option value="c" ${S.tab==='c'?'selected':''}>📖 เนื้อหา</option></select></label></div><p class="pb-msg pb-tmsg"></p></div>`:''}`;
  L.querySelector('.pb-tabs').after(s);
  const save=async d=>{const m=s.querySelector('.pb-tmsg');try{await ctx().DB.set(A.setDoc,d,true);Object.assign(S,d);m.textContent='บันทึกแล้ว ✓';Object.keys(SEL).forEach(k=>delete SEL[k]);rebuild()}catch(e){m.textContent='บันทึกไม่ได้'}};
  const td=s.querySelector('.pb-today');if(td)td.onchange=()=>save({today:+td.value});const dt=s.querySelector('.pb-deftab');if(dt)dt.onchange=()=>save({tab:dt.value})}
@@ -2372,7 +2372,7 @@ function card(l){const host=A.host(l.where);if(!host||host.querySelector('#pbL'+
 
 function rebuild(){document.querySelectorAll('.phx').forEach(x=>x.remove());build()}
 function build(){WHERE.forEach(tabs);WHERE.forEach(link);panel();WHERE.filter(w=>w!==A.main).forEach(banner);WHERE.forEach(strip);board();U.lessons.forEach(l=>{try{card(l)}catch(e){console.error('phbl',l.n,e)}});dqDraw();applyMode()}
-async function init(){const c=ctx();try{const s=c.DB&&c.DB.get?await c.DB.get(A.setDoc):null;S={open:(s&&s.open)||[],today:(s&&+s.today)||0,tab:(s&&s.tab)||'m'}}catch(e){S={open:[],today:0,tab:'m'}}await dqLoad();rebuild()}
+async function init(){const c=ctx();try{const s=c.DB&&c.DB.get?await c.DB.get(A.setDoc):null;S={open:(s&&s.open)||[],today:(s&&+s.today)||0,tab:(s&&s.tab)||''}}catch(e){S={open:[],today:0,tab:''}}await dqLoad();rebuild()}
 setTimeout(init,400);
 if(A.hook)A.hook(()=>setTimeout(()=>{try{build()}catch(e){console.error('phbl',e)}},0));
 let lu='';setInterval(()=>{const c=ctx(),k=(c.U&&c.U.uid||'')+(isT()?'T':'')+(c.DB?'D':'');if(k!==lu){lu=k;init()}},1500);
@@ -2384,5 +2384,95 @@ window.PHBL3UI=KPhbl({U:PHBL3,site:'m3',ctx:()=>window.M3X?M3X():{},isT:c=>!!c.T
  where:['e1','e2','e3'],main:'e1',setDoc:'settings/m3phbl',
  topics:{e1:{name:'กราฟของระบบสมการ',ico:'🔵',c:'#2f7de1',page:'1.1'},e2:{name:'การแก้ระบบสมการ',ico:'🟠',c:'#e8891c',page:'1.2'},e3:{name:'โจทย์ปัญหาระบบสมการ',ico:'🟢',c:'#17a673',page:'1.3'}}});
 
+/* ===== จัดการบัญชีนักเรียน (แก้ชื่อ ห้อง เลขที่ · เปลี่ยนรหัส · ลบ) สำหรับครู · ลิขสิทธิ์ครูคุ้ม ===== */
+window.KAcct=function(A){
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ctx=()=>(A.ctx()||{});const isT=()=>!!A.isT(ctx());
+const AL='abcdefghjkmnpqrstuvwxyz23456789';const rnd=()=>[...crypto.getRandomValues(new Uint32Array(8))].map(v=>AL[v%AL.length]).join('');
+const email=sid=>`${String(sid).toLowerCase()}@${A.dom}`;
+const fs=()=>window.firebase&&firebase.firestore?firebase.firestore():null;
+const del=p=>{const c=ctx();if(c.DB&&c.DB.del)return c.DB.del(p);const f=fs();return f?f.doc(p).delete():Promise.reject(new Error('no-db'))};
+const vget=uid=>ctx().DB.get('pwv/'+uid).catch(()=>null);
+const vset=(uid,d)=>ctx().DB.set('pwv/'+uid,Object.assign({site:A.site,at:new Date().toISOString()},d),true);
+/* แอปสำรองสำหรับล็อกอินเป็นนักเรียนชั่วคราว (ไม่กระทบบัญชีครูที่ใช้อยู่) */
+function aux(){if(A.aux)return A.aux;if(window.__AUX)return window.__AUX;const fb=window.firebase;const a=fb.apps.find(x=>x.name==='kacct')||fb.initializeApp(fb.app().options,'kacct');return a.auth()}
+async function asStudent(sid,pw,fn){const au=aux();const c=await au.signInWithEmailAndPassword(email(sid),pw);try{return await fn(c.user)}finally{try{await au.signOut()}catch(e){}}}
+/* จดรหัสตอนครูสร้างบัญชี (ครอบ DB.newUser เดิม) */
+let patched=null;function patch(){const c=ctx();if(!c.DB||!c.DB.newUser||patched===c.DB||!isT())return;const o=c.DB.newUser.bind(c.DB);c.DB.newUser=(em,pw)=>o(em,pw).then(uid=>{vset(uid,{sid:String(em).split('@')[0],pw}).catch(()=>{});return uid});patched=c.DB}
+/* CSS */
+if(!document.getElementById('kacCss')){const s=document.createElement('style');s.id='kacCss';s.textContent=`
+.kac{font-size:16px;line-height:1.55}.kac *{box-sizing:border-box}.kac .kac-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.kac input,.kac select{font:inherit;font-size:16px;min-height:42px;padding:6px 10px;border-radius:12px;border:1px solid color-mix(in srgb,currentColor 25%,transparent);background:color-mix(in srgb,Canvas 85%,transparent);color:inherit}
+.kac button{font:inherit;font-size:15px;min-height:40px;padding:6px 12px;border-radius:12px;border:1px solid color-mix(in srgb,currentColor 25%,transparent);background:transparent;color:inherit;cursor:pointer}
+.kac button.kac-p{background:#2f7de1;border-color:#2f7de1;color:#fff;font-weight:600}.kac button.kac-d{border-color:#c4410f;color:#c4410f}
+.kac .kac-w{overflow-x:auto}.kac table{width:100%;border-collapse:collapse;min-width:640px}.kac th,.kac td{text-align:left;padding:7px 6px;border-bottom:1px solid color-mix(in srgb,currentColor 12%,transparent);vertical-align:middle}
+.kac td.kac-a{white-space:nowrap}.kac .kac-pw{font-family:monospace;font-size:17px;font-weight:700}
+.kac .kac-box{margin:8px 0;padding:14px;border-radius:16px;background:color-mix(in srgb,#2f7de1 8%,transparent);border:1px solid color-mix(in srgb,#2f7de1 30%,transparent)}
+.kac .kac-box.kac-warn{background:color-mix(in srgb,#c4410f 8%,transparent);border-color:color-mix(in srgb,#c4410f 35%,transparent)}
+.kac .kac-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}.kac label{display:flex;flex-direction:column;gap:2px;font-size:14px}
+.kac .kac-m{font-size:15px;opacity:.85;margin:6px 0}.kac .kac-ok{color:#128a5f;font-weight:600}.kac .kac-no{color:#c4410f;font-weight:600}
+@media print{body *{visibility:hidden}#kacSlips,#kacSlips *{visibility:visible}#kacSlips{position:absolute;left:0;top:0;width:100%}}
+@media(max-width:640px){.kac table{min-width:0}.kac table,.kac tbody,.kac tr,.kac td{display:block}.kac tr:first-child{display:none}.kac tr[data-u]{display:grid;grid-template-columns:auto auto 1fr;gap:2px 10px;padding:10px 0;border-bottom:1px solid color-mix(in srgb,currentColor 14%,transparent)}.kac tr[data-u] td{border:0;padding:0}.kac tr[data-u] td:nth-child(1)::before{content:'ชั้น ';opacity:.7}.kac tr[data-u] td:nth-child(2)::before{content:'เลขที่ ';opacity:.7}.kac tr[data-u] td:nth-child(3)::before{content:'เลขประจำตัว ';opacity:.7}.kac tr[data-u] td:nth-child(4){grid-column:1/-1;font-weight:700;font-size:17px}.kac tr[data-u] td:nth-child(5){grid-column:1/-1}.kac tr[data-u] td:nth-child(5)::before{content:'รหัส ';opacity:.7}.kac tr[data-u] td.kac-a{grid-column:1/-1;white-space:normal;display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}}
+#kacSlips{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:10px}#kacSlips .kac-slip{border:1px dashed #888;border-radius:10px;padding:10px;font-size:15px}`;document.head.appendChild(s)}
+/* UI */
+let S=[],V={},F={cls:'',q:''},OPEN=null;
+async function load(B){B.innerHTML='<p class="kac-m">กำลังโหลด…</p>';const c=ctx();try{S=await c.DB.q(A.col)}catch(e){B.innerHTML='<p class="kac-no">โหลดรายชื่อไม่สำเร็จ ตรวจสอบกฎ (Rules) ของ Firestore</p>';return}
+ V={};try{const v=await c.DB.q('pwv',[['site','==',A.site]]);v.forEach(x=>V[x.id]=x)}catch(e){V=null}draw(B)}
+function rows(){const q=F.q.trim().toLowerCase();return S.filter(x=>(!F.cls||x.cls===F.cls)&&(!q||String(x.name||'').toLowerCase().includes(q)||String(x.sid||'').toLowerCase().includes(q))).sort((a,b)=>String(a.cls).localeCompare(String(b.cls))||(+a.no||0)-(+b.no||0))}
+function draw(B){const cls=[...new Set(S.map(x=>x.cls))].sort();const r=rows();
+ B.innerHTML=`<div class="kac"><p class="kac-m">แก้ชื่อ ห้อง เลขที่ · เปลี่ยนรหัสผ่าน · ลบนักเรียน · รหัสที่ตั้งผ่านหน้านี้หรือแท็บสร้างบัญชีจะถูกจดไว้ให้ครูดูได้คนเดียว</p>
+ ${V===null?'<p class="kac-box kac-warn">ยังอ่านสมุดรหัสไม่ได้ ให้เพิ่มกฎ <b>pwv</b> ใน Firestore Rules ตามไฟล์ firestore.rules ชุดใหม่ก่อน (แก้ชื่อและลบรายชื่อยังใช้ได้)</p>':''}
+ <div class="kac-bar"><select id="kacC" aria-label="เลือกห้อง"><option value="">ทุกห้อง (${S.length} คน)</option>${cls.map(c=>`<option ${c===F.cls?'selected':''}>${esc(c)}</option>`).join('')}</select>
+ <input id="kacQ" placeholder="ค้นหาชื่อหรือเลขประจำตัว" value="${esc(F.q)}" aria-label="ค้นหา" style="flex:1 1 200px">
+ <button type="button" id="kacPrint">🖨️ ใบแจ้งรหัส (ห้องที่เลือก)</button></div>
+ <div id="kacPanel"></div>
+ <div class="kac-w"><table><tr><th>ชั้น</th><th>เลขที่</th><th>เลขประจำตัว</th><th>ชื่อ</th><th>รหัสผ่าน</th><th>จัดการ</th></tr>
+ ${r.map(x=>{const v=V&&V[x.id];return`<tr data-u="${esc(x.id)}"><td>${esc(x.cls)}</td><td>${esc(x.no)}</td><td>${esc(x.sid)}</td><td>${esc(x.name)}</td><td>${v?`<button type="button" data-k="show">👁️ ดู</button>`:'<span class="kac-m">ไม่ได้จดไว้</span>'}</td><td class="kac-a"><button type="button" data-k="edit">✏️ แก้ไข</button> <button type="button" data-k="pw">🔑 เปลี่ยนรหัส</button> <button type="button" class="kac-d" data-k="del">🗑️ ลบ</button></td></tr>`}).join('')}</table></div>
+ ${!r.length?'<p class="kac-m">ไม่พบรายชื่อ</p>':''}<div id="kacSlips" hidden></div></div>`;
+ B.querySelector('#kacC').onchange=e=>{F.cls=e.target.value;draw(B)};
+ const q=B.querySelector('#kacQ');q.oninput=()=>{F.q=q.value;clearTimeout(q._t);q._t=setTimeout(()=>{draw(B);const n=B.querySelector('#kacQ');n.focus();n.setSelectionRange(n.value.length,n.value.length)},350)};
+ B.querySelector('#kacPrint').onclick=()=>slips(B,rows());
+ B.querySelectorAll('tr[data-u] button').forEach(b=>b.onclick=()=>act(B,b.closest('tr').dataset.u,b.dataset.k,b))}
+function stu(uid){return S.find(x=>x.id===uid)}
+function panel(B,html){const p=B.querySelector('#kacPanel');p.innerHTML=html;p.scrollIntoView({behavior:'smooth',block:'nearest'});return p}
+async function act(B,uid,k,btn){const x=stu(uid);if(!x)return;const c=ctx();
+ if(k==='show'){const v=V&&V[uid];btn.outerHTML=v?`<span class="kac-pw">${esc(v.pw)}</span>`:'–';return}
+ if(k==='edit'){const p=panel(B,`<div class="kac-box"><b>แก้ไขข้อมูล: ${esc(x.sid)}</b><div class="kac-g" style="margin-top:8px"><label>ชื่อ–สกุล<input id="kacN" value="${esc(x.name)}"></label><label>ชั้น<input id="kacK" value="${esc(x.cls)}"></label><label>เลขที่<input id="kacNo" value="${esc(x.no)}" inputmode="numeric"></label>${A.nick?`<label>ชื่อเล่นที่แสดง<input id="kacNk" value="${esc(x.nick||'')}"></label>`:''}</div>
+  <p class="kac-m">เลขประจำตัวใช้ล็อกอิน แก้ที่นี่ไม่ได้ ถ้าเลขผิดให้ลบแล้วสร้างบัญชีใหม่</p><div class="kac-bar"><button type="button" class="kac-p" id="kacSv">บันทึก</button><button type="button" id="kacX">ยกเลิก</button><span id="kacMsg" class="kac-m"></span></div></div>`);
+  p.querySelector('#kacX').onclick=()=>p.innerHTML='';
+  p.querySelector('#kacSv').onclick=async()=>{const d={name:p.querySelector('#kacN').value.trim(),cls:p.querySelector('#kacK').value.trim(),no:p.querySelector('#kacNo').value.trim()};if(A.nick)d.nick=p.querySelector('#kacNk').value.trim()||d.name;const m=p.querySelector('#kacMsg');
+   if(!d.name){m.innerHTML='<span class="kac-no">ใส่ชื่อก่อน</span>';return}try{await c.DB.update(A.col+'/'+uid,d);Object.assign(x,d);draw(B);panel(B,`<p class="kac-box"><span class="kac-ok">บันทึกแล้ว ✓</span> ${esc(d.name)} · ${esc(d.cls)} เลขที่ ${esc(d.no)}</p>`)}catch(e){m.innerHTML='<span class="kac-no">บันทึกไม่สำเร็จ</span>'}};return}
+ if(k==='pw'){const v=V&&V[uid];const np=rnd();const p=panel(B,`<div class="kac-box"><b>เปลี่ยนรหัสผ่าน: ${esc(x.sid)} ${esc(x.name)}</b>
+  ${v?'':`<label style="margin-top:8px">รหัสปัจจุบันของนักเรียน (ดูจากใบแจ้งรหัสเดิม)<input id="kacOld" autocomplete="off"></label>`}
+  <label style="margin-top:8px">รหัสใหม่ (อย่างน้อย 6 ตัว)<input id="kacNew" value="${np}" autocomplete="off"></label>
+  <div class="kac-bar"><button type="button" class="kac-p" id="kacGo">เปลี่ยนรหัส</button><button type="button" id="kacX">ยกเลิก</button><span id="kacMsg" class="kac-m"></span></div></div>`);
+  p.querySelector('#kacX').onclick=()=>p.innerHTML='';
+  p.querySelector('#kacGo').onclick=async()=>{const m=p.querySelector('#kacMsg');const old=v?v.pw:(p.querySelector('#kacOld').value||'').trim();const nw=p.querySelector('#kacNew').value.trim();
+   if(nw.length<6){m.innerHTML='<span class="kac-no">รหัสใหม่ต้องมีอย่างน้อย 6 ตัว</span>';return}if(!old){m.innerHTML='<span class="kac-no">ใส่รหัสปัจจุบันก่อน</span>';return}
+   m.textContent='กำลังเปลี่ยน…';try{await asStudent(x.sid,old,u=>u.updatePassword(nw));await vset(uid,{sid:x.sid,pw:nw}).catch(()=>{});if(V)V[uid]={id:uid,sid:x.sid,pw:nw};draw(B);
+    panel(B,`<div class="kac-box"><span class="kac-ok">เปลี่ยนรหัสแล้ว ✓</span><p style="margin:6px 0">${esc(x.name)} · เลขประจำตัว <b>${esc(x.sid)}</b> · รหัสใหม่ <span class="kac-pw">${esc(nw)}</span></p></div>`)}
+   catch(e){const cd=e.code||'';m.innerHTML=`<span class="kac-no">${/wrong-password|invalid-credential|invalid-login/.test(cd)?'รหัสปัจจุบันไม่ถูกต้อง':/user-not-found/.test(cd)?'ไม่พบบัญชีล็อกอินของเลขประจำตัวนี้':/too-many/.test(cd)?'ลองหลายครั้งเกินไป รอสักครู่แล้วลองใหม่':/network/.test(cd)?'เชื่อมต่ออินเทอร์เน็ตไม่ได้':'เปลี่ยนไม่สำเร็จ ('+esc(cd||e.message)+')'}</span>${!v?'<br>ถ้าไม่รู้รหัสเดิม: ลบนักเรียนคนนี้ แล้วลบบัญชีใน Firebase Console › Authentication จากนั้นสร้างบัญชีใหม่':''}`}};return}
+ if(k==='del'){const v=V&&V[uid];const p=panel(B,`<div class="kac-box kac-warn"><b>ลบนักเรียน: ${esc(x.sid)} ${esc(x.name)} (${esc(x.cls)})</b>
+  <p class="kac-m">ลบรายชื่อออกจากเว็บนี้ ${v?'และลบบัญชีล็อกอินด้วย':'(บัญชีล็อกอินจะยังอยู่ เพราะไม่ได้จดรหัสไว้ ลบต่อได้ใน Firebase Console › Authentication)'} · ผลงานที่ส่งไว้แล้วยังเก็บอยู่ · ย้อนกลับไม่ได้</p>
+  <label>พิมพ์เลขประจำตัว <b>${esc(x.sid)}</b> เพื่อยืนยัน<input id="kacCf" autocomplete="off"></label>
+  <div class="kac-bar"><button type="button" class="kac-d" id="kacGo">ลบถาวร</button><button type="button" id="kacX">ยกเลิก</button><span id="kacMsg" class="kac-m"></span></div></div>`);
+  p.querySelector('#kacX').onclick=()=>p.innerHTML='';
+  p.querySelector('#kacGo').onclick=async()=>{const m=p.querySelector('#kacMsg');if(p.querySelector('#kacCf').value.trim()!==String(x.sid)){m.innerHTML='<span class="kac-no">เลขประจำตัวไม่ตรง</span>';return}
+   m.textContent='กำลังลบ…';let authNote='';
+   if(v){try{await asStudent(x.sid,v.pw,u=>u.delete());authNote='ลบบัญชีล็อกอินแล้ว'}catch(e){authNote='ลบบัญชีล็อกอินไม่สำเร็จ ('+(e.code||e.message)+') ลบต่อใน Firebase Console'}}
+   try{await del(A.col+'/'+uid);await del(A.where+'/'+uid).catch(()=>{});if(v)await del('pwv/'+uid).catch(()=>{});S=S.filter(y=>y.id!==uid);if(V)delete V[uid];draw(B);panel(B,`<p class="kac-box"><span class="kac-ok">ลบ ${esc(x.name)} แล้ว ✓</span> ${esc(authNote||'บัญชีล็อกอินยังอยู่ ลบต่อได้ใน Firebase Console › Authentication')}</p>`)}
+   catch(e){m.innerHTML='<span class="kac-no">ลบรายชื่อไม่สำเร็จ</span>'}};return}}
+function slips(B,r){const w=B.querySelector('#kacSlips');const has=r.filter(x=>V&&V[x.id]);if(!has.length){panel(B,'<p class="kac-box kac-warn">ห้องที่เลือกยังไม่มีรหัสที่จดไว้ (บัญชีที่สร้างก่อนอัปเดตนี้ ให้กดเปลี่ยนรหัสหนึ่งครั้ง ระบบจะเริ่มจดให้)</p>');return}
+ w.hidden=false;w.innerHTML=has.map(x=>`<div class="kac-slip"><b>${esc(x.name)}</b><br>ชั้น ${esc(x.cls)} เลขที่ ${esc(x.no)}<br>เลขประจำตัว: <b>${esc(x.sid)}</b><br>รหัส: <span class="kac-pw">${esc(V[x.id].pw)}</span><br><small>${esc(A.url)}</small></div>`).join('');setTimeout(()=>{window.print()},200)}
+/* แท็บในแดชบอร์ดครู */
+function inject(){patch();const tabs=document.getElementById('tTabs'),body=document.getElementById('tBody');if(!tabs||!body||!isT()||tabs.querySelector('[data-kac]'))return;
+ const ref=tabs.querySelector('button');const b=document.createElement('button');b.type='button';b.dataset.kac='1';b.className=ref?ref.className:'';b.setAttribute('aria-pressed','false');b.textContent='จัดการบัญชี';tabs.appendChild(b);
+ tabs.addEventListener('click',e=>{const t=e.target.closest('button');if(t&&t!==b)b.setAttribute('aria-pressed','false')});
+ b.onclick=()=>{tabs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));load(body)}}
+setInterval(inject,800);
+return{load,inject,_patch:patch};
+};
+
+window.KACCT=KAcct({site:'m3',ctx:()=>window.M3X?M3X():{},isT:c=>!!c.T,col:'m3students',where:'m3where',dom:'students.m3math.app',url:'mathdevth.github.io/math-m3'});
 </script>
 </html>
