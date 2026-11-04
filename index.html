@@ -2474,5 +2474,33 @@ return{load,inject,_patch:patch};
 };
 
 window.KACCT=KAcct({site:'m3',ctx:()=>window.M3X?M3X():{},isT:c=>!!c.T,col:'m3students',where:'m3where',dom:'students.m3math.app',url:'mathdevth.github.io/math-m3'});
+/* ===== ช่องตอบตัวเลข: พิมพ์เครื่องหมาย − . / , ได้ทุกเครื่อง (iPhone แป้นตัวเลขไม่มีปุ่มลบ) · ลิขสิทธิ์ครูคุ้ม ===== */
+(function(){if(window.KInput)return;window.KInput=1;
+const SKIP='.dlN,.dlM,.kdN,.kdM,#rwN,#qzI,#kacNo,#lgId,#lgPw,[type=checkbox],[type=radio],[type=range],[type=file],[data-kin-skip]';
+const isNum=el=>el&&el.tagName==='INPUT'&&!el.matches(SKIP)&&(el.type==='number'||/^(decimal|numeric)$/.test(el.getAttribute('inputmode')||''));
+const TH='๐๑๒๓๔๕๖๗๘๙';
+function norm(el){const v=el.value;const n=v.replace(/[−–—‒﹣－]/g,'-').replace(/[／÷]/g,'/').replace(/[，]/g,',').replace(/[．]/g,'.').replace(/[๐-๙]/g,c=>TH.indexOf(c));if(n!==v){const p=el.selectionStart;el.value=n;try{el.setSelectionRange(p,p)}catch(e){}}}
+function fix(el){if(el.type==='number'){const v=el.value;try{el.type='text'}catch(e){}el.value=v}el.setAttribute('autocomplete','off');el.setAttribute('autocorrect','off');el.setAttribute('spellcheck','false')}
+/* แถบปุ่มเครื่องหมาย: แสดงบนจอสัมผัสเท่านั้น */
+const touch=()=>{try{return matchMedia('(pointer:coarse)').matches}catch(e){return false}};
+let bar=null,cur=null;
+function mk(){bar=document.createElement('div');bar.id='kinBar';bar.setAttribute('role','toolbar');bar.setAttribute('aria-label','ปุ่มเครื่องหมาย');
+ bar.innerHTML=[['-','ลบ (ติดลบ)','−'],['.','จุดทศนิยม','.'],['/','เศษส่วน','/'],[',','จุลภาค',','],['(','วงเล็บเปิด','('],[')','วงเล็บปิด',')']].map(([k,l,t])=>`<button type="button" data-k="${k}" aria-label="${l}">${t}</button>`).join('')+'<button type="button" data-k="done" aria-label="เสร็จ">เสร็จ</button>';
+ const s=document.createElement('style');s.textContent=`#kinBar{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;display:flex;gap:6px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:color-mix(in srgb,Canvas 92%,#2f7de1 8%);border-top:1px solid color-mix(in srgb,CanvasText 18%,transparent);box-shadow:0 -4px 16px rgba(0,0,0,.12)}#kinBar[hidden]{display:none}#kinBar button{flex:1;min-height:44px;font:600 22px/1 system-ui,sans-serif;border-radius:10px;border:1px solid color-mix(in srgb,CanvasText 22%,transparent);background:Canvas;color:CanvasText;padding:0}#kinBar button[data-k=done]{flex:1.6;font-size:16px;background:#2f7de1;border-color:#2f7de1;color:#fff}`;
+ document.head.appendChild(s);document.body.appendChild(bar);bar.hidden=true;
+ bar.addEventListener('pointerdown',e=>e.preventDefault());bar.addEventListener('mousedown',e=>e.preventDefault());
+ bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!cur)return;const k=b.dataset.k;if(k==='done'){cur.blur();bar.hidden=true;return}
+  const el=cur,s0=el.selectionStart??el.value.length,s1=el.selectionEnd??s0;let v=el.value,p;
+  if(k==='-'&&s0===s1&&s0===0&&v.startsWith('-')){el.value=v.slice(1);p=0}else{el.value=v.slice(0,s0)+k+v.slice(s1);p=s0+1}
+  try{el.setSelectionRange(p,p)}catch(e){}el.focus();el.dispatchEvent(new Event('input',{bubbles:true}))})}
+document.addEventListener('focusin',e=>{const el=e.target;if(!isNum(el)){if(bar&&e.target!==cur)bar.hidden=true;return}fix(el);cur=el;if(touch()){if(!bar)mk();bar.hidden=false;setTimeout(()=>{try{el.scrollIntoView({block:'center',behavior:'smooth'})}catch(x){}},250)}},true);
+document.addEventListener('focusout',e=>{if(e.target===cur)setTimeout(()=>{if(document.activeElement!==cur&&bar){bar.hidden=true;cur=null}},150)},true);
+document.addEventListener('input',e=>{if(isNum(e.target))norm(e.target)},true);
+/* ช่อง type=number ที่สร้างไว้แล้ว เปลี่ยนเป็นข้อความทันที (ค่าที่มีอยู่ไม่หาย) */
+const sweep=()=>document.querySelectorAll('input[type=number]').forEach(el=>{if(isNum(el))fix(el)});
+try{new MutationObserver(()=>{clearTimeout(sweep._t);sweep._t=setTimeout(sweep,60)}).observe(document.documentElement,{childList:true,subtree:true})}catch(e){}
+if(document.readyState!=='loading')sweep();else document.addEventListener('DOMContentLoaded',sweep);
+})();
+
 </script>
 </html>
