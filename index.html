@@ -2195,6 +2195,7 @@ if(!document.getElementById('phxCss')){const css=document.createElement('style')
 .pb-tabs button[aria-pressed="true"]{background:var(--pc);color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--pc) 40%,transparent)}
 @media(max-width:560px){.pb-tabs button{font-size:14.5px;padding:6px 8px}}
 .pb-strip{padding:14px!important}
+.pb-strip .pb-slides{display:flex;align-items:center;justify-content:center;min-height:44px;margin:0 0 10px;border-radius:14px;font-weight:700;font-size:16px;text-decoration:none;color:var(--pc);border:2px solid color-mix(in srgb,var(--pc) 40%,transparent);background:color-mix(in srgb,var(--pc) 8%,transparent)}
 .pb-strip .pb-sh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;font-weight:700}
 .pb-strip .pb-chips{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}@media(max-width:760px){.pb-strip .pb-chips{grid-template-columns:repeat(4,1fr)}}
 .pb-strip .pb-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;padding:6px 4px;border-radius:16px;border:2px solid color-mix(in srgb,var(--mc) 40%,transparent);background:color-mix(in srgb,var(--mc) 8%,transparent);color:inherit;font-weight:700;text-align:center}
@@ -2312,7 +2313,7 @@ function pick(n){const l=U.lessons.find(x=>x.n===n);if(!l||(stOf(n)==='lock'))re
  A.nav(l.where);let k=0;const sc=()=>{const h=A.host(l.where),s=h&&h.querySelector('.pb-strip');if(s)s.scrollIntoView({behavior:'smooth',block:'start'});else if(++k<12)setTimeout(sc,120)};setTimeout(sc,80)}
 function stIcon(n){const s=stOf(n);return s==='done'?'✓ ทำแล้ว':s==='now'?'⭐ วันนี้':s==='lock'?'🔒':' '}
 function strip(w){const h=A.host(w);if(!h||h.querySelector('.pb-strip'))return;const s=document.createElement('div');s.className='phx pb-strip';s.style.setProperty('--pc',TOPIC[w].c);const cur=SEL[w]||defSel(w);
- s.innerHTML=`<div class="pb-sh"><span>เลือกภารกิจ</span><span class="pb-msg" style="margin:0">${S.today?`ภารกิจวันนี้: ${S.today}`:''}</span></div><div class="pb-chips">${U.lessons.map(l=>{const t=topicOf(l),st=stOf(l.n);return`<button type="button" class="pb-chip ${st==='now'?'pb-now':''}" style="--mc:${t.c}" data-n="${l.n}" aria-pressed="${l.n===cur&&l.where===w}" ${st==='lock'?'disabled':''} aria-label="ภารกิจที่ ${l.n} ${esc(l.title)} ${stIcon(l.n)}"><b>${l.n}</b><small>${stIcon(l.n)}</small></button>`}).join('')}</div>`;
+ s.innerHTML=`<div class="pb-sh"><span>เลือกภารกิจ</span><span class="pb-msg" style="margin:0">${S.today?`ภารกิจวันนี้: ${S.today}`:''}</span></div>${U.slides?`<a class="pb-slides" href="${U.slides}" target="_blank" rel="noopener">📽️ เปิดสไลด์ประกอบภารกิจ ↗</a>`:''}<div class="pb-chips">${U.lessons.map(l=>{const t=topicOf(l),st=stOf(l.n);return`<button type="button" class="pb-chip ${st==='now'?'pb-now':''}" style="--mc:${t.c}" data-n="${l.n}" aria-pressed="${l.n===cur&&l.where===w}" ${st==='lock'?'disabled':''} aria-label="ภารกิจที่ ${l.n} ${esc(l.title)} ${stIcon(l.n)}"><b>${l.n}</b><small>${stIcon(l.n)}</small></button>`}).join('')}</div>`;
  const anchor=h.querySelector('#pbMain')||h.querySelector('.pb-ban')||h.querySelector('.pb-tabs');anchor.after(s);s.querySelectorAll('.pb-chip').forEach(b=>b.onclick=()=>pick(+b.dataset.n))}
 
 /* ---------- การ์ดเรื่องของเรา + กระดาน ---------- */
@@ -2460,15 +2461,15 @@ async function act(B,uid,k,btn){const x=stu(uid);if(!x)return;const c=ctx();
   p.querySelector('#kacGo').onclick=async()=>{const m=p.querySelector('#kacMsg');if(p.querySelector('#kacCf').value.trim()!==String(x.sid)){m.innerHTML='<span class="kac-no">เลขประจำตัวไม่ตรง</span>';return}
    m.textContent='กำลังลบ…';let authNote='';
    if(v){try{await asStudent(x.sid,v.pw,u=>u.delete());authNote='ลบบัญชีล็อกอินแล้ว'}catch(e){authNote='ลบบัญชีล็อกอินไม่สำเร็จ ('+(e.code||e.message)+') ลบต่อใน Firebase Console'}}
-   try{await del(A.col+'/'+uid);await del(A.where+'/'+uid).catch(()=>{});if(v)await del('pwv/'+uid).catch(()=>{});S=S.filter(y=>y.id!==uid);if(V)delete V[uid];draw(B);panel(B,`<p class="kac-box"><span class="kac-ok">ลบ ${esc(x.name)} แล้ว ✓</span> ${esc(authNote||'บัญชีล็อกอินยังอยู่ ลบต่อได้ใน Firebase Console › Authentication')}</p>`)}
+   try{await del(A.col+'/'+uid);if(A.where)await del(A.where+'/'+uid).catch(()=>{});if(v)await del('pwv/'+uid).catch(()=>{});S=S.filter(y=>y.id!==uid);if(V)delete V[uid];draw(B);panel(B,`<p class="kac-box"><span class="kac-ok">ลบ ${esc(x.name)} แล้ว ✓</span> ${esc(authNote||'บัญชีล็อกอินยังอยู่ ลบต่อได้ใน Firebase Console › Authentication')}</p>`)}
    catch(e){m.innerHTML='<span class="kac-no">ลบรายชื่อไม่สำเร็จ</span>'}};return}}
 function slips(B,r){const w=B.querySelector('#kacSlips');const has=r.filter(x=>V&&V[x.id]);if(!has.length){panel(B,'<p class="kac-box kac-warn">ห้องที่เลือกยังไม่มีรหัสที่จดไว้ (บัญชีที่สร้างก่อนอัปเดตนี้ ให้กดเปลี่ยนรหัสหนึ่งครั้ง ระบบจะเริ่มจดให้)</p>');return}
  w.hidden=false;w.innerHTML=has.map(x=>`<div class="kac-slip"><b>${esc(x.name)}</b><br>ชั้น ${esc(x.cls)} เลขที่ ${esc(x.no)}<br>เลขประจำตัว: <b>${esc(x.sid)}</b><br>รหัส: <span class="kac-pw">${esc(V[x.id].pw)}</span><br><small>${esc(A.url)}</small></div>`).join('');setTimeout(()=>{window.print()},200)}
 /* แท็บในแดชบอร์ดครู */
 function inject(){patch();const tabs=document.getElementById('tTabs'),body=document.getElementById('tBody');if(!tabs||!body||!isT()||tabs.querySelector('[data-kac]'))return;
- const ref=tabs.querySelector('button');const b=document.createElement('button');b.type='button';b.dataset.kac='1';b.className=ref?ref.className:'';b.setAttribute('aria-pressed','false');b.textContent='จัดการบัญชี';tabs.appendChild(b);
- tabs.addEventListener('click',e=>{const t=e.target.closest('button');if(t&&t!==b)b.setAttribute('aria-pressed','false')});
- b.onclick=()=>{tabs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));load(body)}}
+ const SA=A.selAttr||'aria-pressed';const ref=tabs.querySelector('button');const b=document.createElement('button');b.type='button';b.dataset.kac='1';b.className=ref?ref.className:'';b.setAttribute(SA,'false');b.textContent='จัดการบัญชี';tabs.appendChild(b);
+ tabs.addEventListener('click',e=>{const t=e.target.closest('button');if(t&&t!==b)b.setAttribute(SA,'false')});
+ b.onclick=()=>{tabs.querySelectorAll('button').forEach(x=>x.setAttribute(SA,String(x===b)));load(body)}}
 setInterval(inject,800);
 return{load,inject,_patch:patch};
 };
